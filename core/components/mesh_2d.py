@@ -1,6 +1,7 @@
 """The 2D mesh component for the Agent World game."""
 
 from game.component import GameComponent
+from game.event_handler import EventHandler
 
 
 class Material:
@@ -35,3 +36,6 @@ class Mesh2D(GameComponent):
 
     def update(self) -> None:
         """Update the mesh component."""
+
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""

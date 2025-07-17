@@ -1,6 +1,7 @@
 """The position module defines a component that holds the position of a game object."""
 
 from game.component import GameComponent
+from game.event_handler import EventHandler
 
 
 class Position(GameComponent):
@@ -26,3 +27,6 @@ class Position(GameComponent):
 
     def update(self) -> None:
         """Update the position component."""
+
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""

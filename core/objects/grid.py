@@ -29,6 +29,10 @@ class Grid(GameObject):
     def add_events(self, event_handler: EventHandler) -> None:
         """Register event listeners for the grid."""
 
+    def on_grid(self, x: int, y: int) -> bool:
+        """Check if the given coordinates are within the grid bounds."""
+        return 0 <= x < self.grid_size and 0 <= y < self.grid_size
+
 
 class GridGenerator:
     """Generates a grid with random tiles."""

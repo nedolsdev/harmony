@@ -1,5 +1,7 @@
 """The behavior module defines a game object interacts with the game state."""
 
+from game.component import GameComponent
 
-class Behavior:
-    """A base class for game objects that interact with the game state."""
+
+class Behavior(GameComponent):
+    """A behaviour is a special type of game component that defines how a game object interacts with the game state."""

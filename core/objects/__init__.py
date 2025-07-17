@@ -1,1 +1,1 @@
-"""The objects package contains the base classes for game objects."""
+"""The objects package defines the core objects of the game engine."""

@@ -58,5 +58,5 @@ class GameObject:
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this game object."""
-        msg = f"'{self.__class__.__name__}' does not implement 'add_events' method."
-        raise NotImplementedError(msg)
+        for component in self.components:
+            component.add_events(event_handler)
