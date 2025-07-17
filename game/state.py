@@ -1,7 +1,6 @@
 """The state module defines the game state, including the grid and the agent's position."""
 
 from game.object import GameObject
-from world.grid import GridGenerator
 
 
 class GameState:
@@ -9,7 +8,6 @@ class GameState:
 
     def __init__(self) -> None:
         """Initialize the game state with a grid."""
-        self.grid = GridGenerator.generate()
         self.game_objects: list[GameObject] = []
 
     def add_game_object(self, game_object: GameObject) -> None:

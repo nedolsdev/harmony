@@ -5,7 +5,7 @@ import pygame
 from game.draw import Renderer
 from game.event import Event, PygameEvent, PygameKeydownEvent
 from game.event_handler import EventHandler
-from world.state import GameState
+from game.state import GameState
 
 
 class Runner:

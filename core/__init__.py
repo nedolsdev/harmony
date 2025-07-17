@@ -1,1 +1,1 @@
-"""The core package contains the definitions for agents."""
+"""The core package contains the objects and components used in the Agent World game."""

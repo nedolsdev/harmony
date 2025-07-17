@@ -2,24 +2,31 @@
 
 import random
 
-from world.tile import Tile, TileType
+from core.objects.tile import Tile, TileType
+from game.event_handler import EventHandler
+from game.object import GameObject
 
 
-class Grid:
+class Grid(GameObject):
     """Represents a grid of tiles in the game world."""
 
-    GRID_SIZE = 10
-
-    def __init__(self) -> None:
+    def __init__(self, event_handler: EventHandler, grid_size: int) -> None:
         """Initialize the grid with empty tiles."""
-        self.tiles = [[Tile(TileType.EMPTY, x, y) for x in range(self.GRID_SIZE)] for y in range(self.GRID_SIZE)]
+        super().__init__(event_handler)
+        self.grid_size = grid_size
+
+        self.tiles = [
+            [Tile(event_handler, TileType.EMPTY, x, y) for x in range(self.grid_size)] for y in range(self.grid_size)
+        ]
+        self.tags.add("grid")
 
     def set_tile(self, x: int, y: int, tile_type: TileType) -> None:
         """Set the tile at the specified position to the given tile type."""
-        if 0 <= x < self.GRID_SIZE and 0 <= y < self.GRID_SIZE:
-            self.tiles[y][x] = Tile(tile_type, x, y)
+        if 0 <= x < self.grid_size and 0 <= y < self.grid_size:
+            event_handler = self.event_handler
+            self.tiles[y][x] = Tile(event_handler, tile_type, x, y)
         else:
-            msg = f"Coordinates ({x}, {y}) out of bounds for grid size {self.GRID_SIZE}."
+            msg = f"Coordinates ({x}, {y}) out of bounds for grid size {self.grid_size}."
             raise IndexError(msg)
 
 
@@ -27,16 +34,16 @@ class GridGenerator:
     """Generates a grid with random tiles."""
 
     @staticmethod
-    def generate() -> Grid:
+    def generate(event_handler: EventHandler, grid_size: int) -> Grid:
         """Generate a grid with random tiles."""
-        grid = Grid()
+        grid = Grid(event_handler, grid_size)
 
         chance_wall = 0.1
         chance_hazard = 0.1
 
-        for y in range(grid.GRID_SIZE):
-            for x in range(grid.GRID_SIZE):
-                if (x, y) == (grid.GRID_SIZE - 1, grid.GRID_SIZE - 1):
+        for y in range(grid.grid_size):
+            for x in range(grid.grid_size):
+                if (x, y) == (grid.grid_size - 1, grid.grid_size - 1):
                     grid.set_tile(x, y, TileType.GOAL)
                 else:
                     rnd = random.random()  # noqa: S311 (not security-sensitive)

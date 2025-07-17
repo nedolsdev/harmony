@@ -2,8 +2,6 @@
 
 from typing import TypeVar
 
-from core.components.mesh_2d import Mesh2D
-from core.components.position import Position
 from game.component import GameComponent
 from game.event_handler import EventHandler
 
@@ -13,23 +11,11 @@ T = TypeVar("T", bound="GameComponent")
 class GameObject:
     """A base class for game objects in the game."""
 
-    def __init__(self, event_handler: EventHandler, position: tuple[int, int], width: int, height: int) -> None:
+    def __init__(self, event_handler: EventHandler) -> None:
         """Initialize the game object with its components."""
         self.event_handler = event_handler
         self.components: list[GameComponent] = []
         self.tags: set[str] = set()
-        self.components.append(Position(*position))
-
-        # add position component
-        pos = self.get_component(Position)
-        self.position = pos
-
-        # add mesh component
-        self.mesh = Mesh2D(width, height)
-        self.components.append(self.mesh)
-
-        # add mesh component to tags
-        self.tags.add("mesh")
 
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
