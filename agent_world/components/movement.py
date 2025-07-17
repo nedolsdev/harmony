@@ -18,26 +18,27 @@ class Movement(Behavior):
         """Initialize the movement behavior with an agent and speed."""
         super().__init__()
         self.grid = grid
+        self.tile_size = grid.tile_size
 
     def move_up(self) -> None:
         """Move the agent up by one tile."""
         x, y = self.position.get_coordinates()
-        self.try_move(x, y - 1)
+        self.try_move(x, y - 1 * self.grid.tile_size)
 
     def move_down(self) -> None:
         """Move the agent down by one tile."""
         x, y = self.position.get_coordinates()
-        self.try_move(x, y + 1)
+        self.try_move(x, y + 1 * self.grid.tile_size)
 
     def move_left(self) -> None:
         """Move the agent left by one tile."""
         x, y = self.position.get_coordinates()
-        self.try_move(x - 1, y)
+        self.try_move(x - 1 * self.grid.tile_size, y)
 
     def move_right(self) -> None:
         """Move the agent right by one tile."""
         x, y = self.position.get_coordinates()
-        self.try_move(x + 1, y)
+        self.try_move(x + 1 * self.grid.tile_size, y)
 
     def get_position(self) -> tuple[int, int]:
         """Return the agent's current position."""
@@ -49,7 +50,7 @@ class Movement(Behavior):
 
     def try_move(self, x: int, y: int) -> bool:
         """Attempt to move the agent to the specified coordinates."""
-        if self.move_is_valid(x, y):
+        if self.move_is_valid(x // self.grid.tile_size, y // self.grid.tile_size):
             self.position.set_coordinates(x, y)
             return True
         return False

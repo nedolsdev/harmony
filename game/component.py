@@ -1,5 +1,7 @@
 """The component module defines the base class for game components."""
 
+from abc import abstractmethod
+
 from game.event_handler import EventHandler
 
 
@@ -10,16 +12,19 @@ class GameComponent:
         """Initialize the game component."""
         self.active = True
 
+    @abstractmethod
     def start(self) -> None:
         """Start the component."""
         msg = f"'{self.__class__.__name__}' does not implement 'start' method."
         raise NotImplementedError(msg)
 
+    @abstractmethod
     def update(self) -> None:
         """Update the component."""
         msg = f"'{self.__class__.__name__}' does not implement 'update' method."
         raise NotImplementedError(msg)
 
+    @abstractmethod
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
         msg = f"'{self.__class__.__name__}' does not implement 'add_events' method."

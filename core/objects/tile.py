@@ -2,7 +2,6 @@
 
 from enum import IntEnum
 
-from game.event_handler import EventHandler
 from game.object import GameObject
 
 
@@ -41,6 +40,3 @@ class Tile(GameObject):
         self.color = color
 
         self.tags.add("tile")
-
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Register event listeners for the tile."""

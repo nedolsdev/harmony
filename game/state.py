@@ -1,6 +1,10 @@
 """The state module defines the game state, including the grid and the agent's position."""
 
+from typing import TypeVar
+
 from game.object import GameObject
+
+T = TypeVar("T", bound="GameObject")
 
 
 class GameState:
@@ -26,3 +30,7 @@ class GameState:
     def find_with_tag(self, tag: str) -> list[GameObject]:
         """Find all game objects with a specific tag."""
         return [obj for obj in self.game_objects if tag in obj.tags]
+
+    def find_with_type(self, object_type: type[T]) -> list[T]:
+        """Find all game objects of a specific type."""
+        return [obj for obj in self.game_objects if isinstance(obj, object_type)]

@@ -1,6 +1,6 @@
 """The agent module defines the agent's behavior and interactions with the game state."""
 
-from core.components.mesh_2d import Mesh2D
+from core.components.mesh_2d import Material, Mesh2D
 from core.components.position import Position
 from game.object import GameObject
 
@@ -17,7 +17,7 @@ class Agent(GameObject):
         self.components.append(Position(*position))
 
         # add mesh component
-        self.components.append(Mesh2D(width, height))
+        self.components.append(Mesh2D(width, height, Material((50, 150, 250))))
 
         # add mesh component to tags
         self.tags.add("mesh")

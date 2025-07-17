@@ -2,6 +2,7 @@
 
 import random
 
+from core.components.position import Position
 from core.objects.tile import Tile, TileType
 from game.event_handler import EventHandler
 from game.object import GameObject
@@ -10,13 +11,16 @@ from game.object import GameObject
 class Grid(GameObject):
     """Represents a grid of tiles in the game world."""
 
-    def __init__(self, grid_size: int) -> None:
+    def __init__(self, grid_size: int, tile_size: int) -> None:
         """Initialize the grid with empty tiles."""
         super().__init__()
         self.grid_size = grid_size
+        self.tile_size = tile_size
 
         self.tiles = [[Tile(TileType.EMPTY, x, y) for x in range(self.grid_size)] for y in range(self.grid_size)]
         self.tags.add("grid")
+
+        self.add_component(Position(x=0, y=0))
 
     def set_tile(self, x: int, y: int, tile_type: TileType) -> None:
         """Set the tile at the specified position to the given tile type."""
@@ -38,9 +42,9 @@ class GridGenerator:
     """Generates a grid with random tiles."""
 
     @staticmethod
-    def generate(grid_size: int) -> Grid:
+    def generate(grid_size: int, tile_size: int) -> Grid:
         """Generate a grid with random tiles."""
-        grid = Grid(grid_size)
+        grid = Grid(grid_size, tile_size)
 
         chance_wall = 0.1
         chance_hazard = 0.1
