@@ -3,7 +3,6 @@
 from collections.abc import Callable
 
 from game.event import Event, EventListener
-from world.state import GameState
 
 
 class EventHandler:
@@ -13,24 +12,24 @@ class EventHandler:
         """Initialize the event handler."""
         self.event_listeners: dict[str, list[EventListener]] = {}
 
-    def handle_events(self, state: GameState, events: list[Event]) -> None:
+    def handle_events(self, events: list[Event]) -> None:
         """Process input events and update the game state."""
         for event in events:
-            self.handle_event(event, state)
+            self.handle_event(event)
 
-    def handle_event(self, event: Event, state: GameState) -> None:
+    def handle_event(self, event: Event) -> None:
         """Handle a single event to update the game state."""
         if event.event_type in self.event_listeners:
             for listener in self.event_listeners[event.event_type]:
-                listener.handle_event(event, state)
+                listener.handle_event()
 
-    def register_listener(self, event_type: str, callback: Callable[[Event, GameState], None]) -> None:
+    def register_listener(self, event_type: str, callback: Callable[[], None]) -> None:
         """Register a new event listener."""
         if event_type not in self.event_listeners:
             self.event_listeners[event_type] = []
         self.event_listeners[event_type].append(EventListener(event_type, callback))
 
-    def unregister_listener(self, event_type: str, callback: Callable[[Event, GameState], None]) -> None:
+    def unregister_listener(self, event_type: str, callback: Callable[[], None]) -> None:
         """Unregister an existing event listener."""
         if event_type in self.event_listeners:
             self.event_listeners[event_type] = [

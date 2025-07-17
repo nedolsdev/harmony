@@ -22,15 +22,12 @@ class Runner:
         self.state = state
 
         # add game quit listener
-        def quit_listener(_event: Event, _state: GameState) -> None:
+        def quit_listener() -> None:
             """Stop the game when a quit event is received."""
             self.stop()
 
         event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
-        event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_key(pygame.K_ESCAPE),
-            quit_listener,
-        )
+        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_ESCAPE), quit_listener)
 
     def run_step(self) -> None:
         """Run a single step of the game loop."""
@@ -43,7 +40,7 @@ class Runner:
             else:
                 events.append(PygameEvent(event))
 
-        self.event_handler.handle_events(self.state, events)
+        self.event_handler.handle_events(events)
 
         if not self.running:
             return

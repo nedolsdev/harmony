@@ -1,15 +1,25 @@
 """The agent module defines the agent's behavior and interactions with the game state."""
 
+import pygame
+
+from game.event import PygameKeydownEvent
+from game.event_handler import EventHandler
 from game.object import GameObject
 
 
 class Agent(GameObject):
     """Represents an agent in the game."""
 
-    def __init__(self, position: tuple[int, int], width: int, height: int) -> None:
+    def __init__(self, event_handler: EventHandler, position: tuple[int, int], width: int, height: int) -> None:
         """Initialize the agent with a position."""
-        super().__init__(position, width, height)
+        super().__init__(event_handler, position, width, height)
         self.tags.add("agent")
+
+        # add movement listeners
+        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_UP), self.move_up)
+        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_DOWN), self.move_down)
+        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_LEFT), self.move_left)
+        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_RIGHT), self.move_right)
 
     def move_up(self) -> None:
         """Move the agent up by one tile."""

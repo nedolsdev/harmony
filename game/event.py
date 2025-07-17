@@ -4,8 +4,6 @@ from collections.abc import Callable
 
 import pygame
 
-from world.state import GameState
-
 
 class Event:
     """A simple event class to represent an event in the game."""
@@ -53,11 +51,11 @@ class PygameKeydownEvent(PygameEvent):
 class EventListener:
     """A simple event listener that can be used to listen for specific events."""
 
-    def __init__(self, event_type: str, callback: Callable[[Event, GameState], None]) -> None:
+    def __init__(self, event_type: str, callback: Callable[[], None]) -> None:
         """Initialize the event listener with an event type and callback."""
         self.event_type = event_type
         self.callback = callback
 
-    def handle_event(self, event: Event, state: GameState) -> None:
+    def handle_event(self) -> None:
         """Handle the event by calling the callback."""
-        self.callback(event, state)
+        self.callback()
