@@ -2,6 +2,7 @@
 
 import pygame
 
+from game.behavior import Behavior
 from game.draw import Renderer
 from game.event import Event, PygameEvent, PygameKeydownEvent
 from game.event_handler import EventHandler
@@ -59,6 +60,12 @@ class Runner:
     def start(self) -> None:
         """Start the main game loop."""
         self.running = True
+
+        # set all behavior owners
+        for game_object in self.state.get_game_objects():
+            for component in game_object.get_components():
+                if isinstance(component, Behavior):
+                    component.set_owner(game_object)
 
         # sync all game objects with the event handler
         for game_object in self.state.get_game_objects():

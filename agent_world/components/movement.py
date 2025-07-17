@@ -12,10 +12,11 @@ from game.event_handler import EventHandler
 class Movement(Behavior):
     """A behavior that allows an agent to move in the game world."""
 
-    def __init__(self, position: Position, grid: Grid) -> None:
+    position: Position
+
+    def __init__(self, grid: Grid) -> None:
         """Initialize the movement behavior with an agent and speed."""
         super().__init__()
-        self.position = position
         self.grid = grid
 
     def move_up(self) -> None:
@@ -55,6 +56,7 @@ class Movement(Behavior):
 
     def start(self) -> None:
         """Initialize the movement behavior."""
+        self.position = self.game_object.get_component(Position)
 
     def update(self) -> None:
         """Update the movement behavior."""

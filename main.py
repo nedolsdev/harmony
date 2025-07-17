@@ -2,7 +2,6 @@
 
 from agent_world.components.movement import Movement
 from agent_world.objects.agent import Agent
-from core.components.position import Position
 from core.objects.grid import GridGenerator
 from game.draw import Renderer
 from game.event_handler import EventHandler
@@ -20,7 +19,7 @@ def main() -> None:
 
     agent = Agent(position=(0, 0), width=60, height=60)
     state.add_game_object(agent)
-    agent.add_component(Movement(position=agent.get_component(Position), grid=grid))
+    agent.add_component(Movement(grid))
 
     renderer = Renderer(grid_size=10)
 

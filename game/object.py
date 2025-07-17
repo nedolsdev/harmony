@@ -15,6 +15,7 @@ class GameObject:
         """Initialize the game object with its components."""
         self.components: list[GameComponent] = []
         self.tags: set[str] = set()
+        self.active = True
 
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
@@ -60,3 +61,15 @@ class GameObject:
         """Add events to the event handler for this game object."""
         for component in self.components:
             component.add_events(event_handler)
+
+    def activate(self) -> None:
+        """Activate the game object."""
+        self.active = True
+        for component in self.components:
+            component.activate()
+
+    def deactivate(self) -> None:
+        """Deactivate the game object."""
+        self.active = False
+        for component in self.components:
+            component.deactivate()

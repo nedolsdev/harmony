@@ -24,3 +24,11 @@ class GameComponent:
         """Add events to the event handler for this component."""
         msg = f"'{self.__class__.__name__}' does not implement 'add_events' method."
         raise NotImplementedError(msg)
+
+    def activate(self) -> None:
+        """Activate the component."""
+        self.active = True
+
+    def deactivate(self) -> None:
+        """Deactivate the component."""
+        self.active = False
