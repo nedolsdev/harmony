@@ -10,33 +10,33 @@ from game.object import GameObject
 class Grid(GameObject):
     """Represents a grid of tiles in the game world."""
 
-    def __init__(self, event_handler: EventHandler, grid_size: int) -> None:
+    def __init__(self, grid_size: int) -> None:
         """Initialize the grid with empty tiles."""
-        super().__init__(event_handler)
+        super().__init__()
         self.grid_size = grid_size
 
-        self.tiles = [
-            [Tile(event_handler, TileType.EMPTY, x, y) for x in range(self.grid_size)] for y in range(self.grid_size)
-        ]
+        self.tiles = [[Tile(TileType.EMPTY, x, y) for x in range(self.grid_size)] for y in range(self.grid_size)]
         self.tags.add("grid")
 
     def set_tile(self, x: int, y: int, tile_type: TileType) -> None:
         """Set the tile at the specified position to the given tile type."""
         if 0 <= x < self.grid_size and 0 <= y < self.grid_size:
-            event_handler = self.event_handler
-            self.tiles[y][x] = Tile(event_handler, tile_type, x, y)
+            self.tiles[y][x] = Tile(tile_type, x, y)
         else:
             msg = f"Coordinates ({x}, {y}) out of bounds for grid size {self.grid_size}."
             raise IndexError(msg)
+
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Register event listeners for the grid."""
 
 
 class GridGenerator:
     """Generates a grid with random tiles."""
 
     @staticmethod
-    def generate(event_handler: EventHandler, grid_size: int) -> Grid:
+    def generate(grid_size: int) -> Grid:
         """Generate a grid with random tiles."""
-        grid = Grid(event_handler, grid_size)
+        grid = Grid(grid_size)
 
         chance_wall = 0.1
         chance_hazard = 0.1

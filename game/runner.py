@@ -42,6 +42,10 @@ class Runner:
 
         self.event_handler.handle_events(events)
 
+        # update all game objects
+        for game_object in self.state.get_game_objects():
+            game_object.update()
+
         if not self.running:
             return
 
@@ -55,6 +59,15 @@ class Runner:
     def start(self) -> None:
         """Start the main game loop."""
         self.running = True
+
+        # sync all game objects with the event handler
+        for game_object in self.state.get_game_objects():
+            game_object.add_events(self.event_handler)
+
+        # start all game objects
+        for game_object in self.state.get_game_objects():
+            game_object.start()
+
         while self.running:
             self.run_step()
         pygame.quit()

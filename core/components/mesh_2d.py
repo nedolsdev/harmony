@@ -29,3 +29,9 @@ class Mesh2D(GameComponent):
         """Set the width and height of the mesh."""
         self.width = width
         self.height = height
+
+    def start(self) -> None:
+        """Initialize the mesh component."""
+
+    def update(self) -> None:
+        """Update the mesh component."""

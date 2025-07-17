@@ -26,9 +26,9 @@ TILE_COLORS: dict[TileType, tuple[int, int, int]] = {
 class Tile(GameObject):
     """Represents a tile in the grid with a type and position."""
 
-    def __init__(self, event_handler: EventHandler, tile_type: TileType, x: int, y: int) -> None:
+    def __init__(self, tile_type: TileType, x: int, y: int) -> None:
         """Initialize a tile with its type and position."""
-        super().__init__(event_handler)
+        super().__init__()
         self.tile_type = tile_type
         self.x = x
         self.y = y
@@ -41,3 +41,6 @@ class Tile(GameObject):
         self.color = color
 
         self.tags.add("tile")
+
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Register event listeners for the tile."""

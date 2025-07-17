@@ -13,10 +13,10 @@ def main() -> None:
     state = GameState()
     event_handler = EventHandler()
 
-    agent = Agent(event_handler, position=(0, 0), width=60, height=60)
+    agent = Agent(position=(0, 0), width=60, height=60)
     state.add_game_object(agent)
 
-    grid = GridGenerator.generate(event_handler, grid_size=10)
+    grid = GridGenerator.generate(grid_size=10)
     state.add_game_object(grid)
 
     renderer = Renderer(grid_size=10)

@@ -20,3 +20,9 @@ class Position(GameComponent):
         """Set the x and y coordinates of the position."""
         self.x = x
         self.y = y
+
+    def start(self) -> None:
+        """Initialize the position component."""
+
+    def update(self) -> None:
+        """Update the position component."""

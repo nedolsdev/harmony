@@ -11,9 +11,8 @@ T = TypeVar("T", bound="GameComponent")
 class GameObject:
     """A base class for game objects in the game."""
 
-    def __init__(self, event_handler: EventHandler) -> None:
+    def __init__(self) -> None:
         """Initialize the game object with its components."""
-        self.event_handler = event_handler
         self.components: list[GameComponent] = []
         self.tags: set[str] = set()
 
@@ -46,3 +45,18 @@ class GameObject:
                 return component
         msg = f"Component {component_type.__name__} not found in the game object."
         raise ValueError(msg)
+
+    def start(self) -> None:
+        """Start the game object by initializing its components."""
+        for component in self.components:
+            component.start()
+
+    def update(self) -> None:
+        """Update the game object by updating its components."""
+        for component in self.components:
+            component.update()
+
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this game object."""
+        msg = f"'{self.__class__.__name__}' does not implement 'add_events' method."
+        raise NotImplementedError(msg)
