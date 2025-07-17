@@ -1,1 +1,1 @@
-"""The objects package contains the base classes for game objects in the Agent World game."""
+"""The agent_world package contains the components and behaviors that define the game world in the Agent World game."""

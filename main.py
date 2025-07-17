@@ -1,7 +1,7 @@
 """Main entry point for the Agent World game."""
 
-from agent_world.agent import Agent
 from agent_world.components.movement import Movement
+from agent_world.objects.agent import Agent
 from core.components.position import Position
 from core.objects.grid import GridGenerator
 from game.draw import Renderer
