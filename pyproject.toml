@@ -11,6 +11,7 @@ dependencies = [
 
 [tool.ruff.lint]
 select = ["ALL"]
+ignore = ["FIX002", "TD002"]
 
 [tool.ruff]
 line-length = 120

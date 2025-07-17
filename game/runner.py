@@ -28,7 +28,7 @@ class Runner:
 
         event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
         event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_type_and_key(pygame.KEYDOWN, pygame.K_ESCAPE),
+            PygameKeydownEvent.get_name_from_key(pygame.K_ESCAPE),
             quit_listener,
         )
 

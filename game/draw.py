@@ -2,6 +2,8 @@
 
 import pygame
 
+from core.components.mesh_2d import Mesh2D
+from game.object import GameObject
 from world.grid import Grid
 from world.state import GameState
 
@@ -30,9 +32,19 @@ class Renderer:
                 # draw grid lines
                 pygame.draw.rect(self.screen, (200, 200, 200), rect, 1)
 
+    def draw_objects(self, objects: list[GameObject]) -> None:
+        """Draw game objects on the screen."""
+        for obj in objects:
+            if obj.has_component(Mesh2D):
+                mesh = obj.get_component(Mesh2D)
+                pos = obj.position.get_coordinates()
+                rect = pygame.Rect(pos[0] * self.TILE_SIZE, pos[1] * self.TILE_SIZE, mesh.width, mesh.height)
+                pygame.draw.rect(self.screen, mesh.material.color, rect)
+
     def draw_frame(self, state: GameState) -> None:
         """Draw a single frame of the game."""
         self.screen.fill((255, 255, 255))
         self.draw_grid(state.grid)
+        self.draw_objects(state.get_game_objects())
 
         pygame.display.flip()

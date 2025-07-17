@@ -10,7 +10,6 @@ class TileType(IntEnum):
     WALL = 1
     GOAL = 2
     HAZARD = 3
-    AGENT = 4
 
 
 TILE_COLORS: dict[TileType, tuple[int, int, int]] = {
@@ -18,7 +17,6 @@ TILE_COLORS: dict[TileType, tuple[int, int, int]] = {
     TileType.WALL: (0, 0, 0),
     TileType.GOAL: (0, 200, 0),
     TileType.HAZARD: (200, 0, 0),
-    TileType.AGENT: (0, 0, 255),
 }
 
 

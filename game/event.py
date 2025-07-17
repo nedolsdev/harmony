@@ -40,20 +40,13 @@ class PygameKeydownEvent(PygameEvent):
         key: int = event.key
         self.key = key
 
-        # override the event type to include the key name
-        key_name = PygameKeydownEvent.get_name_from_key(key)
-        self.event_type = f"{self.event_type} {key_name}"
+        self.event_type = PygameKeydownEvent.get_name_from_key(key)
 
     @staticmethod
     def get_name_from_key(key: int) -> str:
-        """Get the name of the key from its Pygame key code."""
-        return pygame.key.name(key)
-
-    @staticmethod
-    def get_name_from_type_and_key(pygame_type: int, key: int) -> str:
         """Get the name of the event from its Pygame type and key."""
-        event_name = PygameEvent.get_name_from_type(pygame_type)
-        key_name = PygameKeydownEvent.get_name_from_key(key)
+        event_name = PygameEvent.get_name_from_type(pygame.KEYDOWN)
+        key_name = pygame.key.name(key)
         return f"{event_name} {key_name}"
 
 

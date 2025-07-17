@@ -36,9 +36,7 @@ class GridGenerator:
 
         for y in range(grid.GRID_SIZE):
             for x in range(grid.GRID_SIZE):
-                if (x, y) == (0, 0):
-                    grid.set_tile(x, y, TileType.AGENT)
-                elif (x, y) == (grid.GRID_SIZE - 1, grid.GRID_SIZE - 1):
+                if (x, y) == (grid.GRID_SIZE - 1, grid.GRID_SIZE - 1):
                     grid.set_tile(x, y, TileType.GOAL)
                 else:
                     rnd = random.random()  # noqa: S311 (not security-sensitive)
