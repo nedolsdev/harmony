@@ -35,6 +35,9 @@ class GameObject:
         # start
         self.started = False
 
+        # children
+        self.children: list[GameObject] = []
+
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
         # check if the component is already added
@@ -120,3 +123,19 @@ class GameObject:
     def add_tag(self, tag: str) -> None:
         """Add a tag to the game object."""
         self.tags.add(tag)
+
+    def add_child(self, child: GameObject) -> None:
+        """Add a child game object."""
+        self.children.append(child)
+
+    def get_children(self) -> list[GameObject]:
+        """Return the list of child game objects."""
+        return self.children
+
+    def remove_child(self, child: GameObject) -> None:
+        """Remove a child game object."""
+        if child in self.children:
+            self.children.remove(child)
+        else:
+            msg = f"Child {child.__class__.__name__} not found in the game object's children."
+            raise ValueError(msg)

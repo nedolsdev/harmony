@@ -1,7 +1,8 @@
 """The component factory module defines the ComponentFactory class for creating game components."""
 
-from core.components.mesh_2d import Material, Mesh2D
 from core.components.position import Position
+from core.components.sprite_2d import Sprite2D, SpriteImage
+from game.material import Material
 
 
 class ComponentFactory:
@@ -13,6 +14,6 @@ class ComponentFactory:
         return Position(x, y)
 
     @staticmethod
-    def mesh_2d(width: int, height: int, material: Material) -> Mesh2D:
-        """Create a 2D mesh component."""
-        return Mesh2D(width, height, material)
+    def sprite_2d(width: int, height: int, material: Material, image: SpriteImage | None = None) -> Sprite2D:
+        """Create a 2D sprite component."""
+        return Sprite2D(width, height, material, image)
