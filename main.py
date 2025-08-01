@@ -1,7 +1,5 @@
 """Main entry point for the Agent World game."""
 
-import logging
-
 from agent_world.components.movement import Movement
 from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
@@ -12,6 +10,7 @@ from game.component_factory import ComponentFactory
 from game.draw import Renderer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
+from game.logging import EngineLogger
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.runner import Runner
@@ -60,17 +59,10 @@ def main() -> None:
 
     game = Runner(renderer, event_handler, state)
 
-    ImageCache.set_max_size(100)
-
     # TODO: #3 Refactor out logging setup to a separate module
-    # show image cache debug messages
-    logger = logging.getLogger("ImageCache")
-    logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter("[%(name)s] %(message)s")
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+    EngineLogger.setup()
 
+    ImageCache.set_max_size(100)
     ImageCache.clear()
 
     game.start()

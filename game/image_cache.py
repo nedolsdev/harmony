@@ -29,7 +29,7 @@ class ImageCache:
             return
         while len(cls._cache) > cls._max_size:
             evicted, _ = cls._cache.popitem(last=False)
-            cls._logger.debug("[ImageCache] Evicting: %s", evicted)
+            cls._logger.debug("Evicting: %s", evicted)
 
     @classmethod
     def _convert(cls, surface: pygame.Surface) -> pygame.Surface:
@@ -48,10 +48,10 @@ class ImageCache:
                 raw = pygame.image.load(norm_path)
                 surface = cls._convert(raw)
                 cls._cache[norm_path] = surface
-                cls._logger.debug("[ImageCache] Loaded: %s", norm_path)
+                cls._logger.debug("Loaded: %s", norm_path)
                 cls._evict_if_needed()
             except Exception as _:
-                cls._logger.exception("[ImageCache] Failed to load image '%s'", norm_path)
+                cls._logger.exception("Failed to load image '%s'", norm_path)
                 return cls.get_fallback_copy()
 
         return cls._cache[norm_path]
@@ -63,7 +63,7 @@ class ImageCache:
             surface = pygame.Surface((64, 64), pygame.SRCALPHA)
             surface.fill((255, 255, 255, 255))
             cls._fallback = cls._convert(surface)
-            cls._logger.debug("[ImageCache] Created fallback image")
+            cls._logger.debug("Created fallback image")
         return cls._fallback
 
     @classmethod
@@ -83,11 +83,11 @@ class ImageCache:
         norm_path = os.path.normpath(path)
         if norm_path in cls._cache:
             del cls._cache[norm_path]
-            cls._logger.debug("[ImageCache] Unloaded: %s", norm_path)
+            cls._logger.debug("Unloaded: %s", norm_path)
 
     @classmethod
     def clear(cls) -> None:
         """Clear the image cache."""
         cls._cache.clear()
         cls._fallback = None
-        cls._logger.debug("[ImageCache] Cache cleared")
+        cls._logger.debug("Cache cleared")
