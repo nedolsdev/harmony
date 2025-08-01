@@ -59,7 +59,6 @@ def main() -> None:
 
     game = Runner(renderer, event_handler, state)
 
-    # TODO: #3 Refactor out logging setup to a separate module
     EngineLogger.setup()
 
     ImageCache.set_max_size(100)
