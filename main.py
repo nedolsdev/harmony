@@ -11,7 +11,7 @@ from game.draw import Renderer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
-from game.material import ColorMaterial
+from game.material import GrayscaleMaterial
 from game.object_builder import GameObjectBuilder
 from game.runner import Runner
 from game.state import GameState
@@ -38,7 +38,7 @@ def main() -> None:
             ComponentFactory.sprite_2d(
                 width=tile_size,
                 height=tile_size,
-                material=ColorMaterial((50, 150, 250), 128),
+                material=GrayscaleMaterial(),
                 image=SpriteImage("assets/sprites/agent.png"),
             ),
         )

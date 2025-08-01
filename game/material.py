@@ -1,5 +1,6 @@
 """A material module that defines a simple material class for rendering."""
 
+import numpy as np
 import pygame
 
 
@@ -40,3 +41,15 @@ class ColorMaterial(Material):
     def apply(self, surface: "pygame.Surface") -> None:
         """Apply the color material to the given surface."""
         surface.fill((*self.color, self.alpha), special_flags=pygame.BLEND_RGBA_MULT)
+
+
+class GrayscaleMaterial(Material):
+    """A material that applies a grayscale effect to the surface."""
+
+    def apply(self, surface: "pygame.Surface") -> None:
+        """Apply the grayscale effect to the given surface."""
+        arr = pygame.surfarray.pixels3d(surface)
+        gray = (0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]).astype(np.uint8)
+        arr[:, :, 0] = gray
+        arr[:, :, 1] = gray
+        arr[:, :, 2] = gray
