@@ -1,7 +1,13 @@
 """The position module defines a component that holds the position of a game object."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from game.component import GameComponent
-from game.event_handler import EventHandler
+
+if TYPE_CHECKING:
+    from game.event_handler import EventHandler
 
 
 class Position(GameComponent):
@@ -22,6 +28,9 @@ class Position(GameComponent):
         self.x = x
         self.y = y
 
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
     def start(self) -> None:
         """Initialize the position component."""
 
@@ -30,3 +39,7 @@ class Position(GameComponent):
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
+
+    def copy(self) -> Position:
+        """Create a copy of the position component."""
+        return Position(self.x, self.y)

@@ -71,6 +71,10 @@ class Runner:
         for game_object in self.state.get_game_objects():
             game_object.add_events(self.event_handler)
 
+        # awake all game objects
+        for game_object in self.state.get_game_objects():
+            game_object.awake()
+
         # start all game objects
         for game_object in self.state.get_game_objects():
             game_object.start()

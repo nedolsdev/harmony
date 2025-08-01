@@ -2,7 +2,7 @@
 
 from typing import TypeVar
 
-from game.object import GameObject
+from game.object import GameObject, ObjectAlreadyAwokenError
 
 T = TypeVar("T", bound="GameObject")
 
@@ -16,6 +16,13 @@ class GameState:
 
     def add_game_object(self, game_object: GameObject) -> None:
         """Add a game object to the game state."""
+        # check if its awoken
+        if game_object.awoken:
+            msg = f"GameObject '{game_object.__class__.__name__}' has already been awoken."
+            prefab_warn = "Maybe you added the prefab game object to the game state?"
+            full_msg = f"{msg} {prefab_warn}"
+            raise ObjectAlreadyAwokenError(full_msg)
+
         self.game_objects.append(game_object)
 
     def remove_game_object(self, game_object: GameObject) -> None:

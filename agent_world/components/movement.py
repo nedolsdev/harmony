@@ -1,12 +1,18 @@
 """The movement module defines a behavior that allows an agent to move in the game world."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import pygame
 
 from core.components.position import Position
-from core.objects.grid import Grid
 from game.behavior import Behavior
 from game.event import PygameKeydownEvent
-from game.event_handler import EventHandler
+
+if TYPE_CHECKING:
+    from core.objects.grid import Grid
+    from game.event_handler import EventHandler
 
 
 class Movement(Behavior):
@@ -55,9 +61,12 @@ class Movement(Behavior):
             return True
         return False
 
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+        self.position = self.game_object.get_component(Position)
+
     def start(self) -> None:
         """Initialize the movement behavior."""
-        self.position = self.game_object.get_component(Position)
 
     def update(self) -> None:
         """Update the movement behavior."""
@@ -69,3 +78,10 @@ class Movement(Behavior):
         event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_DOWN), self.move_down)
         event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_LEFT), self.move_left)
         event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_RIGHT), self.move_right)
+
+    def copy(self) -> Movement:
+        """Create a copy of the movement behavior."""
+        new_movement = Movement(self.grid)
+        if self.position:
+            new_movement.position = self.position.copy()
+        return new_movement

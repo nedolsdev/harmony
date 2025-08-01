@@ -36,6 +36,10 @@ class GridRender(Render):
                 pygame.draw.rect(surface, (200, 200, 200), rect, 1)
 
     @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
     def start(self) -> None:
         """Start the render component."""
 

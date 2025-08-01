@@ -1,12 +1,16 @@
 """The 2D mesh component for the Agent World game."""
 
-from typing import override
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
 
 import pygame
 
-from core.components.position import Position
 from core.components.render import Render
-from game.event_handler import EventHandler
+
+if TYPE_CHECKING:
+    from core.components.position import Position
+    from game.event_handler import EventHandler
 
 
 class Material:
@@ -37,6 +41,10 @@ class Mesh2D(Render):
         self.height = height
 
     @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
     def start(self) -> None:
         """Initialize the mesh component."""
 
@@ -54,3 +62,7 @@ class Mesh2D(Render):
         mesh = self
         rect = pygame.Rect(position.x, position.y, mesh.width, mesh.height)
         pygame.draw.rect(surface, mesh.material.color, rect)
+
+    def copy(self) -> Mesh2D:
+        """Create a copy of the mesh component."""
+        return Mesh2D(self.width, self.height, self.material)

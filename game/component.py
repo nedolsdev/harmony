@@ -1,8 +1,12 @@
 """The component module defines the base class for game components."""
 
-from abc import abstractmethod
+from __future__ import annotations
 
-from game.event_handler import EventHandler
+from abc import abstractmethod
+from typing import TYPE_CHECKING, Self
+
+if TYPE_CHECKING:
+    from game.event_handler import EventHandler
 
 
 class GameComponent:
@@ -13,14 +17,20 @@ class GameComponent:
         self.active = True
 
     @abstractmethod
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+        msg = f"'{self.__class__.__name__}' does not implement 'awake' method."
+        raise NotImplementedError(msg)
+
+    @abstractmethod
     def start(self) -> None:
-        """Start the component."""
+        """Event call on the first frame of the game."""
         msg = f"'{self.__class__.__name__}' does not implement 'start' method."
         raise NotImplementedError(msg)
 
     @abstractmethod
     def update(self) -> None:
-        """Update the component."""
+        """Update the component every frame."""
         msg = f"'{self.__class__.__name__}' does not implement 'update' method."
         raise NotImplementedError(msg)
 
@@ -37,3 +47,9 @@ class GameComponent:
     def deactivate(self) -> None:
         """Deactivate the component."""
         self.active = False
+
+    def copy(self) -> Self:
+        """Create a copy of the game component."""
+        """This method should be overridden in subclasses."""
+        msg = f"'{self.__class__.__name__}' does not implement 'copy' method."
+        raise NotImplementedError(msg)

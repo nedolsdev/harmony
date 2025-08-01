@@ -1,11 +1,24 @@
 """The object module defines the structure of a game object."""
 
-from typing import TypeVar
+from __future__ import annotations
 
-from game.component import GameComponent
-from game.event_handler import EventHandler
+from typing import TYPE_CHECKING, Self, TypeVar
+
+if TYPE_CHECKING:
+    from game.component import GameComponent
+    from game.event_handler import EventHandler
 
 T = TypeVar("T", bound="GameComponent")
+
+
+# custom ObjectAlreadyAwokenError exception
+class ObjectAlreadyAwokenError(RuntimeError):
+    """Exception raised when a game object has already been awoken."""
+
+
+# custom ObjectAlreadyStartedError exception
+class ObjectAlreadyStartedError(RuntimeError):
+    """Exception raised when a game object has already been started."""
 
 
 class GameObject:
@@ -16,6 +29,11 @@ class GameObject:
         self.components: list[GameComponent] = []
         self.tags: set[str] = set()
         self.active = True
+
+        # awoke
+        self.awoken = False
+        # start
+        self.started = False
 
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
@@ -47,8 +65,25 @@ class GameObject:
         msg = f"Component {component_type.__name__} not found in the game object."
         raise ValueError(msg)
 
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+        if self.awoken:
+            msg = f"GameObject '{self.__class__.__name__}' has already been awoken."
+            raise ObjectAlreadyAwokenError(msg)
+
+        self.awoken = True
+
+        for component in self.components:
+            component.awake()
+
     def start(self) -> None:
         """Start the game object by initializing its components."""
+        if self.started:
+            msg = f"GameObject '{self.__class__.__name__}' has already been started."
+            raise ObjectAlreadyStartedError(msg)
+
+        self.started = True
+
         for component in self.components:
             component.start()
 
@@ -73,3 +108,15 @@ class GameObject:
         self.active = False
         for component in self.components:
             component.deactivate()
+
+    def copy(self) -> Self:
+        """Create a copy of the game object."""
+        new_object = type(self)()
+        new_object.components = [component.copy() for component in self.components]
+        new_object.tags = self.tags.copy()
+        new_object.active = self.active
+        return new_object
+
+    def add_tag(self, tag: str) -> None:
+        """Add a tag to the game object."""
+        self.tags.add(tag)

@@ -5,7 +5,7 @@ from game.object import GameObject
 
 
 class Behavior(GameComponent):
-    """A behaviour is a special type of game component that defines how a game object interacts with the game state."""
+    """A behavior is a special type of game component that defines how a game object interacts with the game state."""
 
     game_object: GameObject
 
