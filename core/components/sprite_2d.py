@@ -38,6 +38,10 @@ class Sprite2D(Render):
         self.image = image
         self.material = material
 
+        # starts dirty to ensure it is rendered on first update
+        self._dirty = True
+        self._cached_surface: pygame.Surface | None = None
+
     def get_dimensions(self) -> tuple[int, int]:
         """Return the width and height of the sprite."""
         return self.width, self.height
@@ -65,12 +69,27 @@ class Sprite2D(Render):
 
     def render(self, position: Position, surface: pygame.Surface) -> None:
         """Render the sprite at the given position."""
-        if self.image:
-            img = pygame.transform.scale(self.image.load(), (self.width, self.height)).copy()
-        else:
-            img = self.get_default_sprite_surface((self.width, self.height))
+        if self._dirty:
+            # sprite is dirty, re-render
 
-        self.material.apply(img)
+            if self.image:
+                img = pygame.transform.scale(self.image.load(), (self.width, self.height)).copy()
+            else:
+                img = self.get_default_sprite_surface((self.width, self.height))
+
+            self.material.apply(img)
+
+            # save the rendered surface for future use
+            self._cached_surface = img.copy()
+            self._dirty = False
+
+        else:
+            # sprite is not dirty, use cached surface
+            img = self._cached_surface
+            if img is None:
+                msg = "Sprite2D.render called as not 'dirty' without a cached surface."
+                raise RuntimeError(msg)
+
         surface.blit(img, (position.x, position.y))
 
     def copy(self) -> Sprite2D:
@@ -83,3 +102,15 @@ class Sprite2D(Render):
         surface = pygame.Surface(size, pygame.SRCALPHA)
         surface.fill((255, 255, 255, 255))
         return surface
+
+    def mark_dirty(self) -> None:
+        """Mark the sprite as dirty, indicating it needs to be redrawn."""
+        self._dirty = True
+
+    def is_dirty(self) -> bool:
+        """Check if the sprite is marked as dirty."""
+        return self._dirty
+
+    def clear_dirty(self) -> None:
+        """Clear the dirty flag for the sprite."""
+        self._dirty = False
