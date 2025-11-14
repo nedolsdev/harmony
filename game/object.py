@@ -38,6 +38,9 @@ class GameObject:
         # children
         self.children: list[GameObject] = []
 
+        # parent
+        self.parent: GameObject | None = None
+
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
         # check if the component is already added
@@ -141,6 +144,7 @@ class GameObject:
     def add_child(self, child: GameObject) -> None:
         """Add a child game object."""
         self.children.append(child)
+        child.parent = self
 
     def get_children(self) -> list[GameObject]:
         """Return the list of child game objects."""
@@ -153,3 +157,7 @@ class GameObject:
         else:
             msg = f"Child {child.__class__.__name__} not found in the game object's children."
             raise ValueError(msg)
+
+    def get_parent(self) -> GameObject | None:
+        """Return the parent game object."""
+        return self.parent

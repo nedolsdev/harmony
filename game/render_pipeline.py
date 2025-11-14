@@ -39,17 +39,21 @@ class RenderPipeline:
 
     def get_render_queue(self, scene: Scene) -> list[GameObject]:
         """Get a list of game objects sorted by their sorting layer and order in layer for rendering."""
-        game_objects = scene.get_game_objects()
+        game_objects = scene.get_flattened_game_objects()
 
         # can render and is active
-        to_render = [
-            obj
-            for obj in game_objects
-            if obj.active
-            and obj.has_component(Render)
-            and obj.has_component(RenderLayer)
-            and obj.has_component(Position)
-        ]
+        to_render: list[GameObject] = []
+
+        for i, obj in enumerate(game_objects):
+            if (
+                obj.active
+                and obj.has_component(Render)
+                and obj.has_component(RenderLayer)
+                and obj.has_component(Position)
+            ):
+                to_render.append(obj)
+                render_layer = obj.get_component(RenderLayer)
+                render_layer.set_order_in_layer(i)
 
         # sort by sorting layer value and order in layer
         def sort_key(game_object: GameObject) -> tuple[int, int]:

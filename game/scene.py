@@ -35,6 +35,20 @@ class Scene:
         """Return the list of game objects in the scene."""
         return self.root_objects
 
+    def get_flattened_game_objects(self) -> list[GameObject]:
+        """Return a flattened list of all game objects in the scene, including children."""
+        all_objects: list[GameObject] = []
+
+        def add_children(obj: GameObject) -> None:
+            all_objects.append(obj)
+            for child in obj.children:
+                add_children(child)
+
+        for root_obj in self.root_objects:
+            add_children(root_obj)
+
+        return all_objects
+
     def find_objects_with_tag(self, tag: str) -> list[GameObject]:
         """Find all game objects with a specific tag within the scene."""
         return [obj for obj in self.root_objects if tag in obj.tags]
