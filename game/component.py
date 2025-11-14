@@ -3,18 +3,28 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, TypeVar
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
+
+T = TypeVar("T", bound="GameComponent")
 
 
 class GameComponent:
     """A base class for game components that can be added to the game state."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        disallow_multiple_of_type: bool = False,
+        disallow_multiple_of_exact_type: bool = False,
+    ) -> None:
         """Initialize the game component."""
         self.active = True
+
+        self.disallow_multiple_of_type = disallow_multiple_of_type
+        self.disallow_multiple_of_exact_type = disallow_multiple_of_exact_type
 
     @abstractmethod
     def awake(self) -> None:
@@ -53,3 +63,17 @@ class GameComponent:
         """This method should be overridden in subclasses."""
         msg = f"'{self.__class__.__name__}' does not implement 'copy' method."
         raise NotImplementedError(msg)
+
+    def is_of_type(self, component_type: type[T]) -> bool:
+        """Check if the component is of a specific type."""
+        return isinstance(self, component_type)
+
+    def is_of_exact_type(self, component_type: type[T]) -> bool:
+        """Check if the component is of a specific type (exact match)."""
+        return type(self) is component_type
+
+    def conflicts_with(self, other: GameComponent) -> bool:
+        """Check if this component conflicts with another component."""
+        return (self.disallow_multiple_of_type and other.is_of_type(type(self))) or (
+            self.disallow_multiple_of_exact_type and other.is_of_exact_type(type(self))
+        )

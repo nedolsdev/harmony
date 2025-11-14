@@ -41,11 +41,17 @@ class GameObject:
     def add_component(self, component: GameComponent) -> None:
         """Add a component to the game object."""
         # check if the component is already added
-        if self.has_component(type(component)):
+        if not self.is_component_allowed(component):
             msg = f"Component {type(component).__name__} already exists in the game object."
             raise ValueError(msg)
 
         self.components.append(component)
+
+    def is_component_allowed(self, component: GameComponent) -> bool:
+        """Check if the component can be added to the game object."""
+        return not any(
+            component.conflicts_with(existing) or existing.conflicts_with(component) for existing in self.components
+        )
 
     def remove_component(self, component: GameComponent) -> None:
         """Remove a component from the game object."""
@@ -58,7 +64,11 @@ class GameObject:
 
     def has_component(self, component_type: type[GameComponent]) -> bool:
         """Check if the game object has a specific component type."""
-        return any(isinstance(component, component_type) for component in self.components)
+        return any(component.is_of_type(component_type) for component in self.components)
+
+    def has_exact_component(self, component_type: type[T]) -> bool:
+        """Check if the game object has a specific component type (exact match)."""
+        return any(component.is_of_exact_type(component_type) for component in self.components)
 
     def get_component(self, component_type: type[T]) -> T:
         """Get a specific component type from the game object."""
@@ -67,6 +77,10 @@ class GameObject:
                 return component
         msg = f"Component {component_type.__name__} not found in the game object."
         raise ValueError(msg)
+
+    def get_components_of_type(self, component_type: type[T]) -> list[T]:
+        """Get all components of a specific type from the game object."""
+        return [component for component in self.components if isinstance(component, component_type)]
 
     def awake(self) -> None:
         """Event call when the script instance is created."""

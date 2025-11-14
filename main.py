@@ -50,7 +50,7 @@ def main() -> None:
 
     prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Movement(grid))  # custom component
+        .add_component(Movement(grid))
         .add_component(Position(0, 0))
         .add_component(
             Sprite2D(

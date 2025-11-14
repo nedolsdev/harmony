@@ -15,7 +15,7 @@ class Position(GameComponent):
 
     def __init__(self, x: int, y: int) -> None:
         """Initialize the position component with x and y coordinates."""
-        super().__init__()
+        super().__init__(disallow_multiple_of_type=True)
         self.x = x
         self.y = y
 
