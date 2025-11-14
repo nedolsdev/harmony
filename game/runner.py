@@ -3,10 +3,10 @@
 import pygame
 
 from game.behavior import Behavior
-from game.draw import Renderer
 from game.event import Event, PygameEvent, PygameKeydownEvent
 from game.event_handler import EventHandler
-from game.state import GameState
+from game.render_pipeline import RenderPipeline
+from game.scene import Scene
 
 
 class Runner:
@@ -14,13 +14,13 @@ class Runner:
 
     FPS = 60
 
-    def __init__(self, renderer: Renderer, event_handler: EventHandler, state: GameState) -> None:
+    def __init__(self, render_pipeline: RenderPipeline, event_handler: EventHandler, scene: Scene) -> None:
         """Initialize the runner with a renderer and an event handler."""
-        self.renderer = renderer
+        self.renderer = render_pipeline
         self.event_handler = event_handler
         self.clock = pygame.time.Clock()
         self.running = False
-        self.state = state
+        self.scene = scene
 
         # add game quit listener
         def quit_listener() -> None:
@@ -44,13 +44,13 @@ class Runner:
         self.event_handler.handle_events(events)
 
         # update all game objects
-        for game_object in self.state.get_game_objects():
+        for game_object in self.scene.get_game_objects():
             game_object.update()
 
         if not self.running:
             return
 
-        self.renderer.draw_frame(self.state)
+        self.renderer.draw_frame(self.scene)
         self.clock.tick(self.FPS)
 
     def stop(self) -> None:
@@ -62,21 +62,21 @@ class Runner:
         self.running = True
 
         # set all behavior owners
-        for game_object in self.state.get_game_objects():
+        for game_object in self.scene.get_game_objects():
             for component in game_object.get_components():
                 if isinstance(component, Behavior):
                     component.set_owner(game_object)
 
         # sync all game objects with the event handler
-        for game_object in self.state.get_game_objects():
+        for game_object in self.scene.get_game_objects():
             game_object.add_events(self.event_handler)
 
         # awake all game objects
-        for game_object in self.state.get_game_objects():
+        for game_object in self.scene.get_game_objects():
             game_object.awake()
 
         # start all game objects
-        for game_object in self.state.get_game_objects():
+        for game_object in self.scene.get_game_objects():
             game_object.start()
 
         while self.running:
