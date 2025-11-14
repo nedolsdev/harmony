@@ -10,6 +10,7 @@ class RenderLayer(GameComponent):
 
     def __init__(self, layer: SortingLayer) -> None:
         """Initialize the render layer with a sorting layer and order within that layer."""
+        super().__init__(disallow_multiple_of_type=True)
         self.sorting_layer = layer
         self.order_in_layer: int | None = None
 

@@ -3,6 +3,7 @@
 from typing import Generic, TypeVar
 
 from game.behavior import Behavior
+from game.component import GameComponent
 from game.object import GameObject
 
 T = TypeVar("T", bound=GameObject)
@@ -27,6 +28,17 @@ class Prefab(Generic[T]):
     def instantiate(self) -> T:
         """Create a new instance of the prefab. Used when the game has already started."""
         game_object = self.create_object()
+        game_object.awake()
+        return game_object
+
+    def instantiate_with(self, components: list[GameComponent]) -> T:
+        """Create a new instance of the prefab with additional components. Used when the game has already started."""
+        game_object = self.create_object()
+        for component in components:
+            # if we have already have the component, remove it
+            if game_object.has_exact_component(type(component)):
+                game_object.remove_component(game_object.get_component(type(component)))
+            game_object.add_component(component)
         game_object.awake()
         return game_object
 
