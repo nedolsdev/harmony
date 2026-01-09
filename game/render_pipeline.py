@@ -48,6 +48,7 @@ class RenderPipeline:
             if (
                 obj.active
                 and obj.has_component(Render)
+                and obj.get_component(Render).active
                 and obj.has_component(RenderLayer)
                 and obj.has_component(Position)
             ):
