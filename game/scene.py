@@ -51,8 +51,8 @@ class Scene:
 
     def find_objects_with_tag(self, tag: str) -> list[GameObject]:
         """Find all game objects with a specific tag within the scene."""
-        return [obj for obj in self.root_objects if tag in obj.tags]
+        return [obj for obj in self.get_flattened_game_objects() if tag in obj.tags]
 
     def find_objects_of_type(self, object_type: type[T]) -> list[T]:
         """Find all game objects of a specific type within the scene."""
-        return [obj for obj in self.root_objects if isinstance(obj, object_type)]
+        return [obj for obj in self.get_flattened_game_objects() if isinstance(obj, object_type)]
