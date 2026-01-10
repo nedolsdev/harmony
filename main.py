@@ -1,5 +1,7 @@
 """Main entry point for the Agent World game."""
 
+from rich.traceback import install
+
 from agent_world.components.movement import Movement
 from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
@@ -16,6 +18,8 @@ from game.render_pipeline import RenderPipeline
 from game.runner import Runner
 from game.scene import Scene
 from game.scene_manager import SceneManager
+
+install()
 
 
 def main() -> None:
@@ -50,7 +54,7 @@ def main() -> None:
 
     prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Movement(grid))
+        .add_component(Movement(grid))  # custom component
         .add_component(Position(0, 0))
         .add_component(
             Sprite2D(
