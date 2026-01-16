@@ -46,14 +46,12 @@ class Rotation(GameComponent):
     @staticmethod
     def _convert_degrees_to_radians(deg: float) -> float:
         """Convert any degree value to radian."""
-        deg = Rotation._normalize_degree(deg)
-        return deg * math.pi / 180
+        return math.radians(Rotation._normalize_degree(deg))
 
     @staticmethod
     def _convert_radians_to_degrees(rad: float) -> float:
         """Convert any radian value to degree."""
-        rad = Rotation._normalize_radian(rad)
-        return rad * 180 / math.pi
+        return math.degrees(Rotation._normalize_radian(rad))
 
     def get_degrees(self) -> float:
         """Get the rotation of the object in degrees."""
