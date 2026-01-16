@@ -2,7 +2,7 @@
 
 from rich.traceback import install
 
-from agent_world.components.movement import Movement
+from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
 from core.components.position import Position
@@ -55,7 +55,6 @@ def main() -> None:
 
     prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Movement(grid))  # custom component
         .add_component(Position(0 + tile_size // 2, 0 + tile_size // 2))
         .add_component(
             Sprite2D(
@@ -66,6 +65,7 @@ def main() -> None:
             ),
         )
         .add_component(Rotation(degrees=0))
+        .add_component(RotateAround(point=Position(x=window_size // 2, y=window_size // 2)))
         .add_component(RenderLayer(default_layer))
         .add_tag("agent")
         .build_as_prefab()

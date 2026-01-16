@@ -14,19 +14,24 @@ if TYPE_CHECKING:
 class Rotation(GameComponent):
     """A component that holds the rotation of a game object."""
 
+    _rotation: float
+    """The rotation value stored in radians."""
+
     def __init__(self, *, degrees: float | None = None, radians: float | None = None) -> None:
         """Initialize the position component with x and y coordinates."""
         super().__init__(disallow_multiple_of_type=True)
+        self.set_rotation(degrees=degrees, radians=radians)
+
+    def set_rotation(self, *, degrees: float | None = None, radians: float | None = None) -> None:
+        """Set the rotation of the object."""
         # can't provide both degrees and radians
         if degrees is not None and radians is not None:
             msg = "Only provide 'degrees' or 'radians' as an argument to rotation, not both."
             raise ValueError(msg)
-        # assume rotation of 0
-        if degrees is None and radians is None:
-            radians = 0
-
-        self._rotation = radians if radians is not None else Rotation._convert_degrees_to_radians(degrees)  # pyright: ignore[reportArgumentType] (we can guarantee degrees is set)
-        """The rotation value is always stored in radians."""
+        if degrees is not None:
+            self._rotation = self._convert_degrees_to_radians(degrees)
+        elif radians is not None:
+            self._rotation = self._normalize_radian(radians)
 
     @staticmethod
     def _normalize_degree(deg: float) -> float:
@@ -70,7 +75,6 @@ class Rotation(GameComponent):
 
     def update(self) -> None:
         """Update the position component."""
-        self._rotation += self._convert_degrees_to_radians(1)
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
