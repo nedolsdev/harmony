@@ -43,3 +43,7 @@ class Position(GameComponent):
     def copy(self) -> Position:
         """Create a copy of the position component."""
         return Position(self.x, self.y)
+
+    def to_tuple(self) -> tuple[int, int]:
+        """Get the position as a tuple."""
+        return (self.x, self.y)

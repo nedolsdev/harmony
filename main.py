@@ -7,6 +7,7 @@ from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
+from core.components.rotation import Rotation
 from core.components.sprite_2d import Sprite2D, SpriteImage
 from core.objects.grid import GridGenerator
 from game.event_handler import EventHandler
@@ -55,7 +56,7 @@ def main() -> None:
     prefab = (
         GameObjectBuilder(Agent)
         .add_component(Movement(grid))  # custom component
-        .add_component(Position(0, 0))
+        .add_component(Position(0 + tile_size // 2, 0 + tile_size // 2))
         .add_component(
             Sprite2D(
                 width=tile_size,
@@ -64,19 +65,15 @@ def main() -> None:
                 image=SpriteImage("assets/sprites/agent.png"),
             ),
         )
+        .add_component(Rotation(degrees=0))
         .add_component(RenderLayer(default_layer))
         .add_tag("agent")
         .build_as_prefab()
     )
 
     agent2 = prefab.create_object()
-    agent3 = prefab.create_object()
-
-    # set x and y position for the second agent
-    agent2.get_component(Position).set_coordinates(tile_size, tile_size)
 
     scene.add_game_object(agent2)
-    scene.add_game_object(agent3)
 
     EngineLogger.setup()
 

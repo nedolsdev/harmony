@@ -11,6 +11,7 @@ from game.image_cache import ImageCache
 
 if TYPE_CHECKING:
     from core.components.position import Position
+    from core.components.rotation import Rotation
     from game.event_handler import EventHandler
     from game.material import Material
 
@@ -67,7 +68,7 @@ class Sprite2D(Render):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
-    def render(self, position: Position, surface: pygame.Surface) -> None:
+    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the sprite at the given position."""
         if self._dirty:
             # sprite is dirty, re-render
@@ -90,7 +91,11 @@ class Sprite2D(Render):
                 msg = "Sprite2D.render called as not 'dirty' without a cached surface."
                 raise RuntimeError(msg)
 
-        surface.blit(img, (position.x, position.y))
+        if rotation:
+            img = pygame.transform.rotate(img, rotation.get_degrees())
+
+        rect = img.get_rect(center=position.to_tuple())
+        surface.blit(img, rect)
 
     def copy(self) -> Sprite2D:
         """Create a copy of the sprite component."""

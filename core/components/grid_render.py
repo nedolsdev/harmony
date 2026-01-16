@@ -6,6 +6,7 @@ import pygame
 
 from core.components.position import Position
 from core.components.render import Render
+from core.components.rotation import Rotation
 from core.objects.grid import Grid
 
 
@@ -18,7 +19,7 @@ class GridRender(Render):
         self.grid = grid
 
     @override
-    def render(self, position: Position, surface: pygame.Surface) -> None:
+    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the tile at the specified position."""
         for y in range(self.grid.grid_size):
             for x in range(self.grid.grid_size):

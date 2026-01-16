@@ -5,6 +5,7 @@ import pygame
 from core.components.position import Position
 from core.components.render import Render
 from core.components.render_layer import RenderLayer
+from core.components.rotation import Rotation
 from game.object import GameObject
 from game.scene import Scene
 from game.sorting_layer import SortingLayerManager
@@ -27,7 +28,8 @@ class RenderPipeline:
         for obj in objects:
             render_component = obj.get_component(Render)
             position_component = obj.get_component(Position)
-            render_component.render(position_component, self.screen)
+            rotation_component = obj.get_component(Rotation) if obj.has_component(Rotation) else None
+            render_component.render(position_component, self.screen, rotation=rotation_component)
 
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""
