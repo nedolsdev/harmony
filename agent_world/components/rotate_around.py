@@ -19,20 +19,16 @@ class RotateAround(Behavior):
     position: Position
     rotation: Rotation
 
-    def __init__(self, point: Position) -> None:
-        """Initialize the movement behavior with an agent and speed."""
+    def __init__(self, point: Position, angular_speed: float, radius: float) -> None:
+        """Initialize the movement behavior with an agent and speed. Angular speed is in degrees per frame."""
         super().__init__()
         self.point = point
 
-        # set angular speed to 90 degrees per second (just as an example)
-        fps = 60
-        self.angular_speed = 90 / fps
+        self.angular_speed = angular_speed
 
-        # current angle in degrees
         self.current_angle = 0.0
 
-        # radius
-        self.radius = 50
+        self.radius = radius
 
     def get_position(self) -> tuple[int, int]:
         """Return the agent's current position."""
@@ -69,7 +65,7 @@ class RotateAround(Behavior):
 
     def copy(self) -> RotateAround:
         """Create a copy of the rotate around behavior."""
-        new_rotate_around = RotateAround(self.point)
+        new_rotate_around = RotateAround(self.point, self.angular_speed, self.radius)
         if self.position and self.rotation:
             new_rotate_around.position = self.position.copy()
             new_rotate_around.rotation = self.rotation.copy()

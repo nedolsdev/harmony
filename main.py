@@ -65,7 +65,9 @@ def main() -> None:
             ),
         )
         .add_component(Rotation(degrees=0))
-        .add_component(RotateAround(point=Position(x=window_size // 2, y=window_size // 2)))
+        .add_component(
+            RotateAround(point=Position(x=window_size // 2, y=window_size // 2), radius=50, angular_speed=2),
+        )
         .add_component(RenderLayer(default_layer))
         .add_tag("agent")
         .build_as_prefab()
