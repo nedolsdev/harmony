@@ -47,3 +47,11 @@ class Position(GameComponent):
     def to_tuple(self) -> tuple[int, int]:
         """Get the position as a tuple."""
         return (self.x, self.y)
+
+    def __sub__(self, other: Position) -> Position:
+        """Subtract two Position objects."""
+        return Position(self.x - other.x, self.y - other.y)
+
+    def __add__(self, other: Position) -> Position:
+        """Add two Position objects."""
+        return Position(self.x + other.x, self.y + other.y)

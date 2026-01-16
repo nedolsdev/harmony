@@ -5,6 +5,7 @@ from rich.traceback import install
 from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
+from core.components.line_2d import Line2D
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
 from core.components.rotation import Rotation
@@ -13,7 +14,7 @@ from core.objects.grid import GridGenerator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
-from game.material import GrayscaleMaterial
+from game.material import ColorMaterial, GrayscaleMaterial
 from game.object_builder import GameObjectBuilder
 from game.render_pipeline import RenderPipeline
 from game.runner import Runner
@@ -76,6 +77,33 @@ def main() -> None:
     agent2 = prefab.create_object()
 
     scene.add_game_object(agent2)
+
+    # line
+    line_prefab = (
+        GameObjectBuilder(Agent)
+        .add_component(Position(250, 250))
+        .add_component(
+            Line2D(
+                start=Position(0, 0),
+                end=Position(100, 100),
+                material=ColorMaterial((0, 255, 0)),
+                width=5,
+            ),
+        )
+        .add_component(
+            Line2D(
+                start=Position(0, 0),
+                end=Position(-100, 100),
+                material=ColorMaterial((255, 0, 0)),
+                width=5,
+            ),
+        )
+        .add_component(RenderLayer(default_layer))
+        .build_as_prefab()
+    )
+
+    line_object = line_prefab.create_object()
+    scene.add_game_object(line_object)
 
     EngineLogger.setup()
 
