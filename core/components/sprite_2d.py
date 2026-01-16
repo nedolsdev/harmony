@@ -1,4 +1,4 @@
-"""The 2D sprite component for the Agent World game."""
+"""The 2D sprite component."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class SpriteImage:
 
 
 class Sprite2D(Render):
-    """A 2D sprite component for the Agent World game."""
+    """A 2D sprite component."""
 
     def __init__(self, width: int, height: int, material: Material, image: SpriteImage | None = None) -> None:
         """Initialize the 2D sprite with given width and height."""
