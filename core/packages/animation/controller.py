@@ -2,8 +2,6 @@
 
 from collections.abc import Callable
 
-from core.packages.animation.clip import NO_ANIMATION, AnimationClip
-
 
 class StateNode:
     """A state within a StateMachine."""
@@ -119,18 +117,9 @@ class StateMachine:
         self.transitioning_to = None
 
 
-class AnimationState(StateNode):
-    """A StateNode for a specific AnimationClip."""
-
-    def __init__(self, name: str, clip: AnimationClip) -> None:
-        """Initialize the AnimationState."""
-        super().__init__(name)
-        self.clip = clip
-
-
 class AnimationController(StateMachine):
     """AnimationController is a state machine with transitions between animations."""
 
-    def __init__(self, initial_state: AnimationState | None = None) -> None:
+    def __init__(self, initial_state: StateNode | None = None) -> None:
         """Initialize the AnimationController. If no initial state is given, a default idle empty animation is made."""
-        super().__init__(initial_state or AnimationState("Idle", NO_ANIMATION))
+        super().__init__(initial_state or StateNode("Idle"))
