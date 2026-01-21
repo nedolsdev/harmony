@@ -32,6 +32,10 @@ class AnimationClip:
         """Check whether the animation is on the last frame."""
         return self.current_frame == self.get_number_of_frames() - 1
 
+    def get_animation_time(self) -> float:
+        """Get the animation time in seconds."""
+        return self.get_number_of_frames() / self.fps
+
     def get_number_of_frames(self) -> int:
         """Get the number of frames the clip contains."""
         msg = "The 'get_number_of_frames' method should be implemented in subclasses."
