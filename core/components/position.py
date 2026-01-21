@@ -4,13 +4,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from core.packages.animation.animatable import Animatable
+from core.packages.animation.frame import VectorFrame
 from game.component import GameComponent
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
 
-class Position(GameComponent):
+class Position(GameComponent, Animatable[VectorFrame[tuple[int, int]]]):
     """A component that holds the position of a game object."""
 
     def __init__(self, x: int, y: int) -> None:

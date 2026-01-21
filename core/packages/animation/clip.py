@@ -1,8 +1,6 @@
 """An AnimationClip defines the sequence of AnimationFrames played by the animation."""
 
-
-class AnimationFrame:
-    """An AnimationFrame is a single state in time of an AnimationClip in progress."""
+from core.packages.animation.frame import AnimationFrame
 
 
 class AnimationClip:
