@@ -2,9 +2,7 @@
 
 from typing import Generic, Self, TypeVar
 
-from core.components.position import Position
 from core.packages.animation.clip import AnimationFrame, SimpleAnimationClip
-from core.packages.animation.frame import VectorFrame
 
 T = TypeVar("T", bound=AnimationFrame)
 
