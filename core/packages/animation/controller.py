@@ -20,6 +20,10 @@ class StateNode:
         """Initialize the StateNode with a name."""
         self.name = name
 
+    def __str__(self) -> str:
+        """Get str."""
+        return self.name
+
 
 NodeT = TypeVar("NodeT", bound=StateNode)
 DataT = TypeVar("DataT", bound=Any)
@@ -234,7 +238,11 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
 
         current = self.current_state
 
+        print(len(self.nodes))
+
         transitions = self.get_transitions_from_node(current)
+
+        print(len(transitions))
 
         # check if we can transition
         for transition in transitions:

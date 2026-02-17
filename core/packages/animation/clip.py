@@ -1,6 +1,6 @@
 """An AnimationClip defines the sequence of AnimationFrames played by the animation."""
 
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
 from game.component import GameComponent
@@ -110,6 +110,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         self.key_frames: list[KeyFrame[T]] = []
         self.blender = blender
 
+    @override
     def get_number_of_frames(self) -> int:
         """Get the number of frames the clip contains."""
         last_frame = self.key_frames[-1]
@@ -150,4 +151,18 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         self.key_frames.sort(key=lambda key_frame: key_frame.frame_number)
 
 
-NO_ANIMATION = AnimationClip(fps=0, target=None)
+class EmptyAnimationClip(AnimationClip):
+    """Empty AnimationClip."""
+
+    @override
+    def get_number_of_frames(self) -> int:
+        """Get the number of frames the clip contains."""
+        return 0
+
+    @override
+    def get_frame(self, frame: int) -> AnimationFrame:
+        """Get the AnimationFrame for a given frame number."""
+        return AnimationFrame()
+
+
+NO_ANIMATION = EmptyAnimationClip(fps=0, target=None)

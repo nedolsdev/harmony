@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic
 
 from core.packages.animation.controller import AnimationController, DataT
-from game.component import GameComponent
+from game.behavior import Behavior
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 # parameter types are Trigger, Int, Float, Bool
 
 
-class Animator(GameComponent, Generic[DataT]):
+class Animator(Behavior, Generic[DataT]):
     """The animator component that acts on the animation controller."""
 
     def __init__(self, controller: AnimationController[DataT]) -> None:
@@ -30,8 +30,8 @@ class Animator(GameComponent, Generic[DataT]):
 
     def update(self) -> None:
         """Update the component every frame."""
-
-        # apply the frame to the component
+        print(self.controller.get_layer().current_state.name)
+        self.controller.update(self.game_object)
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""

@@ -3,6 +3,7 @@
 from core.components.position import Position, PositionFrame
 from core.packages.animation.clip import NO_ANIMATION, KeyFrame, KeyFrameBlender, KeyFramedAnimationClip
 from core.packages.animation.controller import (
+    ENTRY_STATE,
     AnimationController,
     AnimationLayer,
     AnimationState,
@@ -42,20 +43,20 @@ clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Position)
 
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((0, 0, 0)),
+        VectorFrame((50, 50, 50)),
         0,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((15, 15, 15)),
-        10,
+        VectorFrame((75, 75, 75)),
+        30,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((0, 0, 0)),
-        20,
+        VectorFrame((50, 50, 50)),
+        60,
     ),
 )
 
@@ -68,11 +69,15 @@ class NoData:
     """No data needed for this Animation."""
 
 
-controller = AnimationController(NoData())
+test_controller = AnimationController(NoData(), init_default_layer=False)
 
 default_layer = AnimationLayer("Default")
 
 transition = AnimationTransition()
 
 # instantly enters the move animation to play it
+default_layer.add_edge(ENTRY_STATE, move, transition)
+
 default_layer.add_edge(idle, move, transition)
+
+test_controller.add_layer(default_layer)
