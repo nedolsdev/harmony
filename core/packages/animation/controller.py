@@ -6,12 +6,11 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
 from core.packages.animation.frame import AnimationFrame
-from game.object import GameObject
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from core.packages.animation.animatable import Animatable
+    from game.object import GameObject
 
 
 class StateNode:
@@ -254,14 +253,15 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
 
         clip = current.clip
 
-        frame = clip.get_next_animation_frame(loop=True)
+        frame = clip.get_next_animation_frame()
 
         # end of the animation don't do anything
-        if frame is None:
+        # if there is no clip target component we can't render it
+        if frame is None or clip.target is None:
             return
 
         # apply the animation frame
-        target.set_animation_frame(frame)
+        target.set_animation_frame(frame, clip.target)
 
 
 class AnimationController(Generic[DataT]):

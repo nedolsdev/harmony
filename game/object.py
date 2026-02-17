@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Self, TypeVar
 
-from core.packages.animation.frame import AnimationFrame
+from core.packages.animation.animatable import Animatable
 
 if TYPE_CHECKING:
+    from core.packages.animation.frame import AnimationFrame
     from game.component import GameComponent
     from game.event_handler import EventHandler
 
@@ -164,5 +165,12 @@ class GameObject:
         """Return the parent game object."""
         return self.parent
 
-    def set_animation_frame(self, frame: AnimationFrame) -> None:
+    def set_animation_frame(self, frame: AnimationFrame, target: type[GameComponent]) -> None:
         """Set the animation frame to the first component that matches."""
+        component = self.get_component(target)
+
+        if not isinstance(component, Animatable):
+            msg = f"Tried to animate a component cannot be animated. Component '{component}'"
+            raise TypeError(msg)
+
+        component.set_animation_frame(frame)
