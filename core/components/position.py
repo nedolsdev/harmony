@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
@@ -11,8 +11,10 @@ from game.component import GameComponent
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
+PositionFrame = VectorFrame[tuple[int, int, int]]
 
-class Position(GameComponent, Animatable[VectorFrame[tuple[int, int]]]):
+
+class Position(GameComponent, Animatable[PositionFrame]):
     """A component that holds the position of a game object."""
 
     def __init__(self, x: int, y: int) -> None:
@@ -57,3 +59,8 @@ class Position(GameComponent, Animatable[VectorFrame[tuple[int, int]]]):
     def __add__(self, other: Position) -> Position:
         """Add two Position objects."""
         return Position(self.x + other.x, self.y + other.y)
+
+    @override
+    def set_animation_frame(self, frame: PositionFrame) -> None:
+        """Set or update the component based on the frame."""
+        self.set_coordinates(frame.vector[0], frame.vector[1])

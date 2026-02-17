@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Self, TypeVar
 
+from core.packages.animation.frame import AnimationFrame
+
 if TYPE_CHECKING:
     from game.component import GameComponent
     from game.event_handler import EventHandler
@@ -161,3 +163,6 @@ class GameObject:
     def get_parent(self) -> GameObject | None:
         """Return the parent game object."""
         return self.parent
+
+    def set_animation_frame(self, frame: AnimationFrame) -> None:
+        """Set the animation frame to the first component that matches."""
