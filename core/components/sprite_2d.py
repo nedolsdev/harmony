@@ -7,25 +7,13 @@ from typing import TYPE_CHECKING, override
 import pygame
 
 from core.components.render import Render
-from game.image_cache import ImageCache
 
 if TYPE_CHECKING:
+    from core.assets.sprite_image import SpriteImage
     from core.components.position import Position
     from core.components.rotation import Rotation
     from game.event_handler import EventHandler
     from game.material import Material
-
-
-class SpriteImage:
-    """A class to represent a sprite image."""
-
-    def __init__(self, image_path: str) -> None:
-        """Initialize the sprite image with a file path."""
-        self.image_path = image_path
-
-    def load(self) -> pygame.Surface:
-        """Lazily load and return the image surface."""
-        return ImageCache.load(self.image_path)
 
 
 class Sprite2D(Render):

@@ -4,13 +4,11 @@ from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
 from agent_world.objects.agent import Agent
-from core.components.grid_render import GridRender
 from core.components.line_2d import Line2D
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
 from core.components.rotation import Rotation
 from core.components.sprite_2d import Sprite2D, SpriteImage
-from core.objects.grid import GridGenerator
 from core.packages.animation.animator import Animator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -49,11 +47,6 @@ def main() -> None:
     default_layer = renderer.sorting_layers.get_layer("Default")
 
     game = Runner(renderer, event_handler, scene)
-
-    grid = GridGenerator.generate(grid_size=grid_size, tile_size=tile_size)
-    scene.add_game_object(grid)
-    grid.add_component(GridRender(grid))
-    grid.add_component(RenderLayer(bg_layer))
 
     prefab = (
         GameObjectBuilder(Agent)
