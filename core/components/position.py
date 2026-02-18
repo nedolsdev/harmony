@@ -63,18 +63,6 @@ class Position(GameComponent, Animatable[PositionFrame], Local["Position"]):
 
         return pos
 
-    def __sub__(self, other: Position) -> Position:
-        """Subtract two Position objects."""
-        pos = self.copy()
-        pos.set_coordinates(self.x - other.x, self.y - other.y)
-        return pos
-
-    def __add__(self, other: Position) -> Position:
-        """Add two Position objects."""
-        pos = self.copy()
-        pos.set_coordinates(self.x + other.x, self.y + other.y)
-        return pos
-
     @override
     def set_animation_frame(self, frame: PositionFrame, *, target_local_if_available: bool) -> None:
         """Set or update the component based on the frame."""
@@ -82,3 +70,13 @@ class Position(GameComponent, Animatable[PositionFrame], Local["Position"]):
             self.local.set_coordinates(frame.vector[0], frame.vector[1])
         else:
             self.set_coordinates(frame.vector[0], frame.vector[1])
+
+    @staticmethod
+    def add(coord1: tuple[int, int], coord2: tuple[int, int]) -> tuple[int, int]:
+        """Add two coordinates."""
+        return (coord1[0] + coord2[0], coord1[1] + coord2[1])
+
+    @staticmethod
+    def subtract(coord1: tuple[int, int], coord2: tuple[int, int]) -> tuple[int, int]:
+        """Add two coordinates."""
+        return (coord1[0] - coord2[0], coord1[1] - coord2[1])

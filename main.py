@@ -3,7 +3,6 @@
 from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
-from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from core.components.grid_render import GridRender
 from core.components.line_2d import Line2D
@@ -68,7 +67,6 @@ def main() -> None:
             ),
         )
         .add_component(Rotation(degrees=0))
-        # .add_component(Animator(test_controller))
         .add_component(RenderLayer(default_layer))
         .add_tag("agent")
         .build_as_prefab()
