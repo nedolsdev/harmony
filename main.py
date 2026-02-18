@@ -4,11 +4,12 @@ from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
 from agent_world.objects.agent import Agent
+from core.assets.sprite_image import SpriteImage
 from core.components.line_2d import Line2D
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
 from core.components.rotation import Rotation
-from core.components.sprite_2d import Sprite2D, SpriteImage
+from core.components.sprite_2d import Sprite2D
 from core.packages.animation.animator import Animator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
