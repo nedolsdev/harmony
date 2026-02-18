@@ -16,11 +16,14 @@ class GameComponent:
 
     def __init__(
         self,
-        *,
+        *args,  # noqa: ANN002
         disallow_multiple_of_type: bool = False,
         disallow_multiple_of_exact_type: bool = False,
+        **kwargs,  # noqa: ANN003
     ) -> None:
         """Initialize the game component."""
+        super().__init__(*args, **kwargs)
+
         self.active = True
 
         self.disallow_multiple_of_type = disallow_multiple_of_type

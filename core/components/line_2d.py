@@ -31,10 +31,8 @@ class Line2D(Render):
     @override
     def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the sprite at the given position."""
-        rel_start = position - self.start_pos
-        rel_end = position - self.end_pos
-        start_pixel = rel_start.get_coordinates()
-        end_pixel = rel_end.get_coordinates()
+        start_pixel = Position.subtract(position.get_coordinates(), self.start_pos.get_coordinates())
+        end_pixel = Position.subtract(position.get_coordinates(), self.end_pos.get_coordinates())
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
         pygame.draw.line(line_surface, (255, 255, 255, 255), start_pixel, end_pixel, self.width)
