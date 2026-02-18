@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Self, TypeVar
 
 from core.packages.animation.animatable import Animatable
+from game.local import Local
 
 if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
@@ -98,6 +99,8 @@ class GameObject:
 
         for component in self.components:
             component.awake()
+            if isinstance(component, Local):
+                component.awake_local()
 
     def start(self) -> None:
         """Start the game object by initializing its components."""
@@ -165,7 +168,13 @@ class GameObject:
         """Return the parent game object."""
         return self.parent
 
-    def set_animation_frame(self, frame: AnimationFrame, target: type[GameComponent]) -> None:
+    def set_animation_frame(
+        self,
+        frame: AnimationFrame,
+        target: type[GameComponent],
+        *,
+        target_local_if_available: bool,
+    ) -> None:
         """Set the animation frame to the first component that matches."""
         component = self.get_component(target)
 
@@ -173,4 +182,4 @@ class GameObject:
             msg = f"Tried to animate a component cannot be animated. Component '{component}'"
             raise TypeError(msg)
 
-        component.set_animation_frame(frame)
+        component.set_animation_frame(frame, target_local_if_available=target_local_if_available)

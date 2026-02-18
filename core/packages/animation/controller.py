@@ -238,11 +238,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
 
         current = self.current_state
 
-        print(len(self.nodes))
-
         transitions = self.get_transitions_from_node(current)
-
-        print(len(transitions))
 
         # check if we can transition
         for transition in transitions:
@@ -269,7 +265,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
             return
 
         # apply the animation frame
-        target.set_animation_frame(frame, clip.target)
+        target.set_animation_frame(frame, clip.target, target_local_if_available=clip.target_local_if_available)
 
 
 class AnimationController(Generic[DataT]):

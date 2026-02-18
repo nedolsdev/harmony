@@ -94,7 +94,7 @@ class Sprite2D(Render):
         if rotation:
             img = pygame.transform.rotate(img, rotation.get_degrees())
 
-        rect = img.get_rect(center=position.to_tuple())
+        rect = img.get_rect(center=position.get_coordinates())
         surface.blit(img, rect)
 
     def copy(self) -> Sprite2D:

@@ -43,19 +43,19 @@ clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Position)
 
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((50, 50, 50)),
+        VectorFrame((0, 0, 0)),
         0,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((75, 75, 75)),
+        VectorFrame((25, 25, 25)),
         30,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((50, 50, 50)),
+        VectorFrame((0, 0, 0)),
         60,
     ),
 )

@@ -30,7 +30,6 @@ class Animator(Behavior, Generic[DataT]):
 
     def update(self) -> None:
         """Update the component every frame."""
-        print(self.controller.get_layer().current_state.name)
         self.controller.update(self.game_object)
 
     def add_events(self, event_handler: EventHandler) -> None:

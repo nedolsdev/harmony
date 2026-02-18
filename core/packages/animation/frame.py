@@ -13,6 +13,7 @@ T = TypeVar("T", bound=tuple)
 class VectorFrame(AnimationFrame, Generic[T]):
     """Frame with a vector of some values T."""
 
-    def __init__(self, vector: T) -> None:
+    def __init__(self, vector: T, *, first: bool = False) -> None:
         """Frame with a vector of values T."""
         self.vector = vector
+        self.first = first
