@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING, override
 
 import pygame
 
+from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
 
 if TYPE_CHECKING:
-    from core.assets.sprite_image import SpriteImage
     from core.components.position import Position
     from core.components.rotation import Rotation
     from game.event_handler import EventHandler
@@ -64,7 +64,7 @@ class Sprite2D(Render):
             if self.image:
                 img = pygame.transform.scale(self.image.load(), (self.width, self.height)).copy()
             else:
-                img = self.get_default_sprite_surface((self.width, self.height))
+                img = SpriteImage.get_default_sprite_surface((self.width, self.height))
 
             self.material.apply(img)
 
@@ -88,13 +88,6 @@ class Sprite2D(Render):
     def copy(self) -> Sprite2D:
         """Create a copy of the sprite component."""
         return Sprite2D(self.width, self.height, self.material, self.image)
-
-    @staticmethod
-    def get_default_sprite_surface(size: tuple[int, int]) -> pygame.Surface:
-        """Return a default sprite surface with the given size."""
-        surface = pygame.Surface(size, pygame.SRCALPHA)
-        surface.fill((255, 255, 255, 255))
-        return surface
 
     def mark_dirty(self) -> None:
         """Mark the sprite as dirty, indicating it needs to be redrawn."""
