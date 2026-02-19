@@ -16,6 +16,8 @@ if TYPE_CHECKING:
 class Grid(GameComponent):
     """The Grid component defines a local coordinate system for positioning cells."""
 
+    # TODO: Add grid gap  # noqa: TD003
+
     def __init__(self, cell_size: int) -> None:
         """Initialize the Grid component."""
         super().__init__()
