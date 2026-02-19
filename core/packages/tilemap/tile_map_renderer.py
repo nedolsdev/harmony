@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
-from core.packages.tilemap.hex import create_hex_sprite
-from game.material import ColorMaterial
 from game.vector2 import Vector2
 
 if TYPE_CHECKING:
@@ -47,23 +44,11 @@ class TileMapRenderer(Render):
                     coords = (pos[0] + world_coords[0], pos[1] + world_coords[1])
 
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile, self.grid.cell_size), coords)
+                    surface.blit(self.get_tile_surface(tile), coords)
 
-    def get_tile_surface(self, tile: Tile, tile_size: int) -> pygame.Surface:
+    def get_tile_surface(self, tile: Tile) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        # temp for now
-        if isinstance(tile.material, ColorMaterial):
-            color = tile.material.color
-            return create_hex_sprite(tile_size, color, outline_width=0)
-
-        surface = (
-            tile.sprite.load()
-            if tile.sprite is not None
-            else SpriteImage.get_default_sprite_surface((tile_size, tile_size))
-        )
-
-        tile.material.apply(surface)
-        return surface
+        return tile.get_surface()
 
     @override
     def awake(self) -> None:

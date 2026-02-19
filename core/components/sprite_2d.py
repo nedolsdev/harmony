@@ -62,7 +62,7 @@ class Sprite2D(Render):
             # sprite is dirty, re-render
 
             if self.image:
-                img = pygame.transform.scale(self.image.load(), (self.width, self.height)).copy()
+                img = pygame.transform.scale(self.image.get_surface(), (self.width, self.height)).copy()
             else:
                 img = SpriteImage.get_default_sprite_surface((self.width, self.height))
 
