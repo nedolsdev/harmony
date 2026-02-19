@@ -1,7 +1,5 @@
 """A Tile is a cell of a TileMap."""
 
-import pygame
-
 from core.assets.sprite_image import SpriteImage
 from game.material import Material
 
