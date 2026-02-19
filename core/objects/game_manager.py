@@ -1,9 +1,9 @@
 """The game manager module contains the game object that manages the game state."""
 
-from game.object import GameObject
+from core.objects.empty import Empty
 
 
-class GameManager(GameObject):
+class GameManager(Empty):
     """Manages the game state and interactions between game objects."""
 
     def __init__(self) -> None:

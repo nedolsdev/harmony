@@ -3,8 +3,10 @@
 import numpy as np
 import pygame
 
+from game.asset import Asset
 
-class Material:
+
+class Material(Asset):
     """The base material class for render components."""
 
     def apply(self, surface: "pygame.Surface") -> None:

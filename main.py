@@ -4,13 +4,14 @@ from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
 from agent_world.objects.agent import Agent
-from core.components.grid_render import GridRender
+from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
+from core.assets.sprite_image import SpriteImage
 from core.components.line_2d import Line2D
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
 from core.components.rotation import Rotation
-from core.components.sprite_2d import Sprite2D, SpriteImage
-from core.objects.grid import GridGenerator
+from core.components.sprite_2d import Sprite2D
+from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -36,7 +37,7 @@ def main() -> None:
 
     event_handler = EventHandler()
 
-    grid_size = 10
+    grid_size = 12
     tile_size = 60
     window_size = grid_size * tile_size
 
@@ -49,11 +50,6 @@ def main() -> None:
     default_layer = renderer.sorting_layers.get_layer("Default")
 
     game = Runner(renderer, event_handler, scene)
-
-    grid = GridGenerator.generate(grid_size=grid_size, tile_size=tile_size)
-    scene.add_game_object(grid)
-    grid.add_component(GridRender(grid))
-    grid.add_component(RenderLayer(bg_layer))
 
     prefab = (
         GameObjectBuilder(Agent)
@@ -72,9 +68,21 @@ def main() -> None:
         .build_as_prefab()
     )
 
+    grid_obj = (
+        GameObjectBuilder(Empty)
+        .add_component(Position(x=50, y=50))
+        .add_component(RenderLayer(bg_layer))
+        .add_component(grid)
+        .add_component(tile_map)
+        .add_component(tile_map_renderer)
+        .build_as_prefab()
+    )
+
+    scene.add_game_object(grid_obj.create_object())
+
     agent2 = prefab.create_object()
 
-    scene.add_game_object(agent2)
+    # scene.add_game_object(agent2)
 
     # line
     line_prefab = (
@@ -102,7 +110,7 @@ def main() -> None:
     )
 
     line_object = line_prefab.create_object()
-    scene.add_game_object(line_object)
+    # scene.add_game_object(line_object)
 
     EngineLogger.setup()
 
