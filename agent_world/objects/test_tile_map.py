@@ -9,10 +9,10 @@ from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
 
-grid = Grid(cell_size=16, system=HexGridSystem())
+grid = Grid(cell_size=32, system=HexGridSystem(), gap=2)
 
-width = 16
-height = 16
+width = 5
+height = 5
 
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
@@ -23,7 +23,6 @@ green_tile = Tile(sprite=None, material=ColorMaterial(color=(0, 255, 0)))
 blue_tile = Tile(sprite=None, material=ColorMaterial(color=(0, 0, 255)))
 
 palette = TilePalette()
-palette.add_tile(white_tile)
 palette.add_tile(black_tile)
 palette.add_tile(red_tile)
 palette.add_tile(green_tile)

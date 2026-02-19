@@ -17,12 +17,12 @@ if TYPE_CHECKING:
 class GridSystem:
     """Defines the coordinate system of a Grid."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int) -> Vector2:
+    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
@@ -36,13 +36,13 @@ class GridSystem:
 class SquareGridSystem(GridSystem):
     """A square coordinate system for a Grid."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
-        return world_coord // cell_size
+        return world_coord // (cell_size + gap)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int) -> Vector2:
+    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
-        return cell_coord * cell_size
+        return cell_coord * (cell_size + gap)
 
     def get_neighbors(self, cell_coord: Vector2) -> list[Vector2]:
         """Get the neighbors of a given cell coordinate."""
@@ -58,18 +58,18 @@ class SquareGridSystem(GridSystem):
 class HexGridSystem(GridSystem):
     """A hexagonal coordinate system for a Grid. (Axial coordinates with Pointy Hexes)."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
-        size = cell_size
+        size = cell_size + gap
 
         q = (math.sqrt(3) / 3 * world_coord.x - 1 / 3 * world_coord.y) / size
         r = (2 / 3 * world_coord.y) / size
 
         return self._hex_round(q, r)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int) -> Vector2:
+    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
-        size = cell_size
+        size = cell_size + gap
         q, r = cell_coord.x, cell_coord.y
 
         x = size * (math.sqrt(3) * q + math.sqrt(3) / 2 * r)
@@ -119,10 +119,11 @@ class Grid(GameComponent):
 
     # TODO: Add grid gap  # noqa: TD003
 
-    def __init__(self, cell_size: int, system: GridSystem) -> None:
+    def __init__(self, cell_size: int, system: GridSystem, gap: int = 0) -> None:
         """Initialize the Grid component."""
         super().__init__()
         self.cell_size = cell_size
+        self.gap = gap
         self.system = system
         self.layers = SortingLayerManager()
 
@@ -135,11 +136,11 @@ class Grid(GameComponent):
 
     def world_to_cell(self, world_coord: Vector2) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
-        return self.system.world_to_cell(world_coord, self.cell_size)
+        return self.system.world_to_cell(world_coord, self.cell_size, self.gap)
 
     def cell_to_world(self, cell_coord: Vector2) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
-        return self.system.cell_to_world(cell_coord, self.cell_size)
+        return self.system.cell_to_world(cell_coord, self.cell_size, self.gap)
 
     @override
     def awake(self) -> None:

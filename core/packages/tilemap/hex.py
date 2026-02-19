@@ -6,9 +6,7 @@ import pygame
 
 
 def create_hex_sprite(
-    radius: int,
-    color: tuple[int, int, int],
-    outline_color: tuple[int, int, int] = (0, 0, 0),
+    radius: int, color: tuple[int, int, int], outline_color: tuple[int, int, int] = (0, 0, 0), outline_width: int = 2
 ) -> pygame.Surface:
     """Create a hex sprite surface."""
     width = int(math.sqrt(3) * radius)
@@ -27,6 +25,7 @@ def create_hex_sprite(
         points.append((x, y))
 
     pygame.draw.polygon(surface, color, points)
-    pygame.draw.polygon(surface, outline_color, points, 2)
+    if outline_width != 0:
+        pygame.draw.polygon(surface, outline_color, points, outline_width)
 
     return surface

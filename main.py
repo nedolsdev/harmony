@@ -82,7 +82,7 @@ def main() -> None:
 
     agent2 = prefab.create_object()
 
-    scene.add_game_object(agent2)
+    # scene.add_game_object(agent2)
 
     # line
     line_prefab = (
@@ -110,7 +110,7 @@ def main() -> None:
     )
 
     line_object = line_prefab.create_object()
-    scene.add_game_object(line_object)
+    # scene.add_game_object(line_object)
 
     EngineLogger.setup()
 

@@ -54,7 +54,7 @@ class TileMapRenderer(Render):
         # temp for now
         if isinstance(tile.material, ColorMaterial):
             color = tile.material.color
-            return create_hex_sprite(tile_size, color)
+            return create_hex_sprite(tile_size, color, outline_width=0)
 
         surface = (
             tile.sprite.load()
