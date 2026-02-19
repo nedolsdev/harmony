@@ -4,12 +4,14 @@ from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
 from agent_world.objects.agent import Agent
+from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
 from core.assets.sprite_image import SpriteImage
 from core.components.line_2d import Line2D
 from core.components.position import Position
 from core.components.render_layer import RenderLayer
 from core.components.rotation import Rotation
 from core.components.sprite_2d import Sprite2D
+from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -65,6 +67,18 @@ def main() -> None:
         .add_tag("agent")
         .build_as_prefab()
     )
+
+    grid_obj = (
+        GameObjectBuilder(Empty)
+        .add_component(Position(x=0, y=0))
+        .add_component(RenderLayer(bg_layer))
+        .add_component(grid)
+        .add_component(tile_map)
+        .add_component(tile_map_renderer)
+        .build_as_prefab()
+    )
+
+    scene.add_game_object(grid_obj.create_object())
 
     agent2 = prefab.create_object()
 

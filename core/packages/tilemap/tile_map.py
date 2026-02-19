@@ -1,7 +1,14 @@
 """Defines an arrangement of Tiles."""
 
-from core.packages.tilemap.tile import Tile
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
+
 from game.component import GameComponent
+
+if TYPE_CHECKING:
+    from core.packages.tilemap.tile import Tile
+    from game.event_handler import EventHandler
 
 
 class TileMap(GameComponent):
@@ -28,7 +35,7 @@ class TileMap(GameComponent):
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
 
-    def get_tile_at_coordinate(self, x: int, y: int) -> Tile:
+    def get_tile_at_coordinate(self, x: int, y: int) -> Tile | None:
         """Get a tile at a given coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
@@ -40,6 +47,22 @@ class TileMap(GameComponent):
     def get_height(self) -> int:
         """Get an upper bound of the width (assumes the TileMap only grows)."""
         return self.height
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the sprite component."""
+
+    @override
+    def update(self) -> None:
+        """Update the sprite component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""
 
 
 class DictBasedTileMap(TileMap):
@@ -60,6 +83,14 @@ class DictBasedTileMap(TileMap):
         """Remove a tile at a given coordinate."""
         del self.tiles[(x, y)]
 
-    def get_tile_at_coordinate(self, x: int, y: int) -> Tile:
+    def get_tile_at_coordinate(self, x: int, y: int) -> Tile | None:
         """Get a tile at a given coordinate."""
-        return self.tiles[(x, y)]
+        if not self.in_bounds(x, y):
+            return None
+        return self.tiles.get((x, y), None)
+
+    @override
+    def copy(self) -> DictBasedTileMap:
+        """Create a copy of the position component."""
+        # TODO:  # noqa: TD003
+        return self

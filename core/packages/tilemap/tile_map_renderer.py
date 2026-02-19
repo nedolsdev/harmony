@@ -1,17 +1,22 @@
 """The TileMapRenderer defines how the TileMap is drawn to the screen."""
 
-from typing import override
+from __future__ import annotations
 
-import pygame
+from typing import TYPE_CHECKING, override
 
 from core.assets.sprite_image import SpriteImage
-from core.components.position import Position
 from core.components.render import Render
-from core.components.rotation import Rotation
-from core.packages.tilemap.grid import Grid
-from core.packages.tilemap.tile import Tile
-from core.packages.tilemap.tile_map import TileMap
 from game.vector2 import Vector2
+
+if TYPE_CHECKING:
+    import pygame
+
+    from core.components.position import Position
+    from core.components.rotation import Rotation
+    from core.packages.tilemap.grid import Grid
+    from core.packages.tilemap.tile import Tile
+    from core.packages.tilemap.tile_map import TileMap
+    from game.event_handler import EventHandler
 
 
 class TileMapRenderer(Render):
@@ -48,3 +53,24 @@ class TileMapRenderer(Render):
 
         tile.material.apply(surface)
         return surface
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the sprite component."""
+
+    @override
+    def update(self) -> None:
+        """Update the sprite component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""
+
+    @override
+    def copy(self) -> TileMapRenderer:
+        """Create a copy of the sprite component."""
+        return TileMapRenderer(self.tile_map.copy(), self.grid.copy())

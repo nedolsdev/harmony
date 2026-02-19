@@ -1,9 +1,16 @@
 """The Grid component defines a local coordinate system for positioning cells."""
 
-from core.packages.tilemap.tile_map import TileMap
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
+
 from game.component import GameComponent
 from game.sorting_layer import SortingLayerManager
-from game.vector2 import Vector2
+
+if TYPE_CHECKING:
+    from core.packages.tilemap.tile_map import TileMap
+    from game.event_handler import EventHandler
+    from game.vector2 import Vector2
 
 
 class Grid(GameComponent):
@@ -28,4 +35,26 @@ class Grid(GameComponent):
 
     def cell_to_world(self, cell_coord: Vector2) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
-        return cell_coord // self.cell_size
+        return cell_coord * self.cell_size
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the sprite component."""
+
+    @override
+    def update(self) -> None:
+        """Update the sprite component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""
+
+    @override
+    def copy(self) -> Grid:
+        """Create a copy of the position component."""
+        # TODO:  # noqa: TD003
+        return self
