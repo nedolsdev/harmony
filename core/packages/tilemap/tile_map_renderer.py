@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, override
 
 from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
+from core.packages.tilemap.hex import create_hex_sprite
+from game.material import ColorMaterial
 from game.vector2 import Vector2
 
 if TYPE_CHECKING:
@@ -33,18 +35,27 @@ class TileMapRenderer(Render):
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
+        pos = position.get_coordinates()
+
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
                 tile = self.tile_map.get_tile_at_coordinate(x, y)
                 if tile:
                     # convert using grid
-                    world_coords = self.grid.cell_to_world(Vector2(x, y))
+                    world_coords = self.grid.cell_to_world(Vector2(x, y)).as_int_tuple()
+
+                    coords = (pos[0] + world_coords[0], pos[1] + world_coords[1])
 
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile, self.grid.cell_size), world_coords.as_int_tuple())
+                    surface.blit(self.get_tile_surface(tile, self.grid.cell_size), coords)
 
     def get_tile_surface(self, tile: Tile, tile_size: int) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
+        # temp for now
+        if isinstance(tile.material, ColorMaterial):
+            color = tile.material.color
+            return create_hex_sprite(tile_size, color)
+
         surface = (
             tile.sprite.load()
             if tile.sprite is not None

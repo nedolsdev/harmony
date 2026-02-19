@@ -1,15 +1,20 @@
 """Test tile map."""
 
-from core.packages.tilemap.grid import Grid
+import random
+
+from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from core.packages.tilemap.tile import Tile
 from core.packages.tilemap.tile_map import DictBasedTileMap
 from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
 
-grid = Grid(cell_size=16)
+grid = Grid(cell_size=16, system=HexGridSystem())
 
-tile_map = DictBasedTileMap(name="Test TileMap", width=16, height=16)
+width = 16
+height = 16
+
+tile_map = DictBasedTileMap("Test TileMap", width, height)
 
 white_tile = Tile(sprite=None, material=ColorMaterial(color=(255, 255, 255)))
 black_tile = Tile(sprite=None, material=ColorMaterial(color=(0, 0, 0)))
@@ -24,8 +29,10 @@ palette.add_tile(red_tile)
 palette.add_tile(green_tile)
 palette.add_tile(blue_tile)
 
-tile_map.set_tile(black_tile, x=0, y=0)
-tile_map.set_tile(red_tile, x=5, y=3)
-tile_map.set_tile(green_tile, x=2, y=10)
+for x in range(width):
+    for y in range(height):
+        random_tile = random.choice(palette.tiles)  # noqa: S311 (can be insecure)
+        tile_map.set_tile(random_tile, x, y)
+
 
 tile_map_renderer = TileMapRenderer(tile_map, grid)

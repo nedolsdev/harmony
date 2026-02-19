@@ -37,7 +37,7 @@ def main() -> None:
 
     event_handler = EventHandler()
 
-    grid_size = 10
+    grid_size = 12
     tile_size = 60
     window_size = grid_size * tile_size
 
@@ -70,7 +70,7 @@ def main() -> None:
 
     grid_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Position(x=0, y=0))
+        .add_component(Position(x=50, y=50))
         .add_component(RenderLayer(bg_layer))
         .add_component(grid)
         .add_component(tile_map)
