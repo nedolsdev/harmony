@@ -4,7 +4,6 @@ from typing import override
 
 import pygame
 
-from core.components.position import Position
 from core.components.render import Render
 from core.components.rotation import Rotation
 from game.event_handler import EventHandler
@@ -30,17 +29,17 @@ class Line2D(Render):
         self.material = material
 
     @override
-    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the sprite at the given position."""
-        start_pixel = position.get_vector() - self.start_pos
-        end_pixel = position.get_vector() - self.end_pos
+        start_pixel = coords - self.start_pos
+        end_pixel = coords - self.end_pos
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
         pygame.draw.line(
             line_surface,
             (255, 255, 255, 255),
-            start_pixel.as_int_tuple(),
-            end_pixel.as_int_tuple(),
+            start_pixel.as_tuple(),
+            end_pixel.as_tuple(),
             self.width,
         )
         self.material.apply(line_surface)
