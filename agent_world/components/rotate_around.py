@@ -5,9 +5,9 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING
 
-from core.components.position import Position
-from core.components.rotation import Rotation
+from core.components.transform import Transform
 from game.behavior import Behavior
+from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
@@ -16,10 +16,9 @@ if TYPE_CHECKING:
 class RotateAround(Behavior):
     """A test behavior for rotating around a given point."""
 
-    position: Position
-    rotation: Rotation
+    transform: Transform
 
-    def __init__(self, point: Position, angular_speed: float, radius: float) -> None:
+    def __init__(self, point: Vector2, angular_speed: float, radius: float) -> None:
         """Initialize the movement behavior with an agent and speed. Angular speed is in degrees per frame."""
         super().__init__()
         self.point = point
@@ -30,14 +29,9 @@ class RotateAround(Behavior):
 
         self.radius = radius
 
-    def get_position(self) -> tuple[float, float]:
-        """Return the agent's current position."""
-        return self.position.get_coordinates()
-
     def awake(self) -> None:
         """Event call when the script instance is created."""
-        self.position = self.game_object.get_component(Position)
-        self.rotation = self.game_object.get_component(Rotation)
+        self.transform = self.game_object.get_component(Transform)
 
     def start(self) -> None:
         """Initialize the rotate around behavior."""
@@ -51,14 +45,13 @@ class RotateAround(Behavior):
         # calculate new position
         radius = self.radius
         rad_angle = math.radians(self.current_angle)
-        new_x = self.point.vector.x + radius * math.cos(rad_angle)
-        new_y = self.point.vector.y + radius * math.sin(rad_angle)
+        new_x = self.point.x + radius * math.cos(rad_angle)
+        new_y = self.point.y + radius * math.sin(rad_angle)
 
-        self.position.set_coordinates(int(new_x), int(new_y))
+        self.transform.world_position = Vector2(new_x, new_y)
 
         # update rotation to face the direction of movement
-        if self.rotation:
-            self.rotation.set_rotation(radians=rad_angle + math.pi / 2)
+        self.transform.local_rotation = rad_angle + math.pi / 2
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Register rotate event listeners with the event handler."""
@@ -66,7 +59,5 @@ class RotateAround(Behavior):
     def copy(self) -> RotateAround:
         """Create a copy of the rotate around behavior."""
         new_rotate_around = RotateAround(self.point, self.angular_speed, self.radius)
-        if self.position and self.rotation:
-            new_rotate_around.position = self.position.copy()
-            new_rotate_around.rotation = self.rotation.copy()
+        new_rotate_around.transform = self.transform.copy()
         return new_rotate_around

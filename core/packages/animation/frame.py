@@ -1,19 +1,15 @@
 """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
-from typing import Generic, TypeVar
+from game.vector2 import Vector2
 
 
 class AnimationFrame:
     """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
 
-T = TypeVar("T", bound=tuple)
+class VectorFrame(AnimationFrame):
+    """Frame with a Vector2."""
 
-
-class VectorFrame(AnimationFrame, Generic[T]):
-    """Frame with a vector of some values T."""
-
-    def __init__(self, vector: T, *, first: bool = False) -> None:
-        """Frame with a vector of values T."""
+    def __init__(self, vector: Vector2) -> None:
+        """Frame with a Vector2."""
         self.vector = vector
-        self.first = first

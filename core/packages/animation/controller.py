@@ -265,7 +265,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
             return
 
         # apply the animation frame
-        target.set_animation_frame(frame, clip.target, target_local_if_available=clip.target_local_if_available)
+        target.set_animation_frame(frame, clip.target)
 
 
 class AnimationController(Generic[DataT]):

@@ -5,7 +5,7 @@ from typing import override
 import pygame
 
 from core.components.render import Render
-from core.components.rotation import Rotation
+from core.components.transform import Transform
 from game.event_handler import EventHandler
 from game.material import Material
 from game.vector2 import Vector2
@@ -29,10 +29,10 @@ class Line2D(Render):
         self.material = material
 
     @override
-    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, transform: Transform, surface: pygame.Surface) -> None:
         """Render the sprite at the given position."""
-        start_pixel = coords - self.start_pos
-        end_pixel = coords - self.end_pos
+        start_pixel = transform.world_position - self.start_pos
+        end_pixel = transform.world_position - self.end_pos
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
         pygame.draw.line(

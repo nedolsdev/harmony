@@ -2,10 +2,9 @@
 
 import pygame
 
-from core.components.position import Position
 from core.components.render import Render
 from core.components.render_layer import RenderLayer
-from core.components.rotation import Rotation
+from core.components.transform import Transform
 from game.object import GameObject
 from game.scene import Scene
 from game.sorting_layer import SortingLayerManager
@@ -26,10 +25,9 @@ class RenderPipeline:
         # and it will be pre-sorted by the scene's render queue.
 
         for obj in objects:
-            position_component = obj.get_component(Position)
-            rotation_component = obj.get_component(Rotation) if obj.has_component(Rotation) else None
+            transform = obj.get_component(Transform)
             for render_component in obj.get_components_of_type(Render):
-                render_component.render(position_component.get_vector(), self.screen, rotation=rotation_component)
+                render_component.render(transform, self.screen)
 
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""
@@ -52,7 +50,7 @@ class RenderPipeline:
                 and obj.has_component(Render)
                 and obj.get_component(Render).active
                 and obj.has_component(RenderLayer)
-                and obj.has_component(Position)
+                and obj.has_component(Transform)
             ):
                 to_render.append(obj)
                 render_layer = obj.get_component(RenderLayer)

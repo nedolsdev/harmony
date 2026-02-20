@@ -17,14 +17,12 @@ class AnimationClip(Generic[T]):
         target: type[GameComponent] | None,
         *,
         loop: bool = False,
-        target_local_if_available: bool = True,
     ) -> None:
         """Initialize the AnimationClip with an FPS."""
         self.current_frame: int = 0
         self.fps = fps
         self.target = target
         self.loop = loop
-        self.target_local_if_available = target_local_if_available
 
     def get_next_animation_frame(self) -> T | None:
         """Get the next animation frame if it exists. Returns 'None' when at the end."""
@@ -112,10 +110,9 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         target: type[GameComponent],
         *,
         loop: bool = True,
-        target_local_if_available: bool = True,
     ) -> None:
         """Initialize the KeyFramedAnimationClip with an FPS and a KeyFrameMixer."""
-        super().__init__(fps, target, loop=loop, target_local_if_available=target_local_if_available)
+        super().__init__(fps, target, loop=loop)
         self.key_frames: list[KeyFrame[T]] = []
         self.blender = blender
 

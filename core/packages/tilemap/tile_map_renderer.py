@@ -10,7 +10,7 @@ from game.vector2 import Vector2
 if TYPE_CHECKING:
     import pygame
 
-    from core.components.rotation import Rotation
+    from core.components.transform import Transform
     from core.packages.tilemap.grid import Grid
     from core.packages.tilemap.tile import Tile
     from core.packages.tilemap.tile_map import TileMap
@@ -27,11 +27,11 @@ class TileMapRenderer(Render):
         self.grid = grid
 
     @override
-    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, transform: Transform, surface: pygame.Surface) -> None:
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
-        pos = coords.as_tuple()
+        pos = transform.world_position.as_tuple()
 
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):

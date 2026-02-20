@@ -3,20 +3,19 @@
 from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
+from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
-from core.assets.sprite_image import SpriteImage
 from core.components.line_2d import Line2D
-from core.components.position import Position
 from core.components.render_layer import RenderLayer
-from core.components.rotation import Rotation
 from core.components.sprite_2d import Sprite2D
+from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
-from game.material import ColorMaterial, GrayscaleMaterial
+from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.render_pipeline import RenderPipeline
 from game.runner import Runner
@@ -52,43 +51,26 @@ def main() -> None:
 
     game = Runner(renderer, event_handler, scene)
 
-    prefab = (
-        GameObjectBuilder(Agent)
-        .add_component(Position(0 + tile_size * 10 // 2, 0 + tile_size * 10 // 2))
-        .add_component(
-            Sprite2D(
-                width=tile_size,
-                height=tile_size,
-                material=GrayscaleMaterial(),
-                image=SpriteImage("assets/sprites/agent.png"),
-            ),
-        )
-        .add_component(Rotation(degrees=0))
-        .add_component(RenderLayer(default_layer))
-        .add_tag("agent")
-        .build_as_prefab()
-    )
+    empty = GameObjectBuilder(Empty).add_component(Transform(local_position=Vector2(0, 0))).build()
 
     grid_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Position(x=50, y=50))
+        .add_component(Transform(local_position=Vector2(50, 50), local_rotation=0.78))
         .add_component(RenderLayer(bg_layer))
         .add_component(grid)
         .add_component(tile_map)
         .add_component(tile_map_renderer)
-        .build_as_prefab()
+        .build()
     )
 
-    scene.add_game_object(grid_obj.create_object())
+    empty.add_child(grid_obj)
 
-    agent2 = prefab.create_object()
-
-    # scene.add_game_object(agent2)
+    scene.add_game_object(empty)
 
     # line
     line_prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Position(250, 250))
+        .add_component(Transform(local_position=Vector2(0, 0)))
         .add_component(
             Line2D(
                 start=Vector2(0, 0),
@@ -110,8 +92,25 @@ def main() -> None:
         .build_as_prefab()
     )
 
+    empty2 = GameObjectBuilder(Empty).add_component(Transform(local_position=Vector2(250, 250))).build()
+
     line_object = line_prefab.create_object()
-    scene.add_game_object(line_object)
+
+    empty2.add_child(line_object)
+
+    scene.add_game_object(empty2)
+
+    # square
+    square = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform())
+        .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
+        .add_component(RenderLayer(default_layer))
+        .add_component(RotateAround(Vector2(400, 400), 2, 50))
+        .build()
+    )
+
+    scene.add_game_object(square)
 
     EngineLogger.setup()
 
