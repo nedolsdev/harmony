@@ -4,11 +4,11 @@ from typing import override
 
 import pygame
 
-from core.components.position import Position
 from core.components.render import Render
 from core.components.rotation import Rotation
 from game.event_handler import EventHandler
 from game.material import Material
+from game.vector2 import Vector2
 
 
 class Line2D(Render):
@@ -16,8 +16,8 @@ class Line2D(Render):
 
     def __init__(
         self,
-        start: Position,
-        end: Position,
+        start: Vector2,
+        end: Vector2,
         width: int,
         material: Material,
     ) -> None:
@@ -29,21 +29,27 @@ class Line2D(Render):
         self.material = material
 
     @override
-    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the sprite at the given position."""
-        start_pixel = Position.subtract(position.get_coordinates(), self.start_pos.get_coordinates())
-        end_pixel = Position.subtract(position.get_coordinates(), self.end_pos.get_coordinates())
+        start_pixel = coords - self.start_pos
+        end_pixel = coords - self.end_pos
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-        pygame.draw.line(line_surface, (255, 255, 255, 255), start_pixel, end_pixel, self.width)
+        pygame.draw.line(
+            line_surface,
+            (255, 255, 255, 255),
+            start_pixel.as_tuple(),
+            end_pixel.as_tuple(),
+            self.width,
+        )
         self.material.apply(line_surface)
         surface.blit(line_surface, (0, 0))
 
-    def get_start_end(self) -> tuple[Position, Position]:
+    def get_start_end(self) -> tuple[Vector2, Vector2]:
         """Return the start and end positions of the line."""
         return self.start_pos, self.end_pos
 
-    def set_start_end(self, start: Position, end: Position) -> None:
+    def set_start_end(self, start: Vector2, end: Vector2) -> None:
         """Set the start and end positions of the line."""
         self.start_pos = start
         self.end_pos = end

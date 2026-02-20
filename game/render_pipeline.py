@@ -29,7 +29,7 @@ class RenderPipeline:
             position_component = obj.get_component(Position)
             rotation_component = obj.get_component(Rotation) if obj.has_component(Rotation) else None
             for render_component in obj.get_components_of_type(Render):
-                render_component.render(position_component, self.screen, rotation=rotation_component)
+                render_component.render(position_component.get_vector(), self.screen, rotation=rotation_component)
 
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""

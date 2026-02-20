@@ -10,10 +10,10 @@ from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
 
 if TYPE_CHECKING:
-    from core.components.position import Position
     from core.components.rotation import Rotation
     from game.event_handler import EventHandler
     from game.material import Material
+    from game.vector2 import Vector2
 
 
 class Sprite2D(Render):
@@ -56,7 +56,7 @@ class Sprite2D(Render):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
-    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the sprite at the given position."""
         if self._dirty:
             # sprite is dirty, re-render
@@ -82,7 +82,7 @@ class Sprite2D(Render):
         if rotation:
             img = pygame.transform.rotate(img, rotation.get_degrees())
 
-        rect = img.get_rect(center=position.get_coordinates())
+        rect = img.get_rect(center=coords.as_tuple())
         surface.blit(img, rect)
 
     def copy(self) -> Sprite2D:

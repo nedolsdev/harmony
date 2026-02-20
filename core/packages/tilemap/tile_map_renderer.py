@@ -10,7 +10,6 @@ from game.vector2 import Vector2
 if TYPE_CHECKING:
     import pygame
 
-    from core.components.position import Position
     from core.components.rotation import Rotation
     from core.packages.tilemap.grid import Grid
     from core.packages.tilemap.tile import Tile
@@ -28,23 +27,23 @@ class TileMapRenderer(Render):
         self.grid = grid
 
     @override
-    def render(self, position: Position, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
+    def render(self, coords: Vector2, surface: pygame.Surface, *, rotation: Rotation | None = None) -> None:
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
-        pos = position.get_coordinates()
+        pos = coords.as_tuple()
 
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
                 tile = self.tile_map.get_tile_at_coordinate(x, y)
                 if tile:
                     # convert using grid
-                    world_coords = self.grid.cell_to_world(Vector2(x, y)).as_int_tuple()
+                    world_coords = self.grid.cell_to_world(Vector2(x, y)).as_tuple()
 
-                    coords = (pos[0] + world_coords[0], pos[1] + world_coords[1])
+                    new_coords = (pos[0] + world_coords[0], pos[1] + world_coords[1])
 
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile), coords)
+                    surface.blit(self.get_tile_surface(tile), new_coords)
 
     def get_tile_surface(self, tile: Tile) -> pygame.Surface:
         """Get the surface of the Tile to draw."""

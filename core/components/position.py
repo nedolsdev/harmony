@@ -8,39 +8,36 @@ from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
 from game.component import GameComponent
 from game.local import Local
+from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
-PositionFrame = VectorFrame[tuple[int, int, int]]
+PositionFrame = VectorFrame[tuple[float, float, float]]
 
 
 class Position(GameComponent, Animatable[PositionFrame], Local["Position"]):
     """A component that holds the position of a game object."""
 
-    def __init__(self, x: int, y: int) -> None:
+    def __init__(self, x: float, y: float) -> None:
         """Initialize the position component with x and y coordinates."""
         super().__init__(disallow_multiple_of_type=True)
-        self.x = x
-        self.y = y
+        self.vector = Vector2(x, y)
 
     @override
     def awake_local(self) -> None:
         self.local = Position(0, 0)
 
-    def get_coordinates(self) -> tuple[int, int]:
+    def get_coordinates(self) -> tuple[float, float]:
         """Return the x and y coordinates of the position."""
-        # sometimes we might not have local because we are just using this for points
-        # it's a bit hacky, but it is what it is
         if not self.has_local():
-            return self.x, self.y
+            return self.vector.as_tuple()
 
-        return self.x + self.local.x, self.y + self.local.y
+        return (self.local.vector + self.vector).as_tuple()
 
-    def set_coordinates(self, x: int, y: int) -> None:
+    def set_coordinates(self, x: float, y: float) -> None:
         """Set the x and y coordinates of the position."""
-        self.x = x
-        self.y = y
+        self.vector = Vector2(x, y)
 
     def awake(self) -> None:
         """Event call when the script instance is created."""
@@ -56,7 +53,7 @@ class Position(GameComponent, Animatable[PositionFrame], Local["Position"]):
 
     def copy(self) -> Position:
         """Create a copy of the position component."""
-        pos = Position(self.x, self.y)
+        pos = Position(self.vector.x, self.vector.y)
 
         if pos.has_local():
             pos.local = self.local.copy()
@@ -71,12 +68,8 @@ class Position(GameComponent, Animatable[PositionFrame], Local["Position"]):
         else:
             self.set_coordinates(frame.vector[0], frame.vector[1])
 
-    @staticmethod
-    def add(coord1: tuple[int, int], coord2: tuple[int, int]) -> tuple[int, int]:
-        """Add two coordinates."""
-        return (coord1[0] + coord2[0], coord1[1] + coord2[1])
-
-    @staticmethod
-    def subtract(coord1: tuple[int, int], coord2: tuple[int, int]) -> tuple[int, int]:
-        """Add two coordinates."""
-        return (coord1[0] - coord2[0], coord1[1] - coord2[1])
+    def get_vector(self) -> Vector2:
+        """Get the true position (local + global)."""
+        if self.local.vector is None:
+            return self.vector
+        return self.vector + self.local.vector

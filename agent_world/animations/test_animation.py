@@ -29,9 +29,9 @@ class BasicPositionLERP(KeyFrameBlender[PositionFrame]):
         v2 = next_key_frame.frame.vector
 
         v3 = (
-            int(v1[0] + percentage * (v2[0] - v1[0])),
-            int(v1[1] + percentage * (v2[1] - v1[1])),
-            int(v1[2] + percentage * (v2[2] - v1[2])),
+            v1[0] + percentage * (v2[0] - v1[0]),
+            v1[1] + percentage * (v2[1] - v1[1]),
+            v1[2] + percentage * (v2[2] - v1[2]),
         )
 
         return PositionFrame(v3)
