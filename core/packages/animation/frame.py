@@ -10,7 +10,6 @@ class AnimationFrame:
 class VectorFrame(AnimationFrame):
     """Frame with a Vector2."""
 
-    def __init__(self, vector: Vector2, *, first: bool = False) -> None:
+    def __init__(self, vector: Vector2) -> None:
         """Frame with a Vector2."""
         self.vector = vector
-        self.first = first

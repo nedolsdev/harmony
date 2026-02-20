@@ -68,7 +68,7 @@ def main() -> None:
     # line
     line_prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Transform(local_position=Vector2(250, 250)))
+        .add_component(Transform(local_position=Vector2(0, 0)))
         .add_component(
             Line2D(
                 start=Vector2(0, 0),
@@ -90,8 +90,13 @@ def main() -> None:
         .build_as_prefab()
     )
 
+    empty2 = GameObjectBuilder(Empty).add_component(Transform(local_position=Vector2(250, 250))).build()
+
     line_object = line_prefab.create_object()
-    scene.add_game_object(line_object)
+
+    empty2.add_child(line_object)
+
+    scene.add_game_object(empty2)
 
     EngineLogger.setup()
 

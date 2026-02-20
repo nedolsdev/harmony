@@ -44,7 +44,7 @@ class Runner:
         self.event_handler.handle_events(events)
 
         # update all game objects
-        for game_object in self.scene.get_game_objects():
+        for game_object in self.scene.get_flattened_game_objects():
             game_object.update()
 
         if not self.running:
