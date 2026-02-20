@@ -3,10 +3,12 @@
 from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
+from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
 from core.components.line_2d import Line2D
 from core.components.render_layer import RenderLayer
+from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
@@ -53,7 +55,7 @@ def main() -> None:
 
     grid_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(50, 50)))
+        .add_component(Transform(local_position=Vector2(50, 50), local_rotation=0.78))
         .add_component(RenderLayer(bg_layer))
         .add_component(grid)
         .add_component(tile_map)
@@ -97,6 +99,18 @@ def main() -> None:
     empty2.add_child(line_object)
 
     scene.add_game_object(empty2)
+
+    # square
+    square = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform())
+        .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
+        .add_component(RenderLayer(default_layer))
+        .add_component(RotateAround(Vector2(400, 400), 2, 50))
+        .build()
+    )
+
+    scene.add_game_object(square)
 
     EngineLogger.setup()
 

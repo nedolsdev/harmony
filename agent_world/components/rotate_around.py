@@ -7,10 +7,10 @@ from typing import TYPE_CHECKING
 
 from core.components.transform import Transform
 from game.behavior import Behavior
+from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
-    from game.vector2 import Vector2
 
 
 class RotateAround(Behavior):
@@ -51,8 +51,7 @@ class RotateAround(Behavior):
         self.transform.world_position = Vector2(new_x, new_y)
 
         # update rotation to face the direction of movement
-        if self.rotation:
-            self.rotation.set_rotation(radians=rad_angle + math.pi / 2)
+        self.transform.local_rotation = rad_angle + math.pi / 2
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Register rotate event listeners with the event handler."""
@@ -60,6 +59,5 @@ class RotateAround(Behavior):
     def copy(self) -> RotateAround:
         """Create a copy of the rotate around behavior."""
         new_rotate_around = RotateAround(self.point, self.angular_speed, self.radius)
-        if self.position and self.rotation:
-            new_rotate_around.transform = self.transform.copy()
+        new_rotate_around.transform = self.transform.copy()
         return new_rotate_around
