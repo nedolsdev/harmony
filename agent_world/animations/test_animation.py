@@ -1,6 +1,6 @@
 """A test animation."""
 
-from core.components.position import Position, PositionFrame
+from core.components.transform import Transform
 from core.packages.animation.clip import NO_ANIMATION, KeyFrame, KeyFrameBlender, KeyFramedAnimationClip
 from core.packages.animation.controller import (
     ENTRY_STATE,
@@ -10,52 +10,46 @@ from core.packages.animation.controller import (
     AnimationTransition,
 )
 from core.packages.animation.frame import VectorFrame
+from game.vector2 import Vector2
 
 
-class BasicPositionLERP(KeyFrameBlender[PositionFrame]):
+class BasicPositionLERP(KeyFrameBlender[VectorFrame]):
     """Test blender for basic LERP between two positions."""
 
     def blend(
         self,
         frame_number: int,
-        current_frame: KeyFrame[PositionFrame],
-        next_key_frame: KeyFrame[PositionFrame],
-    ) -> PositionFrame:
+        current_frame: KeyFrame[VectorFrame],
+        next_key_frame: KeyFrame[VectorFrame],
+    ) -> VectorFrame:
         """Produce an AnimationFrame between the current and next frame."""
         # basic LERP
         percentage = self.get_percentage_of_transition(frame_number, current_frame, next_key_frame)
-
         v1 = current_frame.frame.vector
         v2 = next_key_frame.frame.vector
-
-        v3 = (
-            v1[0] + percentage * (v2[0] - v1[0]),
-            v1[1] + percentage * (v2[1] - v1[1]),
-            v1[2] + percentage * (v2[2] - v1[2]),
-        )
-
-        return PositionFrame(v3)
+        v3 = v1 + (v2 - v1) * percentage
+        return VectorFrame(v3)
 
 
 blender = BasicPositionLERP()
 
-clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Position)
+clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform)
 
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((0, 0, 0)),
+        VectorFrame(Vector2(0, 0)),
         0,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((25, 25, 25)),
+        VectorFrame(Vector2(25, 25)),
         30,
     ),
 )
 clip.add_key_frame(
     KeyFrame(
-        VectorFrame((0, 0, 0)),
+        VectorFrame(Vector2(0, 0)),
         60,
     ),
 )

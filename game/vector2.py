@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from typing import Self
+from typing import Self, overload
 
 
 class Vector2:  # noqa: PLW1641 (unhashable)
@@ -51,13 +51,25 @@ class Vector2:  # noqa: PLW1641 (unhashable)
         """Subtraction."""
         return Vector2(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, scalar: float) -> Vector2:
-        """Multiplication."""
-        return Vector2(self.x * scalar, self.y * scalar)
+    @overload
+    def __mul__(self, other: float) -> Vector2: ...
+    @overload
+    def __mul__(self, other: Vector2) -> Vector2: ...
 
-    def __rmul__(self, scalar: float) -> Vector2:
-        """Right side multiplication (we don't care about order for vectors)."""
-        return self.__mul__(scalar)
+    def __mul__(self, other: float | Vector2) -> Vector2:
+        """Multiply vector by scalar or component-wise by another vector."""
+        if isinstance(other, Vector2):
+            return Vector2(self.x * other.x, self.y * other.y)
+        return Vector2(self.x * other, self.y * other)
+
+    @overload
+    def __rmul__(self, other: float) -> Vector2: ...
+    @overload
+    def __rmul__(self, other: Vector2) -> Vector2: ...
+
+    def __rmul__(self, other: float | Vector2) -> Vector2:
+        """Right-hand multiplication (scalar * vector or vector * vector)."""
+        return self.__mul__(other)
 
     def __truediv__(self, scalar: float) -> Vector2:
         """True division (/)."""  # noqa: D401
@@ -87,10 +99,14 @@ class Vector2:  # noqa: PLW1641 (unhashable)
         self.y -= other.y
         return self
 
-    def __imul__(self, scalar: float) -> Self:
-        """In place multiplication."""
-        self.x *= scalar
-        self.y *= scalar
+    def __imul__(self, other: float | Vector2) -> Self:
+        """In-place multiplication by scalar or component-wise by vector."""
+        if isinstance(other, Vector2):
+            self.x *= other.x
+            self.y *= other.y
+        else:
+            self.x *= other
+            self.y *= other
         return self
 
     def __itruediv__(self, scalar: float) -> Self:
@@ -187,3 +203,13 @@ class Vector2:  # noqa: PLW1641 (unhashable)
             max(min_v.x, min(self.x, max_v.x)),
             max(min_v.y, min(self.y, max_v.y)),
         )
+
+    @classmethod
+    def zero(cls) -> Vector2:
+        """Create a (0, 0) Vector."""
+        return Vector2(0, 0)
+
+    @classmethod
+    def one(cls) -> Vector2:
+        """Create a (1, 1) Vector."""
+        return Vector2(1, 1)

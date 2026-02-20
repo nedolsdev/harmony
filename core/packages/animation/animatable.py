@@ -10,7 +10,7 @@ T = TypeVar("T", bound=AnimationFrame)
 class Animatable(Generic[T]):
     """An interface for components that can be animated to produce an AnimationClip."""
 
-    def set_animation_frame(self, frame: T, *, target_local_if_available: bool) -> None:
+    def set_animation_frame(self, frame: T) -> None:
         """Set or update the component based on the frame."""
-        msg = "The 'set_frame' method should be implemented in subclasses."
+        msg = "The 'set_animation_frame' method should be implemented in subclasses."
         raise NotImplementedError(msg)
