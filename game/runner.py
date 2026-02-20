@@ -61,22 +61,24 @@ class Runner:
         """Start the main game loop."""
         self.running = True
 
+        flattened_objs = self.scene.get_flattened_game_objects()
+
         # set all behavior owners
-        for game_object in self.scene.get_flattened_game_objects():
+        for game_object in flattened_objs:
             for component in game_object.get_components():
                 if isinstance(component, Behavior):
                     component.set_owner(game_object)
 
         # sync all game objects with the event handler
-        for game_object in self.scene.get_flattened_game_objects():
+        for game_object in flattened_objs:
             game_object.add_events(self.event_handler)
 
         # awake all game objects
-        for game_object in self.scene.get_flattened_game_objects():
+        for game_object in flattened_objs:
             game_object.awake()
 
         # start all game objects
-        for game_object in self.scene.get_flattened_game_objects():
+        for game_object in flattened_objs:
             game_object.start()
 
         while self.running:
