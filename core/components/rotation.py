@@ -18,7 +18,7 @@ class Rotation(GameComponent):
     """The rotation value stored in radians."""
 
     def __init__(self, *, degrees: float | None = None, radians: float | None = None) -> None:
-        """Initialize the position component with x and y coordinates."""
+        """Initialize the rotation component."""
         super().__init__(disallow_multiple_of_type=True)
         self.set_rotation(degrees=degrees, radians=radians)
 
@@ -69,14 +69,14 @@ class Rotation(GameComponent):
         """Event call when the script instance is created."""
 
     def start(self) -> None:
-        """Initialize the position component."""
+        """Initialize the rotation component."""
 
     def update(self) -> None:
-        """Update the position component."""
+        """Update the rotation component."""
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
     def copy(self) -> Rotation:
-        """Create a copy of the position component."""
+        """Create a copy of the rotation component."""
         return Rotation(radians=self._rotation)

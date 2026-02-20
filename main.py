@@ -22,6 +22,7 @@ from game.render_pipeline import RenderPipeline
 from game.runner import Runner
 from game.scene import Scene
 from game.scene_manager import SceneManager
+from game.vector2 import Vector2
 
 install()
 
@@ -90,16 +91,16 @@ def main() -> None:
         .add_component(Position(250, 250))
         .add_component(
             Line2D(
-                start=Position(0, 0),
-                end=Position(100, 100),
+                start=Vector2(0, 0),
+                end=Vector2(100, 100),
                 material=ColorMaterial((0, 255, 0)),
                 width=5,
             ),
         )
         .add_component(
             Line2D(
-                start=Position(0, 0),
-                end=Position(-100, 100),
+                start=Vector2(0, 0),
+                end=Vector2(-100, 100),
                 material=ColorMaterial((255, 0, 0)),
                 width=5,
             ),
@@ -110,7 +111,7 @@ def main() -> None:
     )
 
     line_object = line_prefab.create_object()
-    # scene.add_game_object(line_object)
+    scene.add_game_object(line_object)
 
     EngineLogger.setup()
 

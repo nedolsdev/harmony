@@ -30,7 +30,7 @@ class RotateAround(Behavior):
 
         self.radius = radius
 
-    def get_position(self) -> tuple[int, int]:
+    def get_position(self) -> tuple[float, float]:
         """Return the agent's current position."""
         return self.position.get_coordinates()
 
@@ -51,8 +51,8 @@ class RotateAround(Behavior):
         # calculate new position
         radius = self.radius
         rad_angle = math.radians(self.current_angle)
-        new_x = self.point.x + radius * math.cos(rad_angle)
-        new_y = self.point.y + radius * math.sin(rad_angle)
+        new_x = self.point.vector.x + radius * math.cos(rad_angle)
+        new_y = self.point.vector.y + radius * math.sin(rad_angle)
 
         self.position.set_coordinates(int(new_x), int(new_y))
 
