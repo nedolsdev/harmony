@@ -71,7 +71,7 @@ def main() -> None:
     # line
     line_prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Transform(local_position=Vector2(0, 0), local_rotation=1.57, local_scale=Vector2(2, 2)))
+        .add_component(Transform(local_scale=Vector2(0.5, 0.5)))
         .add_component(
             Line2D(
                 start=Vector2(0, 0),
@@ -104,7 +104,7 @@ def main() -> None:
     # square
     square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(100, 100)))
+        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(4, 4)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
         .build()
@@ -112,7 +112,7 @@ def main() -> None:
 
     rotation_parent = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(10, 10)))
+        .add_component(Transform(local_position=Vector2(400, 400)))
         .add_component(RenderLayer(default_layer))
         .add_component(RotateAround(2))
         .build()

@@ -32,8 +32,8 @@ class Line2D(Render):
     @override
     def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
         """Render the line with proper rotation handling."""
-        start_pixel = camera.world_to_screen(transform.transform_point(self.start_pos))
-        end_pixel = camera.world_to_screen(transform.transform_point(self.end_pos))
+        start_pixel = camera.world_to_screen(transform.transform_point(self.start_pos + transform.local_position))
+        end_pixel = camera.world_to_screen(transform.transform_point(self.end_pos + transform.local_position))
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
 
