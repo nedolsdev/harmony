@@ -55,7 +55,7 @@ def main() -> None:
 
     grid_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(50, 50), local_rotation=0.78))
+        .add_component(Transform(local_position=Vector2(50, 50)))
         .add_component(RenderLayer(bg_layer))
         .add_component(grid)
         .add_component(tile_map)
@@ -70,7 +70,7 @@ def main() -> None:
     # line
     line_prefab = (
         GameObjectBuilder(Agent)
-        .add_component(Transform(local_position=Vector2(0, 0)))
+        .add_component(Transform(local_position=Vector2(0, 0), local_rotation=1.57, local_scale=Vector2(2, 2)))
         .add_component(
             Line2D(
                 start=Vector2(0, 0),

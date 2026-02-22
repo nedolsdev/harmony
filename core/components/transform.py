@@ -191,3 +191,52 @@ class Transform(Behavior, Animatable[VectorFrame]):
     def set_animation_frame(self, frame: VectorFrame) -> None:
         """Set the animation frame."""
         self.local_position = frame.vector
+
+    def transform_point(self, local: Vector2) -> Vector2:
+        """Convert a local-space point to world-space."""
+        self._recalculate_if_needed()
+
+        scaled = local * self._world_scale
+
+        cos_r = math.cos(self._world_rotation)
+        sin_r = math.sin(self._world_rotation)
+
+        rotated = Vector2(
+            scaled.x * cos_r - scaled.y * sin_r,
+            scaled.x * sin_r + scaled.y * cos_r,
+        )
+
+        return self._world_position + rotated
+
+    def inverse_transform_point(self, world: Vector2) -> Vector2:
+        """Convert a world-space point to local-space."""
+        self._recalculate_if_needed()
+
+        delta = world - self._world_position
+
+        cos_r = math.cos(-self._world_rotation)
+        sin_r = math.sin(-self._world_rotation)
+
+        unrotated = Vector2(
+            delta.x * cos_r - delta.y * sin_r,
+            delta.x * sin_r + delta.y * cos_r,
+        )
+
+        return Vector2(
+            unrotated.x / self._world_scale.x,
+            unrotated.y / self._world_scale.y,
+        )
+
+    def transform_direction(self, local: Vector2) -> Vector2:
+        """Convert a local direction to world direction (no translation)."""
+        self._recalculate_if_needed()
+
+        scaled = local * self._world_scale
+
+        cos_r = math.cos(self._world_rotation)
+        sin_r = math.sin(self._world_rotation)
+
+        return Vector2(
+            scaled.x * cos_r - scaled.y * sin_r,
+            scaled.x * sin_r + scaled.y * cos_r,
+        )
