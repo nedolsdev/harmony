@@ -6,6 +6,7 @@ import pygame
 
 from core.components.render import Render
 from core.components.transform import Transform
+from core.packages.camera.camera_component import Camera
 from game.event_handler import EventHandler
 from game.material import Material
 from game.vector2 import Vector2
@@ -29,10 +30,10 @@ class Line2D(Render):
         self.material = material
 
     @override
-    def render(self, transform: Transform, surface: pygame.Surface) -> None:
+    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
         """Render the line with proper rotation handling."""
-        start_pixel = transform.transform_point(self.start_pos)
-        end_pixel = transform.transform_point(self.end_pos)
+        start_pixel = camera.world_to_screen(transform.transform_point(self.start_pos))
+        end_pixel = camera.world_to_screen(transform.transform_point(self.end_pos))
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
 

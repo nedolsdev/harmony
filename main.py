@@ -12,6 +12,7 @@ from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
+from core.packages.camera.camera_component import Camera, Viewport
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
@@ -103,14 +104,33 @@ def main() -> None:
     # square
     square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform())
+        .add_component(Transform(local_position=Vector2(100, 100)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
-        .add_component(RotateAround(Vector2(400, 400), 2, 50))
         .build()
     )
 
+    rotation_parent = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform(local_position=Vector2(10, 10)))
+        .add_component(RenderLayer(default_layer))
+        .add_component(RotateAround(2))
+        .build()
+    )
+
+    rotation_parent.add_child(square)
+
     scene.add_game_object(square)
+
+    camera = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform())
+        .add_component(Camera(Viewport(0, 0)))
+        .add_component(RenderLayer(default_layer))
+        .build()
+    )
+
+    scene.add_game_object(camera)
 
     EngineLogger.setup()
 

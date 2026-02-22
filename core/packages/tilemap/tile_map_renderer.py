@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     import pygame
 
     from core.components.transform import Transform
+    from core.packages.camera.camera_component import Camera
     from core.packages.tilemap.grid import Grid
     from core.packages.tilemap.tile import Tile
     from core.packages.tilemap.tile_map import TileMap
@@ -27,7 +28,7 @@ class TileMapRenderer(Render):
         self.grid = grid
 
     @override
-    def render(self, transform: Transform, surface: pygame.Surface) -> None:
+    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
@@ -40,8 +41,10 @@ class TileMapRenderer(Render):
 
                     world_coords = transform.transform_point(local_coords)
 
+                    screen_coords = camera.world_to_screen(world_coords)
+
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile), world_coords.as_tuple())
+                    surface.blit(self.get_tile_surface(tile), screen_coords.as_tuple())
 
     def get_tile_surface(self, tile: Tile) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
