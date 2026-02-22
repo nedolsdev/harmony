@@ -120,7 +120,7 @@ def main() -> None:
 
     rotation_parent.add_child(square)
 
-    scene.add_game_object(square)
+    scene.add_game_object(rotation_parent)
 
     camera = (
         GameObjectBuilder(Empty)
