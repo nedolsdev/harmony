@@ -30,11 +30,15 @@ class Line2D(Render):
 
     @override
     def render(self, transform: Transform, surface: pygame.Surface) -> None:
-        """Render the sprite at the given position."""
-        start_pixel = transform.world_position - self.start_pos
-        end_pixel = transform.world_position - self.end_pos
+        """Render the line with proper rotation handling."""
+        rotated_start = self.start_pos.rotate(transform.world_rotation)
+        rotated_end = self.end_pos.rotate(transform.world_rotation)
+
+        start_pixel = transform.world_position + rotated_start
+        end_pixel = transform.world_position + rotated_end
 
         line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+
         pygame.draw.line(
             line_surface,
             (255, 255, 255, 255),
@@ -42,6 +46,7 @@ class Line2D(Render):
             end_pixel.as_tuple(),
             self.width,
         )
+
         self.material.apply(line_surface)
         surface.blit(line_surface, (0, 0))
 
