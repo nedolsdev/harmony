@@ -22,8 +22,8 @@ class GridSystem:
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
-        """Convert the cell coordinate to world coordinate."""
+    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+        """Convert the cell coordinate to local coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
 
@@ -40,7 +40,7 @@ class SquareGridSystem(GridSystem):
         """Convert the world coordinate to cell coordinate."""
         return world_coord // (cell_size + gap)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
         return cell_coord * (cell_size + gap)
 
@@ -67,7 +67,7 @@ class HexGridSystem(GridSystem):
 
         return self._hex_round(q, r)
 
-    def cell_to_world(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
         size = cell_size + gap
         q, r = cell_coord.x, cell_coord.y
@@ -138,9 +138,9 @@ class Grid(GameComponent):
         """Convert the world coordinate to cell coordinate."""
         return self.system.world_to_cell(world_coord, self.cell_size, self.gap)
 
-    def cell_to_world(self, cell_coord: Vector2) -> Vector2:
-        """Convert the cell coordinate to world coordinate."""
-        return self.system.cell_to_world(cell_coord, self.cell_size, self.gap)
+    def cell_to_local(self, cell_coord: Vector2) -> Vector2:
+        """Convert the cell coordinate to local coordinate."""
+        return self.system.cell_to_local(cell_coord, self.cell_size, self.gap)
 
     @override
     def awake(self) -> None:

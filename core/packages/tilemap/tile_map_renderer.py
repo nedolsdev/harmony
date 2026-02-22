@@ -31,19 +31,17 @@ class TileMapRenderer(Render):
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
-        pos = transform.world_position.as_tuple()
-
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
                 tile = self.tile_map.get_tile_at_coordinate(x, y)
                 if tile:
                     # convert using grid
-                    world_coords = self.grid.cell_to_world(Vector2(x, y)).as_tuple()
+                    local_coords = self.grid.cell_to_local(Vector2(x, y))
 
-                    new_coords = (pos[0] + world_coords[0], pos[1] + world_coords[1])
+                    world_coords = transform.transform_point(local_coords)
 
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile), new_coords)
+                    surface.blit(self.get_tile_surface(tile), world_coords.as_tuple())
 
     def get_tile_surface(self, tile: Tile) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
