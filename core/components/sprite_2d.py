@@ -62,7 +62,7 @@ class Sprite2D(Render):
         """Render the sprite at the given position."""
         local_size = Vector2(self.width, self.height)
 
-        world_size = local_size * transform.world_scale
+        world_size = camera.transform.inverse_transform_scale(transform.transform_scale(local_size))
 
         if self._dirty:
             # sprite is dirty, re-render

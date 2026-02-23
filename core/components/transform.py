@@ -240,3 +240,16 @@ class Transform(Behavior, Animatable[VectorFrame]):
             scaled.x * cos_r - scaled.y * sin_r,
             scaled.x * sin_r + scaled.y * cos_r,
         )
+
+    def transform_scale(self, local: Vector2) -> Vector2:
+        """Convert a local scale to world scale."""
+        self._recalculate_if_needed()
+        return local * self._world_scale
+
+    def inverse_transform_scale(self, local: Vector2) -> Vector2:
+        """Convert a world scale to local scale."""
+        self._recalculate_if_needed()
+        return Vector2(
+            local.x / self.world_scale.x,
+            local.y / self.world_scale.y,
+        )
