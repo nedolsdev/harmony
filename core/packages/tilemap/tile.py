@@ -4,6 +4,7 @@ import pygame
 
 from core.assets.surface_asset import SurfaceAsset
 from game.material import Material
+from game.vector2 import Vector2
 
 
 class Tile(SurfaceAsset):
@@ -20,3 +21,8 @@ class Tile(SurfaceAsset):
         if self.material:
             self.material.apply(surface)
         return surface
+
+    def get_tile_surface_for_size(self, size: Vector2) -> pygame.Surface:
+        """Get the tile surface for a given size."""
+        msg = "Subclasses should implement this method."
+        raise NotImplementedError(msg)

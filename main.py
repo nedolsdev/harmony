@@ -124,8 +124,8 @@ def main() -> None:
 
     camera = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(200, 200)))
-        .add_component(Camera(Viewport(200, 200)))
+        .add_component(Transform())
+        .add_component(Camera(Viewport(window_size, window_size)))
         .add_component(RenderLayer(default_layer))
         .build()
     )
@@ -140,7 +140,7 @@ def main() -> None:
         .build()
     )
 
-    scene.add_game_object(camera2)
+    # scene.add_game_object(camera2)
 
     EngineLogger.setup()
 

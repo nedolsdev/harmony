@@ -3,16 +3,16 @@
 import random
 
 from core.assets.polygon import Polygon
-from core.packages.tilemap.grid import Grid, HexGridSystem
+from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from core.packages.tilemap.tile import Tile
 from core.packages.tilemap.tile_map import DictBasedTileMap
 from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
 
-cell_size = 16
+cell_size = 32
 
-grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=4)
+grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=0)
 
 width = 8
 height = 8

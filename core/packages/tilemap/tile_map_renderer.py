@@ -54,8 +54,7 @@ class TileMapRenderer(Render):
 
     def get_tile_surface(self, tile: Tile, screen_size: Vector2) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        # return tile.get_surface()
-        return pygame.transform.scale(tile.get_surface(), screen_size.as_tuple())
+        return pygame.transform.scale(tile.get_surface(), screen_size.as_int_tuple())
 
     @override
     def awake(self) -> None:
