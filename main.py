@@ -13,6 +13,7 @@ from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.camera.camera_component import Camera, Viewport
+from core.packages.camera.camera_controller import CameraController
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
@@ -127,6 +128,7 @@ def main() -> None:
         .add_component(Transform(local_scale=Vector2(1, 1)))
         .add_component(Camera(Viewport(window_size, window_size)))
         .add_component(RenderLayer(default_layer))
+        .add_component(CameraController(speed=50))
         .build()
     )
 
