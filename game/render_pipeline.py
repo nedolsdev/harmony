@@ -33,10 +33,11 @@ class RenderPipeline:
         # TODO: Fix performance here, matrixes / other point mapping to avoid looping for each camera  # noqa: TD003
 
         for camera in cameras:
+            camera_surface = self.screen.subsurface(camera.viewport.as_tuple())
             for obj in objects:
                 transform = obj.get_component(Transform)
                 for render_component in obj.get_components_of_type(Render):
-                    render_component.render(transform, self.screen, camera)
+                    render_component.render(transform, camera_surface, camera)
 
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""

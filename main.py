@@ -125,12 +125,22 @@ def main() -> None:
     camera = (
         GameObjectBuilder(Empty)
         .add_component(Transform())
-        .add_component(Camera(Viewport(0, 0)))
+        .add_component(Camera(Viewport(200, 200)))
         .add_component(RenderLayer(default_layer))
         .build()
     )
 
     scene.add_game_object(camera)
+
+    camera2 = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform())
+        .add_component(Camera(Viewport(200, 200, offset=Vector2(200, 200))))
+        .add_component(RenderLayer(default_layer))
+        .build()
+    )
+
+    scene.add_game_object(camera2)
 
     EngineLogger.setup()
 
