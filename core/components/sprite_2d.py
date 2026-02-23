@@ -76,7 +76,6 @@ class Sprite2D(Render):
 
             # save the rendered surface for future use
             self._cached_surface = img.copy()
-            self._dirty = False
 
         else:
             # sprite is not dirty, use cached surface
