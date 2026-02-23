@@ -14,8 +14,8 @@ cell_size = 32
 
 grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=0)
 
-width = 8
-height = 8
+width = 16
+height = 16
 
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
