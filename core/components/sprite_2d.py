@@ -9,9 +9,11 @@ import pygame
 
 from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
+from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from core.components.transform import Transform
+    from core.packages.camera.camera_component import Camera
     from game.event_handler import EventHandler
     from game.material import Material
 
@@ -56,15 +58,19 @@ class Sprite2D(Render):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
-    def render(self, transform: Transform, surface: pygame.Surface) -> None:
+    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
         """Render the sprite at the given position."""
+        local_size = Vector2(self.width, self.height)
+
+        world_size = local_size * transform.world_scale
+
         if self._dirty:
             # sprite is dirty, re-render
 
             if self.image:
-                img = pygame.transform.scale(self.image.get_surface(), (self.width, self.height)).copy()
+                img = pygame.transform.scale(self.image.get_surface(), world_size.as_tuple()).copy()
             else:
-                img = SpriteImage.get_default_sprite_surface((self.width, self.height))
+                img = SpriteImage.get_default_sprite_surface(world_size.as_tuple())
 
             self.material.apply(img)
 
@@ -81,7 +87,10 @@ class Sprite2D(Render):
 
         img = pygame.transform.rotate(img, math.degrees(transform.world_rotation))
 
-        rect = img.get_rect(center=transform.world_position.as_tuple())
+        world_coords = transform.world_position
+        screen_coords = camera.world_to_screen(world_coords)
+
+        rect = img.get_rect(center=screen_coords.as_tuple())
         surface.blit(img, rect)
 
     def copy(self) -> Sprite2D:

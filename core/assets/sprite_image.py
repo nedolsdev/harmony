@@ -18,7 +18,7 @@ class SpriteImage(SurfaceAsset):
         return ImageCache.load(self.image_path)
 
     @staticmethod
-    def get_default_sprite_surface(size: tuple[int, int]) -> pygame.Surface:
+    def get_default_sprite_surface(size: tuple[float, float]) -> pygame.Surface:
         """Return a default sprite surface with the given size."""
         surface = pygame.Surface(size, pygame.SRCALPHA)
         surface.fill((255, 255, 255, 255))
