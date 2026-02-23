@@ -12,7 +12,7 @@ from game.material import ColorMaterial
 
 cell_size = 32
 
-grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=0)
+grid = Grid(cell_size=cell_size, system=SquareGridSystem(), gap=0)
 
 width = 16
 height = 16
@@ -20,10 +20,10 @@ height = 16
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
 surface = Polygon.regular(
-    6,
+    4,
     cell_size,
     (255, 255, 255),
-    rotation_degrees=30,
+    rotation_degrees=45,
     outline_width=2,
     outline_color=(144, 144, 144),
 )
