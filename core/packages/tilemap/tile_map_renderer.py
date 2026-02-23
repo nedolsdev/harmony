@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
+import pygame
+
 from core.components.render import Render
 from game.vector2 import Vector2
 
 if TYPE_CHECKING:
-    import pygame
-
     from core.components.transform import Transform
     from core.packages.camera.camera_component import Camera
     from core.packages.tilemap.grid import Grid
@@ -32,6 +32,12 @@ class TileMapRenderer(Render):
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
+        local_size = Vector2(self.grid.cell_size, self.grid.cell_size)
+
+        world_size = transform.transform_scale(local_size)
+
+        screen_size = camera.transform.inverse_transform_scale(world_size)
+
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
                 tile = self.tile_map.get_tile_at_coordinate(x, y)
@@ -44,11 +50,12 @@ class TileMapRenderer(Render):
                     screen_coords = camera.world_to_screen(world_coords)
 
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile), screen_coords.as_tuple())
+                    surface.blit(self.get_tile_surface(tile, screen_size), screen_coords.as_tuple())
 
-    def get_tile_surface(self, tile: Tile) -> pygame.Surface:
+    def get_tile_surface(self, tile: Tile, screen_size: Vector2) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        return tile.get_surface()
+        # return tile.get_surface()
+        return pygame.transform.scale(tile.get_surface(), screen_size.as_tuple())
 
     @override
     def awake(self) -> None:
