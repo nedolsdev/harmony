@@ -15,6 +15,13 @@ class Material(Asset):
         raise NotImplementedError(msg)
 
 
+class NoMaterial(Material):
+    """A material that does nothing."""
+
+    def apply(self, surface: "pygame.Surface") -> None:
+        """Apply the material to the given surface."""
+
+
 class MaterialStack(Material):
     """A stack of materials that can be applied in sequence."""
 

@@ -22,7 +22,7 @@ tile_map = DictBasedTileMap("Test TileMap", width, height)
 surface = Polygon.regular(
     6,
     cell_size,
-    (255, 255, 255),
+    None,
     rotation_degrees=30,
     outline_width=2,
     outline_color=(144, 144, 144),

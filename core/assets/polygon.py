@@ -20,13 +20,18 @@ class Polygon(SurfaceAsset):
     def __init__(
         self,
         points: Iterable[tuple[float, float]],
-        fill_color: tuple[int, int, int],
+        fill_color: tuple[int, int, int] | None = None,
         outline_color: tuple[int, int, int] | None = None,
         outline_width: int = 0,
         *,
         antialiased: bool = False,
     ) -> None:
         """Initialize the Polygon with a list of points."""
+        # should have a fill or outline
+        if fill_color is None and outline_color is None:
+            msg = "No fill_color or outline_color was given. At least one must be present."
+            raise ValueError(msg)
+
         self.local_points = list(points)
         self.fill_color = fill_color
         self.outline_color = outline_color
@@ -52,14 +57,16 @@ class Polygon(SurfaceAsset):
         if self.antialiased:
             int_points = [(int(x), int(y)) for x, y in shifted_points]
 
-            pygame.gfxdraw.filled_polygon(surface, int_points, self.fill_color)
-            pygame.gfxdraw.aapolygon(surface, int_points, self.fill_color)
+            if self.fill_color:
+                pygame.gfxdraw.filled_polygon(surface, int_points, self.fill_color)
+                pygame.gfxdraw.aapolygon(surface, int_points, self.fill_color)
 
             if self.outline_color and self.outline_width > 0:
                 pygame.gfxdraw.aapolygon(surface, int_points, self.outline_color)
 
         else:
-            pygame.draw.polygon(surface, self.fill_color, shifted_points)
+            if self.fill_color:
+                pygame.draw.polygon(surface, self.fill_color, shifted_points)
 
             if self.outline_color and self.outline_width > 0:
                 pygame.draw.polygon(
@@ -80,7 +87,7 @@ class Polygon(SurfaceAsset):
         cls,
         sides: int,
         radius: float,
-        fill_color: tuple[int, int, int],
+        fill_color: tuple[int, int, int] | None = None,
         outline_color: tuple[int, int, int] | None = None,
         outline_width: int = 0,
         *,

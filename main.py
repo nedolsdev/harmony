@@ -6,7 +6,9 @@ from agent_world.animations.test_animation import test_controller
 from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
+from core.assets.polygon import Polygon
 from core.components.line_2d import Line2D
+from core.components.poly_render_2d import PolyRender2D
 from core.components.render_layer import RenderLayer
 from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
@@ -123,26 +125,27 @@ def main() -> None:
 
     scene.add_game_object(rotation_parent)
 
-    camera = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_scale=Vector2(1, 1)))
-        .add_component(Camera(Viewport(window_size, window_size)))
-        .add_component(RenderLayer(default_layer))
-        .add_component(CameraController(speed=50))
-        .build()
-    )
+    # camera = (
+    #     GameObjectBuilder(Empty)
+    #     .add_component(Transform(local_scale=Vector2(1, 1)))
+    #     .add_component(Camera(Viewport(window_size, window_size)))
+    #     .add_component(RenderLayer(default_layer))
+    #     .add_component(CameraController(speed=50))
+    #     .build()
+    # )
 
-    scene.add_game_object(camera)
+    # scene.add_game_object(camera)
 
     camera2 = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_scale=Vector2(2, 2), local_position=Vector2(-250, -250)))
+        .add_component(Transform())
         .add_component(Camera(Viewport(window_size, window_size)))
         .add_component(RenderLayer(default_layer))
+        .add_component(PolyRender2D(Polygon.regular(4, window_size, outline_color=(255, 0, 0), outline_width=5)))
         .build()
     )
 
-    # scene.add_game_object(camera2)
+    scene.add_game_object(camera2)
 
     EngineLogger.setup()
 
