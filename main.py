@@ -6,13 +6,16 @@ from agent_world.animations.test_animation import test_controller
 from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
+from core.assets.polygon import Polygon
 from core.components.line_2d import Line2D
+from core.components.poly_render_2d import PolyRender2D
 from core.components.render_layer import RenderLayer
 from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.camera.camera_component import Camera, Viewport
+from core.packages.camera.camera_controller import CameraController
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
@@ -107,6 +110,17 @@ def main() -> None:
         .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(4, 4)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
+        .add_component(
+            PolyRender2D(
+                Polygon.regular(
+                    4,
+                    25,
+                    outline_color=(0, 255, 0),
+                    outline_width=5,
+                    rotation_degrees=45,
+                ),
+            ),
+        )
         .build()
     )
 
@@ -124,23 +138,21 @@ def main() -> None:
 
     camera = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(200, 200)))
-        .add_component(Camera(Viewport(200, 200)))
+        .add_component(Transform(local_scale=Vector2(1, 1)))
+        .add_component(
+            Camera(
+                Viewport(
+                    window_size,
+                    window_size,
+                ),
+            ),
+        )
         .add_component(RenderLayer(default_layer))
+        .add_component(CameraController(speed=50))
         .build()
     )
 
     scene.add_game_object(camera)
-
-    camera2 = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_scale=Vector2(0.5, 0.5)))
-        .add_component(Camera(Viewport(window_size, window_size)))
-        .add_component(RenderLayer(default_layer))
-        .build()
-    )
-
-    scene.add_game_object(camera2)
 
     EngineLogger.setup()
 

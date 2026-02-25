@@ -62,15 +62,15 @@ class Sprite2D(Render):
         """Render the sprite at the given position."""
         local_size = Vector2(self.width, self.height)
 
-        world_size = camera.transform.inverse_transform_scale(transform.transform_scale(local_size))
+        screen_size = camera.transform.inverse_transform_scale(transform.transform_scale(local_size))
 
         if self._dirty:
             # sprite is dirty, re-render
 
             if self.image:
-                img = pygame.transform.scale(self.image.get_surface(), world_size.as_tuple()).copy()
+                img = pygame.transform.scale(self.image.get_surface(), screen_size.as_tuple()).copy()
             else:
-                img = SpriteImage.get_default_sprite_surface(world_size.as_tuple())
+                img = SpriteImage.get_default_sprite_surface(screen_size.as_tuple())
 
             self.material.apply(img)
 

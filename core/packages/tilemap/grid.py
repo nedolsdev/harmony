@@ -17,12 +17,12 @@ if TYPE_CHECKING:
 class GridSystem:
     """Defines the coordinate system of a Grid."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
 
-    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def cell_to_local(self, cell_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the cell coordinate to local coordinate."""
         msg = "Subclasses should implement this method."
         raise NotImplementedError(msg)
@@ -36,11 +36,11 @@ class GridSystem:
 class SquareGridSystem(GridSystem):
     """A square coordinate system for a Grid."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
         return world_coord // (cell_size + gap)
 
-    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def cell_to_local(self, cell_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
         return cell_coord * (cell_size + gap)
 
@@ -58,18 +58,18 @@ class SquareGridSystem(GridSystem):
 class HexGridSystem(GridSystem):
     """A hexagonal coordinate system for a Grid. (Axial coordinates with Pointy Hexes)."""
 
-    def world_to_cell(self, world_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def world_to_cell(self, world_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
-        size = cell_size + gap
+        size = (cell_size / 2) + gap
 
         q = (math.sqrt(3) / 3 * world_coord.x - 1 / 3 * world_coord.y) / size
         r = (2 / 3 * world_coord.y) / size
 
         return self._hex_round(q, r)
 
-    def cell_to_local(self, cell_coord: Vector2, cell_size: int, gap: int) -> Vector2:
+    def cell_to_local(self, cell_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the cell coordinate to world coordinate."""
-        size = cell_size + gap
+        size = (cell_size / 2) + gap
         q, r = cell_coord.x, cell_coord.y
 
         x = size * (math.sqrt(3) * q + math.sqrt(3) / 2 * r)
@@ -119,7 +119,7 @@ class Grid(GameComponent):
 
     # TODO: Add grid gap  # noqa: TD003
 
-    def __init__(self, cell_size: int, system: GridSystem, gap: int = 0) -> None:
+    def __init__(self, cell_size: float, system: GridSystem, gap: float = 0) -> None:
         """Initialize the Grid component."""
         super().__init__()
         self.cell_size = cell_size

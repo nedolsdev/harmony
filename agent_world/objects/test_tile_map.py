@@ -3,30 +3,43 @@
 import random
 
 from core.assets.polygon import Polygon
-from core.packages.tilemap.grid import Grid, HexGridSystem
+from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from core.packages.tilemap.tile import Tile
 from core.packages.tilemap.tile_map import DictBasedTileMap
 from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
 
-cell_size = 16
+cell_size = 64
 
-grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=4)
+grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=0)
 
-width = 8
-height = 8
+width = 16
+height = 16
 
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
-surface = Polygon.regular(
-    6,
+# square surface
+square_surf = Polygon.regular(
+    4,
     cell_size,
-    (255, 255, 255),
+    fill_color=None,
+    rotation_degrees=45,
+    outline_width=2,
+    outline_color=(144, 144, 144),
+)
+
+# hex surface
+hex_surf = Polygon.regular(
+    6,
+    cell_size / 2,
+    fill_color=(255, 255, 255),
     rotation_degrees=30,
     outline_width=2,
     outline_color=(144, 144, 144),
 )
+
+surface = hex_surf
 
 
 white_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(255, 255, 255)))
