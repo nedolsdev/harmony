@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import pygame
 import pygame.gfxdraw
 
-from core.assets.surface_asset import ResizableSurfaceAsset
+from core.assets.surface_asset import ScalableSurfaceAsset
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from game.vector2 import Vector2
 
 
-class Polygon(ResizableSurfaceAsset):
+class Polygon(ScalableSurfaceAsset):
     """Polygon asset."""
 
     def __init__(
@@ -78,33 +78,17 @@ class Polygon(ResizableSurfaceAsset):
 
         return surface
 
-    def _get_scaled_points(self, size: Vector2) -> list[tuple[float, float]]:
-        """Return new points scaled to fit inside the given size."""
-        xs = [p[0] for p in self.local_points]
-        ys = [p[1] for p in self.local_points]
+    def _get_scaled_points(self, scale: Vector2) -> list[tuple[float, float]]:
+        """Return new points scaled by the given scale factor."""
+        return [(x * scale.x, y * scale.y) for x, y in self.local_points]
 
-        min_x, max_x = min(xs), max(xs)
-        min_y, max_y = min(ys), max(ys)
-
-        original_width = max_x - min_x
-        original_height = max_y - min_y
-
-        if original_width == 0 or original_height == 0:
-            msg = "Polygon has zero width or height and cannot be resized."
-            raise ValueError(msg)
-
-        scale_x = size.x / original_width
-        scale_y = size.y / original_height
-
-        return [((x - min_x) * scale_x, (y - min_y) * scale_y) for x, y in self.local_points]
-
-    def get_surface_of_size(self, size: Vector2) -> pygame.Surface:
+    def get_surface_of_scale(self, scale: Vector2) -> pygame.Surface:
         """Get the surface of the polygon."""
-        if size.x <= 0 or size.y <= 0:
+        if scale.x <= 0 or scale.y <= 0:
             msg = "Size must be positive."
             raise ValueError(msg)
 
-        scaled_points = self._get_scaled_points(size)
+        scaled_points = self._get_scaled_points(scale)
 
         scaled_polygon = Polygon(
             points=scaled_points,

@@ -38,6 +38,8 @@ class TileMapRenderer(Render):
 
         screen_size = camera.transform.inverse_transform_scale(world_size)
 
+        scale_diff = screen_size / local_size
+
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
                 tile = self.tile_map.get_tile_at_coordinate(x, y)
@@ -49,14 +51,14 @@ class TileMapRenderer(Render):
 
                     screen_coords = camera.world_to_screen(world_coords)
 
-                    tile_surface = self.get_tile_surface(tile, screen_size)
+                    tile_surface = self.get_tile_surface(tile, scale_diff)
 
                     # figure out the actual drawing
                     surface.blit(tile_surface, screen_coords.as_tuple())
 
-    def get_tile_surface(self, tile: Tile, screen_size: Vector2) -> pygame.Surface:
+    def get_tile_surface(self, tile: Tile, scale: Vector2) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        return tile.get_surface_of_size(screen_size)
+        return tile.get_surface_of_scale(scale)
 
     @override
     def awake(self) -> None:

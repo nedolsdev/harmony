@@ -32,7 +32,7 @@ square_surf = Polygon.regular(
 # hex surface
 hex_surf = Polygon.regular(
     6,
-    cell_size // 2,
+    cell_size / 2,
     fill_color=(255, 255, 255),
     rotation_degrees=30,
     outline_width=2,

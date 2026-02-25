@@ -71,13 +71,48 @@ class Vector2:  # noqa: PLW1641 (unhashable)
         """Right-hand multiplication (scalar * vector or vector * vector)."""
         return self.__mul__(other)
 
-    def __truediv__(self, scalar: float) -> Vector2:
-        """True division (/)."""  # noqa: D401
-        return Vector2(self.x / scalar, self.y / scalar)
+    @overload
+    def __truediv__(self, other: float) -> Vector2: ...
+    @overload
+    def __truediv__(self, other: Vector2) -> Vector2: ...
 
-    def __floordiv__(self, scalar: float) -> Vector2:
-        """Floor division (//)."""
-        return Vector2(self.x // scalar, self.y // scalar)
+    def __truediv__(self, other: float | Vector2) -> Vector2:
+        """Divide vector by scalar or component-wise by another vector."""
+        if isinstance(other, Vector2):
+            return Vector2(
+                self.x / other.x if other.x != 0 else 0.0,
+                self.y / other.y if other.y != 0 else 0.0,
+            )
+        return Vector2(self.x / other, self.y / other)
+
+    @overload
+    def __floordiv__(self, other: float) -> Vector2: ...
+    @overload
+    def __floordiv__(self, other: Vector2) -> Vector2: ...
+
+    def __floordiv__(self, other: float | Vector2) -> Vector2:
+        """Floor divide by scalar or component-wise by vector."""
+        if isinstance(other, Vector2):
+            return Vector2(
+                self.x // other.x,
+                self.y // other.y,
+            )
+        return Vector2(self.x // other, self.y // other)
+
+    @overload
+    def __ifloordiv__(self, other: float) -> Self: ...
+    @overload
+    def __ifloordiv__(self, other: Vector2) -> Self: ...
+
+    def __ifloordiv__(self, other: float | Vector2) -> Self:
+        """In-place floor division."""
+        if isinstance(other, Vector2):
+            self.x //= other.x
+            self.y //= other.y
+        else:
+            self.x //= other
+            self.y //= other
+        return self
 
     def __neg__(self) -> Vector2:
         """Negation."""
@@ -109,10 +144,19 @@ class Vector2:  # noqa: PLW1641 (unhashable)
             self.y *= other
         return self
 
-    def __itruediv__(self, scalar: float) -> Self:
-        """In place true division."""
-        self.x /= scalar
-        self.y /= scalar
+    @overload
+    def __itruediv__(self, other: float) -> Self: ...
+    @overload
+    def __itruediv__(self, other: Vector2) -> Self: ...
+
+    def __itruediv__(self, other: float | Vector2) -> Self:
+        """In-place division by scalar or component-wise by vector."""
+        if isinstance(other, Vector2):
+            self.x = self.x / other.x if other.x != 0 else 0.0
+            self.y = self.y / other.y if other.y != 0 else 0.0
+        else:
+            self.x /= other
+            self.y /= other
         return self
 
     def magnitude(self) -> float:
