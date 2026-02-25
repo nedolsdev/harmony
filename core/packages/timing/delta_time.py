@@ -27,3 +27,8 @@ class DeltaTime(metaclass=Singleton):
     def delta_time(self) -> float:
         """Get the delta time."""
         return self._dt
+
+    @staticmethod
+    def get_delta_time() -> float:
+        """Get the delta time."""
+        return DeltaTime().delta_time

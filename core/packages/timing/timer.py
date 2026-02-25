@@ -65,7 +65,7 @@ class Timer(GameComponent):
         assert self.time_left is not None  # noqa: S101 (just for type hint, 100% always passes)
 
         # update time left
-        self.time_left -= DeltaTime().delta_time
+        self.time_left -= DeltaTime.get_delta_time()
 
         if self.running and self.time_left <= 0:
             self.callback()
