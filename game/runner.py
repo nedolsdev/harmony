@@ -2,6 +2,7 @@
 
 import pygame
 
+from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
 from game.event_handler import EventHandler
@@ -30,8 +31,14 @@ class Runner:
         event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
         event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_ESCAPE), quit_listener)
 
+        # delta time
+        self.delta_time = DeltaTime()
+
     def run_step(self) -> None:
         """Run a single step of the game loop."""
+        # update delta time each frame
+        self.delta_time.update_delta()
+
         events: list[Event] = []
 
         for event in pygame.event.get():
