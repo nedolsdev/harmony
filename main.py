@@ -1,5 +1,6 @@
 """Main entry point for the Agent World game."""
 
+import pygame
 from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
@@ -16,6 +17,7 @@ from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
+from core.packages.ui.components.base.visual.text import Text
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
@@ -32,6 +34,8 @@ install()
 
 def main() -> None:
     """Initialize the game and start the renderer."""
+    pygame.font.init()
+
     scene_manager = SceneManager()
 
     scene = Scene("Main Scene")
@@ -52,6 +56,7 @@ def main() -> None:
 
     bg_layer = renderer.sorting_layers.get_layer("Background")
     default_layer = renderer.sorting_layers.get_layer("Default")
+    ui_layer = renderer.sorting_layers.get_layer("UI")
 
     game = Runner(renderer, event_handler, scene)
 
@@ -151,6 +156,16 @@ def main() -> None:
         .add_component(CameraController(speed=50))
         .build()
     )
+
+    text = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform(local_position=Vector2(0, 0)))
+        .add_component(RenderLayer(ui_layer))
+        .add_component(Text("Hello world", font=pygame.font.SysFont("Arial", 30), color=(255, 0, 0)))
+        .build()
+    )
+
+    scene.add_game_object(text)
 
     scene.add_game_object(camera)
 
