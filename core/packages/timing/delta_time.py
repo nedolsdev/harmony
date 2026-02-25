@@ -1,7 +1,5 @@
 """A component that keeps track of time between frames."""
 
-import time
-
 
 class Singleton(type):
     """An implementation of the Singleton pattern as a 'type' / 'metaclass'."""
@@ -19,13 +17,13 @@ class DeltaTime(metaclass=Singleton):
 
     def __init__(self) -> None:
         """Initialize the DeltaTime."""
-        self.last_frame_time: float | None = None
+        self._dt: float = 0.0
 
-    def update_delta(self) -> None:
-        """Set current frame."""
-        self.last_frame_time = time.time()
+    def set(self, dt: float) -> None:
+        """Set the delta time."""
+        self._dt = dt
 
     @property
     def delta_time(self) -> float:
         """Get the delta time."""
-        return time.time() - self.last_frame_time  # pyright: ignore[reportOperatorIssue]
+        return self._dt

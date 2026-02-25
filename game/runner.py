@@ -36,9 +36,6 @@ class Runner:
 
     def run_step(self) -> None:
         """Run a single step of the game loop."""
-        # update delta time each frame
-        self.delta_time.update_delta()
-
         events: list[Event] = []
 
         for event in pygame.event.get():
@@ -58,7 +55,8 @@ class Runner:
             return
 
         self.renderer.draw_frame(self.scene)
-        self.clock.tick(self.FPS)
+        dt = self.clock.tick(self.FPS) / 1000.0
+        self.delta_time.set(dt)
 
     def stop(self) -> None:
         """Stop the runner."""

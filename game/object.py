@@ -53,6 +53,10 @@ class GameObject:
 
         self.components.append(component)
 
+        # if we have already awoken, now we awake this specific component
+        if self.awoken:
+            component.awake()
+
     def is_component_allowed(self, component: GameComponent) -> bool:
         """Check if the component can be added to the game object."""
         return not any(

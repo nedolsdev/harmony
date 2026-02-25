@@ -16,6 +16,7 @@ from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
+from core.packages.timing.timer import ComponentUsingTimer, Timer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger
@@ -153,6 +154,17 @@ def main() -> None:
     )
 
     scene.add_game_object(camera)
+
+    # naive timer
+    timer_example = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform())
+        .add_component(ComponentUsingTimer())
+        .add_component(RenderLayer(default_layer))
+        .build()
+    )
+
+    scene.add_game_object(timer_example)
 
     EngineLogger.setup()
 
