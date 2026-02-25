@@ -51,9 +51,7 @@ class PolyRender2D(Render):
         world_coords = transform.world_position
         screen_coords = camera.world_to_screen(world_coords)
 
-        rect = poly_surface.get_rect(center=screen_coords.as_tuple())
-
-        surface.blit(poly_surface, rect)
+        surface.blit(poly_surface, screen_coords.as_tuple())
 
     def copy(self) -> PolyRender2D:
         """Create a copy of the sprite component."""

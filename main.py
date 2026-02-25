@@ -110,6 +110,17 @@ def main() -> None:
         .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(4, 4)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
+        .add_component(
+            PolyRender2D(
+                Polygon.regular(
+                    4,
+                    25,
+                    outline_color=(0, 255, 0),
+                    outline_width=5,
+                    rotation_degrees=45,
+                ),
+            ),
+        )
         .build()
     )
 
@@ -125,27 +136,16 @@ def main() -> None:
 
     scene.add_game_object(rotation_parent)
 
-    # camera = (
-    #     GameObjectBuilder(Empty)
-    #     .add_component(Transform(local_scale=Vector2(1, 1)))
-    #     .add_component(Camera(Viewport(window_size, window_size)))
-    #     .add_component(RenderLayer(default_layer))
-    #     .add_component(CameraController(speed=50))
-    #     .build()
-    # )
-
-    # scene.add_game_object(camera)
-
-    camera2 = (
+    camera = (
         GameObjectBuilder(Empty)
-        .add_component(Transform())
+        .add_component(Transform(local_scale=Vector2(1, 1)))
         .add_component(Camera(Viewport(window_size, window_size)))
         .add_component(RenderLayer(default_layer))
-        .add_component(PolyRender2D(Polygon.regular(4, window_size, outline_color=(255, 0, 0), outline_width=5)))
+        .add_component(CameraController(speed=50))
         .build()
     )
 
-    scene.add_game_object(camera2)
+    scene.add_game_object(camera)
 
     EngineLogger.setup()
 

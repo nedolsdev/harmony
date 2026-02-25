@@ -49,12 +49,14 @@ class TileMapRenderer(Render):
 
                     screen_coords = camera.world_to_screen(world_coords)
 
+                    tile_surface = self.get_tile_surface(tile, screen_size)
+
                     # figure out the actual drawing
-                    surface.blit(self.get_tile_surface(tile, screen_size), screen_coords.as_tuple())
+                    surface.blit(tile_surface, screen_coords.as_tuple())
 
     def get_tile_surface(self, tile: Tile, screen_size: Vector2) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        return pygame.transform.scale(tile.get_surface(), screen_size.as_int_tuple())
+        return pygame.transform.scale(tile.get_surface(), screen_size.as_tuple())
 
     @override
     def awake(self) -> None:
