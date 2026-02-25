@@ -8,13 +8,15 @@ from typing import TYPE_CHECKING
 import pygame
 import pygame.gfxdraw
 
-from core.assets.surface_asset import SurfaceAsset
+from core.assets.surface_asset import ResizableSurfaceAsset
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from game.vector2 import Vector2
 
-class Polygon(SurfaceAsset):
+
+class Polygon(ResizableSurfaceAsset):
     """Polygon asset."""
 
     def __init__(
@@ -37,8 +39,6 @@ class Polygon(SurfaceAsset):
         self.outline_color = outline_color
         self.outline_width = outline_width
         self.antialiased = antialiased
-
-        self.surface = self._create_surface()
 
     def _create_surface(self) -> pygame.Surface:
         xs = [p[0] for p in self.local_points]
@@ -78,9 +78,43 @@ class Polygon(SurfaceAsset):
 
         return surface
 
-    def get_surface(self) -> pygame.Surface:
+    def _get_scaled_points(self, size: Vector2) -> list[tuple[float, float]]:
+        """Return new points scaled to fit inside the given size."""
+        xs = [p[0] for p in self.local_points]
+        ys = [p[1] for p in self.local_points]
+
+        min_x, max_x = min(xs), max(xs)
+        min_y, max_y = min(ys), max(ys)
+
+        original_width = max_x - min_x
+        original_height = max_y - min_y
+
+        if original_width == 0 or original_height == 0:
+            msg = "Polygon has zero width or height and cannot be resized."
+            raise ValueError(msg)
+
+        scale_x = size.x / original_width
+        scale_y = size.y / original_height
+
+        return [((x - min_x) * scale_x, (y - min_y) * scale_y) for x, y in self.local_points]
+
+    def get_surface_of_size(self, size: Vector2) -> pygame.Surface:
         """Get the surface of the polygon."""
-        return self.surface
+        if size.x <= 0 or size.y <= 0:
+            msg = "Size must be positive."
+            raise ValueError(msg)
+
+        scaled_points = self._get_scaled_points(size)
+
+        scaled_polygon = Polygon(
+            points=scaled_points,
+            fill_color=self.fill_color,
+            outline_color=self.outline_color,
+            outline_width=self.outline_width,
+            antialiased=self.antialiased,
+        )
+
+        return scaled_polygon._create_surface()
 
     @classmethod
     def regular(  # noqa: PLR0913

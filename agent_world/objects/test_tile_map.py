@@ -10,7 +10,7 @@ from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
 
-cell_size = 128
+cell_size = 64
 
 grid = Grid(cell_size=cell_size, system=HexGridSystem(), gap=0)
 
@@ -19,14 +19,27 @@ height = 16
 
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
-surface = Polygon.regular(
-    6,
+# square surface
+square_surf = Polygon.regular(
+    4,
     cell_size,
-    None,
+    fill_color=None,
+    rotation_degrees=45,
+    outline_width=2,
+    outline_color=(144, 144, 144),
+)
+
+# hex surface
+hex_surf = Polygon.regular(
+    6,
+    cell_size // 2,
+    fill_color=(255, 255, 255),
     rotation_degrees=30,
     outline_width=2,
     outline_color=(144, 144, 144),
 )
+
+surface = hex_surf
 
 
 white_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(255, 255, 255)))

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-import pygame
-
 from core.components.render import Render
 from game.vector2 import Vector2
 
 if TYPE_CHECKING:
+    import pygame
+
     from core.components.transform import Transform
     from core.packages.camera.camera_component import Camera
     from core.packages.tilemap.grid import Grid
@@ -56,7 +56,7 @@ class TileMapRenderer(Render):
 
     def get_tile_surface(self, tile: Tile, screen_size: Vector2) -> pygame.Surface:
         """Get the surface of the Tile to draw."""
-        return pygame.transform.scale(tile.get_surface(), screen_size.as_tuple())
+        return tile.get_surface_of_size(screen_size)
 
     @override
     def awake(self) -> None:
