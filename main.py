@@ -54,9 +54,6 @@ def main() -> None:
 
     clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
 
-    source = AudioSource(clip, bus=sfx_bus)
-    source.play()
-
     track = MusicTrack("./core/packages/audio/example_assets/music.wav")
 
     player = MusicPlayer(music_bus)
@@ -200,7 +197,7 @@ def main() -> None:
 
     listener_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(-100, 0)))
+        .add_component(Transform(local_position=Vector2(0, 0)))
         .add_component(listener_comp)
         .add_component(RenderLayer(default_layer))
         .build()
@@ -211,14 +208,14 @@ def main() -> None:
     scene.add_game_object(listener_obj)
 
     # local audio source
-    looping_source = AudioSource(clip=clip, bus=sfx_bus, spatializer=AudioSpatializer2D(100, 100))
+    looping_source = AudioSource(clip=clip, bus=sfx_bus, spatializer=AudioSpatializer2D(10, 50))
     looping_source.start_looping()
 
     AudioManager().register_source(looping_source)
 
     audio_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(0, 0)))
+        .add_component(Transform(local_position=Vector2(100, 0)))
         .add_component(looping_source)
         .add_component(RenderLayer(default_layer))
         .add_component(PlaySoundTest())
