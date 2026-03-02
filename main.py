@@ -16,7 +16,7 @@ from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
-from core.packages.timing.timer import ComponentUsingTimer, Timer
+from core.packages.timing.timer import ComponentUsingTimer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.logging import EngineLogger

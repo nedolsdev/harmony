@@ -5,7 +5,10 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Self, TypeVar
 
+from core.packages.timing.coroutine_manager import CoroutineManager
+
 if TYPE_CHECKING:
+    from core.packages.timing.coroutine import Coroutine
     from game.event_handler import EventHandler
 
 T = TypeVar("T", bound="GameComponent")
@@ -28,6 +31,8 @@ class GameComponent:
 
         self.disallow_multiple_of_type = disallow_multiple_of_type
         self.disallow_multiple_of_exact_type = disallow_multiple_of_exact_type
+
+        self.coroutine_manager = CoroutineManager()
 
     @abstractmethod
     def awake(self) -> None:
@@ -80,3 +85,11 @@ class GameComponent:
         return (self.disallow_multiple_of_type and other.is_of_type(type(self))) or (
             self.disallow_multiple_of_exact_type and other.is_of_exact_type(type(self))
         )
+
+    def update_coroutines(self) -> None:
+        """Update the component's coroutines."""
+        self.coroutine_manager.update()
+
+    def start_coroutine(self, coroutine: Coroutine) -> None:
+        """Start a given coroutine."""
+        self.coroutine_manager.start(coroutine)

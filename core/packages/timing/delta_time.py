@@ -17,18 +17,36 @@ class DeltaTime(metaclass=Singleton):
 
     def __init__(self) -> None:
         """Initialize the DeltaTime."""
-        self._dt: float = 0.0
+        self._unscaled_dt: float = 0.0
+        self._time_scale: float = 1
 
     def set(self, dt: float) -> None:
         """Set the delta time."""
-        self._dt = dt
+        self._unscaled_dt = dt
+
+    def set_time_scale(self, scale: float) -> None:
+        """Set the time scale."""
+        if scale <= 0:
+            msg = "Cannot set a negative time scale. Time scale must be greater than or equal to 0."
+            raise ValueError(msg)
+        self._time_scale = scale
 
     @property
     def delta_time(self) -> float:
         """Get the delta time."""
-        return self._dt
+        return self._unscaled_dt * self._time_scale
+
+    @property
+    def unscaled_delta_time(self) -> float:
+        """Get the real delta time (ignores time scale)."""
+        return self._unscaled_dt
 
     @staticmethod
     def get_delta_time() -> float:
         """Get the delta time."""
         return DeltaTime().delta_time
+
+    @staticmethod
+    def get_unscaled_delta_time() -> float:
+        """Get the real delta time (ignores time scale)."""
+        return DeltaTime().unscaled_delta_time

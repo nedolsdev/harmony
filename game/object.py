@@ -119,6 +119,11 @@ class GameObject:
         for component in self.components:
             component.update()
 
+    def update_coroutines(self) -> None:
+        """Update the coroutines for each component."""
+        for component in self.components:
+            component.update_coroutines()
+
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this game object."""
         for component in self.components:
