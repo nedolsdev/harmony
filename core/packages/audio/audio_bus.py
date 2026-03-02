@@ -26,12 +26,11 @@ class AudioBus:
 
     @property
     def volume(self) -> float:
-        """Get the volume of the AudioBus."""
+        """Volume of the AudioBus."""
         return self._volume
 
     @volume.setter
     def volume(self, value: float) -> None:
-        """Set the volume of the AudioBus, updating the underlying sources."""
         check_volume(value)
 
         self._volume = value

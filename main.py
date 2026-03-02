@@ -19,6 +19,8 @@ from core.packages.audio.audio_bus import AudioBus
 from core.packages.audio.audio_clip import AudioClip
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.audio.audio_source import AudioSource
+from core.packages.audio.music_player import MusicPlayer
+from core.packages.audio.music_track import MusicTrack
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
 from core.packages.timing.timer import ComponentUsingTimer
@@ -51,6 +53,11 @@ def main() -> None:
 
     source = AudioSource(clip, bus=sfx_bus)
     source.play()
+
+    track = MusicTrack("./core/packages/audio/example_assets/music.wav")
+
+    player = MusicPlayer(music_bus)
+    player.play(track)
 
     scene_manager = SceneManager()
 
