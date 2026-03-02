@@ -41,7 +41,7 @@ from game.vector2 import Vector2
 install()
 
 
-def main() -> None:
+def main() -> None:  # noqa: PLR0915
     """Initialize the game and start the renderer."""
     # init pygame and mixer
     pygame.mixer.pre_init(44100, -16, 2, 512)
