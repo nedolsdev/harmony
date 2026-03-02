@@ -53,6 +53,10 @@ class GameObject:
 
         self.components.append(component)
 
+        # if we have already awoken, now we awake this specific component
+        if self.awoken:
+            component.awake()
+
     def is_component_allowed(self, component: GameComponent) -> bool:
         """Check if the component can be added to the game object."""
         return not any(
@@ -114,6 +118,11 @@ class GameObject:
         """Update the game object by updating its components."""
         for component in self.components:
             component.update()
+
+    def update_coroutines(self) -> None:
+        """Update the coroutines for each component."""
+        for component in self.components:
+            component.update_coroutines()
 
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this game object."""
