@@ -1,5 +1,6 @@
 """Main entry point for the Agent World game."""
 
+import pygame
 from rich.traceback import install
 
 from agent_world.animations.test_animation import test_controller
@@ -14,6 +15,10 @@ from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
+from core.packages.audio.audio_bus import AudioBus
+from core.packages.audio.audio_clip import AudioClip
+from core.packages.audio.audio_manager import AudioManager
+from core.packages.audio.audio_source import AudioSource
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
 from core.packages.timing.timer import ComponentUsingTimer
@@ -33,6 +38,20 @@ install()
 
 def main() -> None:
     """Initialize the game and start the renderer."""
+    # init pygame and mixer
+    pygame.mixer.pre_init(44100, -16, 2, 512)
+    pygame.init()
+
+    AudioManager(number_of_channels=32)
+
+    sfx_bus = AudioBus("SFX", 1.0)
+    music_bus = AudioBus("Music", 1.0)
+
+    clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
+
+    source = AudioSource(clip, bus=sfx_bus)
+    source.play()
+
     scene_manager = SceneManager()
 
     scene = Scene("Main Scene")
