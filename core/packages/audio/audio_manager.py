@@ -12,6 +12,7 @@ from core.packages.timing.delta_time import Singleton
 if TYPE_CHECKING:
     from core.packages.audio.audio_bus import AudioBus
     from core.packages.audio.audio_clip import AudioClip
+    from core.packages.audio.audio_listener import AudioListener
     from core.packages.audio.audio_source import AudioSource
 
 
@@ -58,6 +59,8 @@ class AudioManager(metaclass=Singleton):
         self.channel_map: dict[pygame.Channel, AudioSource] = {}
 
         self.stealing_policy = stealing_policy
+
+        self.active_listener: None | AudioListener = None
 
     def register_source(self, source: AudioSource) -> None:
         """Register the AudioSource."""
@@ -148,7 +151,7 @@ class AudioManager(metaclass=Singleton):
     def update(self) -> None:
         """Update the AudioSources."""
         for source in self.sources:
-            source.update()
+            source.update_source()
 
         # clean dead (unused) channels
         dead_channels = []
@@ -158,3 +161,7 @@ class AudioManager(metaclass=Singleton):
 
         for channel in dead_channels:
             self.release_channel(channel)
+
+    def set_listener(self, listener: AudioListener) -> None:
+        """Set the AudioListener."""
+        self.active_listener = listener

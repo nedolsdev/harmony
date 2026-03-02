@@ -1,5 +1,7 @@
 """Music player component."""
 
+from typing import override
+
 import pygame
 
 from core.packages.audio.audio_bus import AudioBus
@@ -7,6 +9,7 @@ from core.packages.audio.audio_manager import AudioManager
 from core.packages.audio.music_track import MusicTrack
 from core.packages.audio.volume import check_volume
 from game.component import GameComponent
+from game.event_handler import EventHandler
 
 
 class MusicPlayer(GameComponent):
@@ -76,3 +79,19 @@ class MusicPlayer(GameComponent):
         """Resume the track."""
         pygame.mixer.music.unpause()
         self._paused = False
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the sprite component."""
+
+    @override
+    def update(self) -> None:
+        """Update the sprite component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""

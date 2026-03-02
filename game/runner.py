@@ -2,6 +2,7 @@
 
 import pygame
 
+from core.packages.audio.audio_manager import AudioManager
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
@@ -46,6 +47,9 @@ class Runner:
                 events.append(PygameEvent(event))
 
         self.event_handler.handle_events(events)
+
+        # update audio manager
+        AudioManager().update()
 
         # update all game objects
         objs = self.scene.get_flattened_game_objects()

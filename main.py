@@ -17,10 +17,13 @@ from core.objects.empty import Empty
 from core.packages.animation.animator import Animator
 from core.packages.audio.audio_bus import AudioBus
 from core.packages.audio.audio_clip import AudioClip
+from core.packages.audio.audio_listener import AudioListener
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.audio.audio_source import AudioSource
 from core.packages.audio.music_player import MusicPlayer
 from core.packages.audio.music_track import MusicTrack
+from core.packages.audio.play_sound_test import PlaySoundTest
+from core.packages.audio.spatializer import AudioSpatializer2D
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
 from core.packages.timing.timer import ComponentUsingTimer
@@ -46,8 +49,8 @@ def main() -> None:
 
     AudioManager(number_of_channels=32)
 
-    sfx_bus = AudioBus("SFX", 1.0)
-    music_bus = AudioBus("Music", 1.0)
+    sfx_bus = AudioBus("SFX", 0.1)
+    music_bus = AudioBus("Music", 0.1)
 
     clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
 
@@ -191,6 +194,38 @@ def main() -> None:
     )
 
     scene.add_game_object(timer_example)
+
+    # listener
+    listener_comp = AudioListener()
+
+    listener_obj = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform(local_position=Vector2(-100, 0)))
+        .add_component(listener_comp)
+        .add_component(RenderLayer(default_layer))
+        .build()
+    )
+
+    AudioManager().set_listener(listener_comp)
+
+    scene.add_game_object(listener_obj)
+
+    # local audio source
+    looping_source = AudioSource(clip=clip, bus=sfx_bus, spatializer=AudioSpatializer2D(100, 100))
+    looping_source.start_looping()
+
+    AudioManager().register_source(looping_source)
+
+    audio_obj = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform(local_position=Vector2(0, 0)))
+        .add_component(looping_source)
+        .add_component(RenderLayer(default_layer))
+        .add_component(PlaySoundTest())
+        .build()
+    )
+
+    scene.add_game_object(audio_obj)
 
     EngineLogger.setup()
 
