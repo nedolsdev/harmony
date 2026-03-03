@@ -27,6 +27,7 @@ from core.packages.audio.spatializer import AudioSpatializer2D
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
 from core.packages.geometry.rectangle import Rectangle
+from core.packages.geometry.vector2 import Vector2
 from core.packages.timing.timer import ComponentUsingTimer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -37,7 +38,6 @@ from game.render_pipeline import RenderPipeline
 from game.runner import Runner
 from game.scene import Scene
 from game.scene_manager import SceneManager
-from game.vector2 import Vector2
 
 install()
 

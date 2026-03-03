@@ -1,7 +1,7 @@
 """The shape geometry primitive."""
 
 from core.packages.geometry.geometry import Geometry
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 
 class Shape(Geometry):

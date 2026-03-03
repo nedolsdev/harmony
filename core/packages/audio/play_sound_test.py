@@ -4,10 +4,10 @@ from typing import override
 
 from core.components.transform import Transform
 from core.packages.audio.audio_source import AudioSource
+from core.packages.geometry.vector2 import Vector2
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event_handler import EventHandler
-from game.vector2 import Vector2
 
 
 class PlaySoundTest(Behavior):

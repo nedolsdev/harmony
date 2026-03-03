@@ -5,13 +5,13 @@ import random
 from core.assets.polygon_asset import PolygonAsset
 from core.packages.geometry.polygon import Polygon
 from core.packages.geometry.rectangle import Rectangle
+from core.packages.geometry.vector2 import Vector2
 from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from core.packages.tilemap.tile import Tile
 from core.packages.tilemap.tile_map import DictBasedTileMap
 from core.packages.tilemap.tile_map_renderer import TileMapRenderer
 from core.packages.tilemap.tile_palette import TilePalette
 from game.material import ColorMaterial
-from game.vector2 import Vector2
 
 cell_size = 64
 

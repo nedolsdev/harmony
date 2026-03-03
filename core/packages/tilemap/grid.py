@@ -5,9 +5,9 @@ from __future__ import annotations
 import math
 from typing import TYPE_CHECKING, override
 
+from core.packages.geometry.vector2 import Vector2
 from game.component import GameComponent
 from game.sorting_layer import SortingLayerManager
-from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from core.packages.tilemap.tile_map import TileMap

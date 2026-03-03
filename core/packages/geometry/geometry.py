@@ -3,7 +3,7 @@
 import math
 from typing import Self
 
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 
 class Geometry:

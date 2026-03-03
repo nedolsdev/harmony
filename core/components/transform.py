@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING, override
 
 from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
+from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
-from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler

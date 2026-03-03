@@ -9,7 +9,7 @@ import pygame
 
 from core.assets.sprite_image import SpriteImage
 from core.components.render import Render
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 if TYPE_CHECKING:
     from core.components.transform import Transform

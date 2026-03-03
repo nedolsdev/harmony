@@ -12,7 +12,7 @@ from core.assets.surface_asset import ScalableSurfaceAsset
 
 if TYPE_CHECKING:
     from core.packages.geometry.polygon import Polygon
-    from game.vector2 import Vector2
+    from core.packages.geometry.vector2 import Vector2
 
 
 class PolygonAsset(ScalableSurfaceAsset):

@@ -6,7 +6,7 @@ import math
 from typing import override
 
 from core.packages.geometry.polygon import Polygon
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 
 class Rectangle(Polygon):

@@ -7,7 +7,7 @@ from typing import override
 
 from core.packages.geometry.geometry import Rotatable, ScalableVector2
 from core.packages.geometry.shape import Shape
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 
 class Polygon(Shape, ScalableVector2, Rotatable):

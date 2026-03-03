@@ -3,9 +3,9 @@
 from typing import override
 
 from core.components.transform import Transform
+from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
 from game.event_handler import EventHandler
-from game.vector2 import Vector2
 
 
 class Viewport:
