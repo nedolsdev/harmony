@@ -99,3 +99,9 @@ class Polygon(Shape, ScalableVector2, Rotatable):
     def rotate_radians(self, radians: float) -> Polygon:
         """Return a rotated copy of the polygon (around the origin)."""
         return Polygon([point.rotate(radians) for point in self.points])
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        xs = [p.x for p in self.points]
+        ys = [p.y for p in self.points]
+        return min(xs), max(xs), min(ys), max(ys)

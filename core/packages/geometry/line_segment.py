@@ -38,3 +38,9 @@ class LineSegment(Geometry, ScalableVector2, Rotatable):
             self.start.rotate(radians),
             self.end.rotate(radians),
         )
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        x1, y1 = self.start.as_tuple()
+        x2, y2 = self.end.as_tuple()
+        return min(x1, x2), max(x1, x2), min(y1, y2), max(y1, y2)

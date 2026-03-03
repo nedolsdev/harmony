@@ -14,6 +14,11 @@ class Geometry:
         msg = f"'{self.__class__.__name__}' does not implement 'copy' method."
         raise NotImplementedError(msg)
 
+    def bounds(self) -> tuple[float, float, float, float]:
+        """Get the rectangular bounds of the geometry (min_x, max_x, min_y, max_y)."""
+        msg = f"'{self.__class__.__name__}' does not implement 'bounds' method."
+        raise NotImplementedError(msg)
+
 
 class ScalableVector1:
     """A geometry that is scalable by a constant."""

@@ -40,11 +40,7 @@ class PolygonAsset(ScalableSurfaceAsset):
         self.antialiased = antialiased
 
     def _create_surface(self) -> pygame.Surface:
-        xs = [p.x for p in self.polygon.points]
-        ys = [p.y for p in self.polygon.points]
-
-        min_x, max_x = min(xs), max(xs)
-        min_y, max_y = min(ys), max(ys)
+        min_x, max_x, min_y, max_y = self.polygon.bounds()
 
         width = math.ceil(max_x - min_x) + 1
         height = math.ceil(max_y - min_y) + 1

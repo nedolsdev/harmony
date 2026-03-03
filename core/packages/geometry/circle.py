@@ -3,13 +3,11 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING, override
+from typing import override
 
 from core.packages.geometry.geometry import ScalableVector1
 from core.packages.geometry.shape import Shape
-
-if TYPE_CHECKING:
-    from game.vector2 import Vector2
+from game.vector2 import Vector2
 
 
 class Circle(Shape, ScalableVector1):
@@ -44,3 +42,12 @@ class Circle(Shape, ScalableVector1):
     @override
     def scale(self, factor: float) -> Circle:
         return Circle(self.radius * factor, center=self.center.copy())
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        shift = Vector2(self.radius, self.radius)
+
+        # bottom left, top right
+        bl = self.center - shift
+        tr = self.center + shift
+        return bl.x, tr.x, bl.y, tr.y
