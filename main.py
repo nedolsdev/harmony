@@ -26,6 +26,7 @@ from core.packages.audio.play_sound_test import PlaySoundTest
 from core.packages.audio.spatializer import AudioSpatializer2D
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
+from core.packages.geometry.rectangle import Rectangle
 from core.packages.timing.timer import ComponentUsingTimer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -139,12 +140,10 @@ def main() -> None:  # noqa: PLR0915
         .add_component(RenderLayer(default_layer))
         .add_component(
             PolyRender2D(
-                PolygonAsset.regular(
-                    4,
-                    25,
+                PolygonAsset(
+                    polygon=Rectangle(25, 25, center=Vector2.zero()),
                     outline_color=(0, 255, 0),
                     outline_width=5,
-                    rotation_degrees=45,
                 ),
             ),
         )
