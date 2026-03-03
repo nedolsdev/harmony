@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from game.vector2 import Vector2
 
 
-class Polygon(ScalableSurfaceAsset):
+class PolygonAsset(ScalableSurfaceAsset):
     """Polygon asset."""
 
     def __init__(
@@ -90,7 +90,7 @@ class Polygon(ScalableSurfaceAsset):
 
         scaled_points = self._get_scaled_points(scale)
 
-        scaled_polygon = Polygon(
+        scaled_polygon = PolygonAsset(
             points=scaled_points,
             fill_color=self.fill_color,
             outline_color=self.outline_color,
@@ -111,7 +111,7 @@ class Polygon(ScalableSurfaceAsset):
         *,
         antialiased: bool = False,
         rotation_degrees: float = 0.0,
-    ) -> Polygon:
+    ) -> PolygonAsset:
         """Create a regular n-sided polygon centered at (0, 0)."""
         number_of_sides_of_smallest_polygon = 3
         if sides < number_of_sides_of_smallest_polygon:
@@ -136,9 +136,9 @@ class Polygon(ScalableSurfaceAsset):
             antialiased=antialiased,
         )
 
-    def copy(self) -> Polygon:
+    def copy(self) -> PolygonAsset:
         """Create a copy of the current Polygon."""
-        return Polygon(
+        return PolygonAsset(
             points=self.local_points,
             fill_color=self.fill_color,
             outline_color=self.outline_color,

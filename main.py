@@ -7,7 +7,7 @@ from agent_world.animations.test_animation import test_controller
 from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
-from core.assets.polygon import Polygon
+from core.assets.polygon_asset import PolygonAsset
 from core.components.line_2d import Line2D
 from core.components.poly_render_2d import PolyRender2D
 from core.components.render_layer import RenderLayer
@@ -139,7 +139,7 @@ def main() -> None:  # noqa: PLR0915
         .add_component(RenderLayer(default_layer))
         .add_component(
             PolyRender2D(
-                Polygon.regular(
+                PolygonAsset.regular(
                     4,
                     25,
                     outline_color=(0, 255, 0),
