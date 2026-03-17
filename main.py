@@ -3,74 +3,30 @@
 import pygame
 from rich.traceback import install
 
-from agent_world.animations.test_animation import test_controller
-from agent_world.components.rotate_around import RotateAround
-from agent_world.objects.agent import Agent
-from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
-from core.assets.polygon_asset import PolygonAsset
-from core.components.line_2d import Line2D
-from core.components.poly_render_2d import PolyRender2D
-from core.components.render_layer import RenderLayer
-from core.components.sprite_2d import Sprite2D
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.animation.animator import Animator
-from core.packages.audio.audio_bus import AudioBus
-from core.packages.audio.audio_clip import AudioClip
-from core.packages.audio.audio_listener import AudioListener
 from core.packages.audio.audio_manager import AudioManager
-from core.packages.audio.audio_source import AudioSource
-from core.packages.audio.music_player import MusicPlayer
-from core.packages.audio.music_track import MusicTrack
-from core.packages.audio.play_sound_test import PlaySoundTest
-from core.packages.audio.spatializer import AudioSpatializer2D
-from core.packages.camera.camera_component import Camera, Viewport
-from core.packages.camera.camera_controller import CameraController
-from core.packages.collision.collider_rect import ColliderRect
-from core.packages.collision.collision_grouper import CollisionGrouper
-from core.packages.collision.collision_layer import CollisionLayer
-from core.packages.collision.collision_rule import CollisionRule
-from core.packages.collision.collision_test import CollisionTest
-from core.packages.geometry.rectangle import Rectangle
-from core.packages.geometry.vector2 import Vector2
-from core.packages.timing.timer import ComponentUsingTimer
+from example_scenes.collision import create_collision_scene
+from example_scenes.rotation import create_rotation_scene
+from example_scenes.sound import create_sound_test_scene
+from example_scenes.tile_map import create_tile_map_scene
+from example_scenes.timer import create_timer_scene
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
+from game.lazy_scene import SimpleLazyScene
 from game.logging import EngineLogger
-from game.material import ColorMaterial
-from game.object_builder import GameObjectBuilder
 from game.render_pipeline import RenderPipeline
 from game.runner import Runner
-from game.scene import Scene
 from game.scene_manager import SceneManager
 
 install()
 
 
-def main() -> None:  # noqa: PLR0915
+def main() -> None:
     """Initialize the game and start the renderer."""
     # init pygame and mixer
     pygame.mixer.pre_init(44100, -16, 2, 512)
     pygame.init()
 
     AudioManager(number_of_channels=32)
-
-    sfx_bus = AudioBus("SFX", 0)
-    music_bus = AudioBus("Music", 0.1)
-
-    clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
-
-    track = MusicTrack("./core/packages/audio/example_assets/music.wav")
-
-    player = MusicPlayer(music_bus)
-    player.play(track)
-
-    scene_manager = SceneManager()
-
-    scene = Scene("Main Scene")
-
-    scene_manager.add_scene(scene)
-    scene_manager.set_active_scene("Main Scene")
 
     event_handler = EventHandler()
 
@@ -83,178 +39,19 @@ def main() -> None:  # noqa: PLR0915
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)
 
-    bg_layer = renderer.sorting_layers.get_layer("Background")
-    default_layer = renderer.sorting_layers.get_layer("Default")
+    scene_manager = SceneManager()
+    scenes = [
+        SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Rotation Scene", lambda: create_rotation_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(window_size, renderer.sorting_layers)),
+    ]
 
-    game = Runner(renderer, event_handler, scene)
+    for scene in scenes:
+        scene_manager.add_scene(scene)
 
-    empty = GameObjectBuilder(Empty).add_component(Transform(local_position=Vector2(0, 0))).build()
-
-    grid_obj = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(50, 50)))
-        .add_component(RenderLayer(bg_layer))
-        .add_component(grid)
-        .add_component(tile_map)
-        .add_component(tile_map_renderer)
-        .build()
-    )
-
-    empty.add_child(grid_obj)
-
-    scene.add_game_object(empty)
-
-    # line
-    line_prefab = (
-        GameObjectBuilder(Agent)
-        .add_component(Transform(local_scale=Vector2(0.5, 0.5)))
-        .add_component(
-            Line2D(
-                start=Vector2(0, 0),
-                end=Vector2(100, 100),
-                material=ColorMaterial((0, 255, 0)),
-                width=5,
-            ),
-        )
-        .add_component(
-            Line2D(
-                start=Vector2(0, 0),
-                end=Vector2(-100, 100),
-                material=ColorMaterial((255, 0, 0)),
-                width=5,
-            ),
-        )
-        .add_component(Animator(test_controller))
-        .add_component(RenderLayer(default_layer))
-        .build_as_prefab()
-    )
-
-    empty2 = GameObjectBuilder(Empty).add_component(Transform(local_position=Vector2(250, 250))).build()
-
-    line_object = line_prefab.create_object()
-
-    empty2.add_child(line_object)
-
-    scene.add_game_object(empty2)
-
-    # collision layer and rule
-    layer = CollisionLayer("TestLayer")
-    game.collision_manager.add_collision_layer(layer)
-    game.collision_manager.add_rule(CollisionRule(layer, CollisionGrouper(), can_collide_with_self=True))
-
-    collider1 = ColliderRect(Rectangle(25, 25, Vector2(0, 0)))
-
-    collider1.add_layer(layer)
-
-    # square
-    square = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(2, 2)))
-        .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
-        .add_component(RenderLayer(default_layer))
-        .add_component(collider1)
-        .add_component(
-            PolyRender2D(
-                PolygonAsset(
-                    polygon=Rectangle(25, 25, center=Vector2(0, 0)),
-                    outline_color=(0, 255, 0),
-                    outline_width=5,
-                ),
-            ),
-        )
-        .build()
-    )
-
-    rotation_parent = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(400, 400), local_scale=Vector2(2, 2)))
-        .add_component(RenderLayer(default_layer))
-        .add_component(RotateAround(2))
-        .build()
-    )
-
-    rotation_parent.add_child(square)
-
-    scene.add_game_object(rotation_parent)
-
-    collider2 = ColliderRect(Rectangle(25, 25, Vector2(0, 0)))
-    collider2.add_layer(layer)
-
-    # random square for collision detection
-    square_that_collide = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(200, 400)))
-        .add_component(RenderLayer(default_layer))
-        .add_component(Sprite2D(25, 25, ColorMaterial((144, 144, 144))))
-        .add_component(collider2)
-        .add_component(CollisionTest())
-        .build()
-    )
-
-    # add both colliders to the layer
-
-    scene.add_game_object(square_that_collide)
-
-    camera = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_scale=Vector2(1, 1)))
-        .add_component(
-            Camera(
-                Viewport(
-                    window_size,
-                    window_size,
-                ),
-            ),
-        )
-        .add_component(RenderLayer(default_layer))
-        .add_component(CameraController(speed=50))
-        .build()
-    )
-
-    scene.add_game_object(camera)
-
-    # naive timer
-    timer_example = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform())
-        .add_component(ComponentUsingTimer())
-        .add_component(RenderLayer(default_layer))
-        .build()
-    )
-
-    scene.add_game_object(timer_example)
-
-    # listener
-    listener_comp = AudioListener()
-
-    listener_obj = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(0, 0)))
-        .add_component(listener_comp)
-        .add_component(RenderLayer(default_layer))
-        .build()
-    )
-
-    AudioManager().set_listener(listener_comp)
-
-    scene.add_game_object(listener_obj)
-
-    # local audio source
-    looping_source = AudioSource(clip=clip, bus=sfx_bus, spatializer=AudioSpatializer2D(10, 50))
-    looping_source.start_looping()
-
-    AudioManager().register_source(looping_source)
-
-    audio_obj = (
-        GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(100, 0)))
-        .add_component(looping_source)
-        .add_component(RenderLayer(default_layer))
-        .add_component(PlaySoundTest())
-        .build()
-    )
-
-    scene.add_game_object(audio_obj)
+    game = Runner(renderer, event_handler, scene_manager)
 
     EngineLogger.setup()
 
