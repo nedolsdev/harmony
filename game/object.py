@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
 T = TypeVar("T", bound="GameComponent")
+U = TypeVar("U")
 
 
 # custom ObjectAlreadyAwokenError exception
@@ -92,6 +93,10 @@ class GameObject:
 
     def get_components_of_type(self, component_type: type[T]) -> list[T]:
         """Get all components of a specific type from the game object."""
+        return [component for component in self.components if isinstance(component, component_type)]
+
+    def get_components_of_any_type(self, component_type: type[U]) -> list[U]:
+        """Get all components that satisfy a particular type (where the type is not necessarily a component)."""
         return [component for component in self.components if isinstance(component, component_type)]
 
     def awake(self) -> None:
