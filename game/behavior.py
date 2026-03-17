@@ -1,7 +1,13 @@
 """The behavior module defines a game object interacts with the game state."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from game.component import GameComponent
-from game.object import GameObject
+
+if TYPE_CHECKING:
+    from game.object import GameObject
 
 
 class Behavior(GameComponent):

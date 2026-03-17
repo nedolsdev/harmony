@@ -2,7 +2,10 @@
 
 import random
 
-from core.assets.polygon import Polygon
+from core.assets.polygon_asset import PolygonAsset
+from core.packages.geometry.polygon import Polygon
+from core.packages.geometry.rectangle import Rectangle
+from core.packages.geometry.vector2 import Vector2
 from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from core.packages.tilemap.tile import Tile
 from core.packages.tilemap.tile_map import DictBasedTileMap
@@ -19,27 +22,16 @@ height = 16
 
 tile_map = DictBasedTileMap("Test TileMap", width, height)
 
-# square surface
-square_surf = Polygon.regular(
-    4,
-    cell_size,
-    fill_color=None,
-    rotation_degrees=45,
-    outline_width=2,
-    outline_color=(144, 144, 144),
-)
+square_polygon = Rectangle(cell_size, cell_size, Vector2.zero())
 
-# hex surface
-hex_surf = Polygon.regular(
-    6,
-    cell_size / 2,
+hex_polygon = Polygon.regular(6, cell_size // 2, rotation_degrees=30)
+
+surface = PolygonAsset(
+    polygon=hex_polygon,
     fill_color=(255, 255, 255),
-    rotation_degrees=30,
     outline_width=2,
     outline_color=(144, 144, 144),
 )
-
-surface = hex_surf
 
 
 white_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(255, 255, 255)))

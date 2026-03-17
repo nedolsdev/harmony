@@ -7,9 +7,9 @@ import pygame
 from core.components.render import Render
 from core.components.transform import Transform
 from core.packages.camera.camera_component import Camera
+from core.packages.geometry.vector2 import Vector2
 from game.event_handler import EventHandler
 from game.material import Material
-from game.vector2 import Vector2
 
 
 class Line2D(Render):

@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING, override
 
 from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
+from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
-from game.vector2 import Vector2
+from game.dirty import Dirtyable
 
 if TYPE_CHECKING:
     from game.event_handler import EventHandler
@@ -79,6 +80,10 @@ class Transform(Behavior, Animatable[VectorFrame]):
             return
 
         self._dirty = True
+
+        dirtyables = self.game_object.get_components_of_any_type(Dirtyable)
+        for dirtyable in dirtyables:
+            dirtyable.mark_dirty()
 
         for child in self.game_object.children:
             child.get_component(Transform).mark_dirty()
