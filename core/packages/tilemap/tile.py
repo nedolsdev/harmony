@@ -3,8 +3,8 @@
 import pygame
 
 from core.assets.surface_asset import ScalableSurfaceAsset
+from core.packages.geometry.vector2 import Vector2
 from game.material import Material
-from game.vector2 import Vector2
 
 
 class Tile(ScalableSurfaceAsset):

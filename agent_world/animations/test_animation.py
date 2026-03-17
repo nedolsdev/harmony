@@ -10,7 +10,7 @@ from core.packages.animation.controller import (
     AnimationTransition,
 )
 from core.packages.animation.frame import VectorFrame
-from game.vector2 import Vector2
+from core.packages.geometry.vector2 import Vector2
 
 
 class BasicPositionLERP(KeyFrameBlender[VectorFrame]):

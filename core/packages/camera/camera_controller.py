@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING, override
 import pygame
 
 from core.components.transform import Transform
+from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
 from game.event import PygameKeydownEvent
-from game.vector2 import Vector2
 
 if TYPE_CHECKING:
     from collections.abc import Callable

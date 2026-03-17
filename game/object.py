@@ -5,13 +5,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Self, TypeVar
 
 from core.packages.animation.animatable import Animatable
+from core.packages.collision.collision_manager import CollisionInteraction
 
 if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
+    from core.packages.collision.collision import Collision
     from game.component import GameComponent
     from game.event_handler import EventHandler
 
 T = TypeVar("T", bound="GameComponent")
+U = TypeVar("U")
 
 
 # custom ObjectAlreadyAwokenError exception
@@ -90,6 +93,10 @@ class GameObject:
 
     def get_components_of_type(self, component_type: type[T]) -> list[T]:
         """Get all components of a specific type from the game object."""
+        return [component for component in self.components if isinstance(component, component_type)]
+
+    def get_components_of_any_type(self, component_type: type[U]) -> list[U]:
+        """Get all components that satisfy a particular type (where the type is not necessarily a component)."""
         return [component for component in self.components if isinstance(component, component_type)]
 
     def awake(self) -> None:
@@ -187,3 +194,26 @@ class GameObject:
             raise TypeError(msg)
 
         component.set_animation_frame(frame)
+
+    def handle_collision(self, collision: Collision, interaction: CollisionInteraction) -> None:
+        """Handle a Collision upon this object."""
+        if interaction == CollisionInteraction.ENTER:
+            return self.on_collision_enter(collision)
+        if interaction == CollisionInteraction.EXIT:
+            return self.on_collision_exit(collision)
+        return self.on_collision_stay(collision)
+
+    def on_collision_enter(self, collision: Collision) -> None:
+        """Send the OnCollisionEnter event to all components."""
+        for component in self.components:
+            component.on_collision_enter(collision)
+
+    def on_collision_exit(self, collision: Collision) -> None:
+        """Send the OnCollisionExit event to all components."""
+        for component in self.components:
+            component.on_collision_exit(collision)
+
+    def on_collision_stay(self, collision: Collision) -> None:
+        """Send the OnCollisionStay event to all components."""
+        for component in self.components:
+            component.on_collision_stay(collision)

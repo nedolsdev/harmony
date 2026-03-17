@@ -7,7 +7,7 @@ from agent_world.animations.test_animation import test_controller
 from agent_world.components.rotate_around import RotateAround
 from agent_world.objects.agent import Agent
 from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
-from core.assets.polygon import Polygon
+from core.assets.polygon_asset import PolygonAsset
 from core.components.line_2d import Line2D
 from core.components.poly_render_2d import PolyRender2D
 from core.components.render_layer import RenderLayer
@@ -26,6 +26,13 @@ from core.packages.audio.play_sound_test import PlaySoundTest
 from core.packages.audio.spatializer import AudioSpatializer2D
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
+from core.packages.collision.collider_rect import ColliderRect
+from core.packages.collision.collision_grouper import CollisionGrouper
+from core.packages.collision.collision_layer import CollisionLayer
+from core.packages.collision.collision_rule import CollisionRule
+from core.packages.collision.collision_test import CollisionTest
+from core.packages.geometry.rectangle import Rectangle
+from core.packages.geometry.vector2 import Vector2
 from core.packages.timing.timer import ComponentUsingTimer
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
@@ -36,7 +43,6 @@ from game.render_pipeline import RenderPipeline
 from game.runner import Runner
 from game.scene import Scene
 from game.scene_manager import SceneManager
-from game.vector2 import Vector2
 
 install()
 
@@ -49,7 +55,7 @@ def main() -> None:  # noqa: PLR0915
 
     AudioManager(number_of_channels=32)
 
-    sfx_bus = AudioBus("SFX", 0.1)
+    sfx_bus = AudioBus("SFX", 0)
     music_bus = AudioBus("Music", 0.1)
 
     clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
@@ -131,20 +137,28 @@ def main() -> None:  # noqa: PLR0915
 
     scene.add_game_object(empty2)
 
+    # collision layer and rule
+    layer = CollisionLayer("TestLayer")
+    game.collision_manager.add_collision_layer(layer)
+    game.collision_manager.add_rule(CollisionRule(layer, CollisionGrouper(), can_collide_with_self=True))
+
+    collider1 = ColliderRect(Rectangle(25, 25, Vector2(0, 0)))
+
+    collider1.add_layer(layer)
+
     # square
     square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(4, 4)))
+        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(2, 2)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
+        .add_component(collider1)
         .add_component(
             PolyRender2D(
-                Polygon.regular(
-                    4,
-                    25,
+                PolygonAsset(
+                    polygon=Rectangle(25, 25, center=Vector2(0, 0)),
                     outline_color=(0, 255, 0),
                     outline_width=5,
-                    rotation_degrees=45,
                 ),
             ),
         )
@@ -153,7 +167,7 @@ def main() -> None:  # noqa: PLR0915
 
     rotation_parent = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(400, 400)))
+        .add_component(Transform(local_position=Vector2(400, 400), local_scale=Vector2(2, 2)))
         .add_component(RenderLayer(default_layer))
         .add_component(RotateAround(2))
         .build()
@@ -162,6 +176,24 @@ def main() -> None:  # noqa: PLR0915
     rotation_parent.add_child(square)
 
     scene.add_game_object(rotation_parent)
+
+    collider2 = ColliderRect(Rectangle(25, 25, Vector2(0, 0)))
+    collider2.add_layer(layer)
+
+    # random square for collision detection
+    square_that_collide = (
+        GameObjectBuilder(Empty)
+        .add_component(Transform(local_position=Vector2(200, 400)))
+        .add_component(RenderLayer(default_layer))
+        .add_component(Sprite2D(25, 25, ColorMaterial((144, 144, 144))))
+        .add_component(collider2)
+        .add_component(CollisionTest())
+        .build()
+    )
+
+    # add both colliders to the layer
+
+    scene.add_game_object(square_that_collide)
 
     camera = (
         GameObjectBuilder(Empty)

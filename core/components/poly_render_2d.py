@@ -10,7 +10,7 @@ from game.material import NoMaterial
 if TYPE_CHECKING:
     import pygame
 
-    from core.assets.polygon import Polygon
+    from core.assets.polygon_asset import PolygonAsset
     from core.components.transform import Transform
     from core.packages.camera.camera_component import Camera
     from game.event_handler import EventHandler
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class PolyRender2D(Render):
     """The 2D polygon render component."""
 
-    def __init__(self, polygon: Polygon, material: Material | None = None) -> None:
+    def __init__(self, polygon: PolygonAsset, material: Material | None = None) -> None:
         """Initialize a polygon and material."""
         super().__init__()
         self.polygon = polygon

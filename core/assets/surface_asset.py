@@ -4,8 +4,8 @@ from abc import abstractmethod
 
 import pygame
 
+from core.packages.geometry.vector2 import Vector2
 from game.asset import Asset
-from game.vector2 import Vector2
 
 
 class SurfaceAsset(Asset):
