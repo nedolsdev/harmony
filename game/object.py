@@ -5,9 +5,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Self, TypeVar
 
 from core.packages.animation.animatable import Animatable
+from core.packages.collision.collision_manager import CollisionInteraction
 
 if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
+    from core.packages.collision.collision import Collision
     from game.component import GameComponent
     from game.event_handler import EventHandler
 
@@ -187,3 +189,26 @@ class GameObject:
             raise TypeError(msg)
 
         component.set_animation_frame(frame)
+
+    def handle_collision(self, collision: Collision, interaction: CollisionInteraction) -> None:
+        """Handle a Collision upon this object."""
+        if interaction == CollisionInteraction.ENTER:
+            return self.on_collision_enter(collision)
+        if interaction == CollisionInteraction.EXIT:
+            return self.on_collision_exit(collision)
+        return self.on_collision_stay(collision)
+
+    def on_collision_enter(self, collision: Collision) -> None:
+        """Send the OnCollisionEnter event to all components."""
+        for component in self.components:
+            component.on_collision_enter(collision)
+
+    def on_collision_exit(self, collision: Collision) -> None:
+        """Send the OnCollisionExit event to all components."""
+        for component in self.components:
+            component.on_collision_exit(collision)
+
+    def on_collision_stay(self, collision: Collision) -> None:
+        """Send the OnCollisionStay event to all components."""
+        for component in self.components:
+            component.on_collision_stay(collision)

@@ -3,6 +3,7 @@
 import pygame
 
 from core.packages.audio.audio_manager import AudioManager
+from core.packages.collision.collision_manager import CollisionManager
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
@@ -35,6 +36,9 @@ class Runner:
         # delta time
         self.delta_time = DeltaTime()
 
+        # collisions
+        self.collision_manager = CollisionManager()
+
     def run_step(self) -> None:
         """Run a single step of the game loop."""
         events: list[Event] = []
@@ -50,6 +54,9 @@ class Runner:
 
         # update audio manager
         AudioManager().update()
+
+        # update collisions
+        self.collision_manager.update()
 
         # update all game objects
         objs = self.scene.get_flattened_game_objects()

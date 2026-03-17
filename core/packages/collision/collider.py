@@ -1,12 +1,41 @@
 """The underlying collider that computes collisions between two like colliders."""
 
-from typing import Self
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Literal
+
+from game.behavior import Behavior
+
+if TYPE_CHECKING:
+    from core.packages.collision.collision import Collision
+    from core.packages.collision.collision_layer import CollisionLayer
+    from core.packages.collision.collision_manager import CollisionInteraction
 
 
-class Collider:
+ColliderType = Literal["rect", "circle", "poly"]
+
+
+class Collider(Behavior):
     """The underlying collider that computes collisions between two like colliders."""
 
-    def collides_with(self, other: Self) -> bool:
-        """Check whether the Collider is colliding with another of the same type."""
-        msg = f"'{self.__class__.__name__}' does not implement 'copy' method."
+    def __init__(
+        self,
+    ) -> None:
+        """Initialize the Collider."""
+        super().__init__()
+        self.layers: set[CollisionLayer] = set()
+
+    @staticmethod
+    def get_type() -> ColliderType:
+        """Get the type of collider (e.g. 'rect')."""
+        msg = "Should be implemented in subclasses."
         raise NotImplementedError(msg)
+
+    def add_layer(self, layer: CollisionLayer) -> None:
+        """Add a CollisionLayer that the Collider interacts with."""
+        self.layers.add(layer)
+        layer.colliders.append(self)
+
+    def send_collision_event(self, collision: Collision, interaction: CollisionInteraction) -> None:
+        """Send the collision event to the game object."""
+        self.game_object.handle_collision(collision, interaction)

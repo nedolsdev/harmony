@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Self, TypeVar
 from core.packages.timing.coroutine_manager import CoroutineManager
 
 if TYPE_CHECKING:
+    from core.packages.collision.collision import Collision
     from core.packages.timing.coroutine import Coroutine
     from game.event_handler import EventHandler
 
@@ -93,3 +94,12 @@ class GameComponent:
     def start_coroutine(self, coroutine: Coroutine) -> None:
         """Start a given coroutine."""
         self.coroutine_manager.start(coroutine)
+
+    def on_collision_enter(self, collision: Collision) -> None:
+        """Send the OnCollisionEnter event to all components."""
+
+    def on_collision_exit(self, collision: Collision) -> None:
+        """Send the OnCollisionExit event to all components."""
+
+    def on_collision_stay(self, collision: Collision) -> None:
+        """Send the OnCollisionStay event to all components."""
