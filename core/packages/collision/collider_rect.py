@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, override
 
 from core.packages.collision.collider import Collider, ColliderType
+from core.packages.geometry.transform import transform_rectangle
 
 if TYPE_CHECKING:
     from core.packages.geometry.rectangle import Rectangle
@@ -18,16 +19,22 @@ class ColliderRect(Collider):
         """Initialize the ColliderRect."""
         super().__init__()
         self.rect = rect
+        self._world_rect: Rectangle = None  # pyright: ignore[reportAttributeAccessIssue]
+
+    # NOTE: This assumes that you self.rect is never changed which can not be guaranteed
+
+    @property
+    def world_rect(self) -> Rectangle:
+        """Get world rect based on Transform."""
+        if self._dirty:
+            self._world_rect = transform_rectangle(self.rect, self.transform)
+        return self._world_rect
 
     @staticmethod
     @override
     def get_type() -> ColliderType:
         """Get the type of collider (e.g. 'rect')."""
         return "rect"
-
-    @override
-    def awake(self) -> None:
-        """Event call when the script instance is created."""
 
     @override
     def start(self) -> None:

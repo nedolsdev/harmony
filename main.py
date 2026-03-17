@@ -149,14 +149,14 @@ def main() -> None:  # noqa: PLR0915
     # square
     square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(4, 4)))
+        .add_component(Transform(local_position=Vector2(100, 0), local_scale=Vector2(2, 2)))
         .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
         .add_component(RenderLayer(default_layer))
         .add_component(collider1)
         .add_component(
             PolyRender2D(
                 PolygonAsset(
-                    polygon=Rectangle(25, 25, center=Vector2.zero()),
+                    polygon=Rectangle(25, 25, center=Vector2(0, 0)),
                     outline_color=(0, 255, 0),
                     outline_width=5,
                 ),

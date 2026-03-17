@@ -18,8 +18,8 @@ def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision
         """Check if two 1D intervals overlap."""
         return not (a_max < b_min or b_max < a_min)
 
-    a = rect_a.rect
-    b = rect_b.rect
+    a = rect_a.world_rect
+    b = rect_b.world_rect
 
     ap: list[Vector2] = a.points
     bp: list[Vector2] = b.points

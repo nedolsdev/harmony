@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from core.packages.collision.collision import Collision
 from game.behavior import Behavior
 
 if TYPE_CHECKING:
+    from core.packages.collision.collision import Collision
     from game.event_handler import EventHandler
 
 

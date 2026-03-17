@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Literal, override
 
+from core.components.transform import Transform
 from game.behavior import Behavior
 
 if TYPE_CHECKING:
@@ -25,6 +26,12 @@ class Collider(Behavior):
         super().__init__()
         self.layers: set[CollisionLayer] = set()
 
+        self._dirty = True
+
+    def mark_dirty(self) -> None:
+        """Mark collider as dirty to recompute world collider."""
+        self._dirty = True
+
     @staticmethod
     def get_type() -> ColliderType:
         """Get the type of collider (e.g. 'rect')."""
@@ -39,3 +46,12 @@ class Collider(Behavior):
     def send_collision_event(self, collision: Collision, interaction: CollisionInteraction) -> None:
         """Send the collision event to the game object."""
         self.game_object.handle_collision(collision, interaction)
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+        if not self.game_object.has_component(Transform):
+            msg = "ColliderRect does not have necessary 'Transform' component attached."
+            raise ValueError(msg)
+
+        self.transform = self.game_object.get_component(Transform)
