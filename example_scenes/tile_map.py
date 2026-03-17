@@ -13,7 +13,7 @@ from game.sorting_layer import SortingLayerManager
 
 def create_tile_map_scene(window_size: int, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing the tile map."""
-    scene = Scene("Tile Map Scene")
+    scene = Scene()
 
     # parent object for the grid and tile map
     grid_obj = (

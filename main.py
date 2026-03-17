@@ -11,10 +11,10 @@ from example_scenes.tile_map import create_tile_map_scene
 from example_scenes.timer import create_timer_scene
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
+from game.lazy_scene import SimpleLazyScene
 from game.logging import EngineLogger
 from game.render_pipeline import RenderPipeline
 from game.runner import Runner
-from game.scene import Scene
 from game.scene_manager import SceneManager
 
 install()
@@ -28,13 +28,6 @@ def main() -> None:
 
     AudioManager(number_of_channels=32)
 
-    scene_manager = SceneManager()
-
-    scene = Scene("Main Scene")
-
-    scene_manager.add_scene(scene)
-    scene_manager.set_active_scene("Main Scene")
-
     event_handler = EventHandler()
 
     grid_size = 12
@@ -46,7 +39,19 @@ def main() -> None:
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)
 
-    game = Runner(renderer, event_handler, create_collision_scene(window_size, renderer.sorting_layers))
+    scene_manager = SceneManager()
+    scenes = [
+        SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Rotation Scene", lambda: create_rotation_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(window_size, renderer.sorting_layers)),
+    ]
+
+    for scene in scenes:
+        scene_manager.add_scene(scene)
+
+    game = Runner(renderer, event_handler, scene_manager)
 
     EngineLogger.setup()
 

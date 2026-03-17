@@ -11,10 +11,9 @@ T = TypeVar("T", bound="GameObject")
 class Scene:
     """Represents the current scene of the game."""
 
-    def __init__(self, name: str) -> None:
+    def __init__(self) -> None:
         """Initialize the scene with an empty list of game objects."""
         self.root_objects: list[GameObject] = []
-        self.name = name
 
         # collisions
         self.collision_manager = CollisionManager()

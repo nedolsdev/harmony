@@ -20,7 +20,7 @@ from game.sorting_layer import SortingLayerManager
 
 def create_sound_test_scene(window_size: int, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing audio playback."""
-    scene = Scene("Sound Test Scene")
+    scene = Scene()
 
     sfx_bus = AudioBus("SFX", 1)
     music_bus = AudioBus("Music", 0.5)

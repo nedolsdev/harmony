@@ -11,7 +11,7 @@ from game.sorting_layer import SortingLayerManager
 
 def create_timer_scene(window_size: int, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing timer behavior."""
-    scene = Scene("Timer Scene")
+    scene = Scene()
 
     default_layer = layers.get_layer("Default")
 

@@ -15,7 +15,7 @@ from game.sorting_layer import SortingLayerManager
 
 def create_rotation_scene(window_size: int, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing rotation behavior."""
-    scene = Scene("Rotation Scene")
+    scene = Scene()
 
     default_layer = layers.get_layer("Default")
 
