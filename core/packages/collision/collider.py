@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Literal, override
 
 from core.components.transform import Transform
 from game.behavior import Behavior
+from game.dirty import Dirtyable
 
 if TYPE_CHECKING:
     from core.packages.collision.collision import Collision
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
 ColliderType = Literal["rect", "circle", "poly"]
 
 
-class Collider(Behavior):
+class Collider(Behavior, Dirtyable):
     """The underlying collider that computes collisions between two like colliders."""
 
     def __init__(
@@ -25,12 +26,6 @@ class Collider(Behavior):
         """Initialize the Collider."""
         super().__init__()
         self.layers: set[CollisionLayer] = set()
-
-        self._dirty = True
-
-    def mark_dirty(self) -> None:
-        """Mark collider as dirty to recompute world collider."""
-        self._dirty = True
 
     @staticmethod
     def get_type() -> ColliderType:

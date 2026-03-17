@@ -27,7 +27,9 @@ class ColliderRect(Collider):
     def world_rect(self) -> Rectangle:
         """Get world rect based on Transform."""
         if self._dirty:
+            self._dirty = False
             self._world_rect = transform_rectangle(self.rect, self.transform)
+
         return self._world_rect
 
     @staticmethod
