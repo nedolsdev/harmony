@@ -50,6 +50,10 @@ class StateTransition(Generic[NodeT, DataT]):
         raise NotImplementedError(msg)
 
 
+class IllegalTransitionResolutionError(RuntimeError):
+    """Exception raised a StateTransition is resolved while not running."""
+
+
 class StateMachine(Generic[NodeT, DataT]):
     """State machine base class."""
 
@@ -156,7 +160,7 @@ class StateMachine(Generic[NodeT, DataT]):
         """Finish the current StateTransition marking the targeted state as the current state."""
         if not self.is_in_transition():
             msg = "Cannot resolve transition as the StateMachine is not performing a StateTransition."
-            raise ValueError(msg)
+            raise IllegalTransitionResolutionError(msg)
 
         self.current_state = self.transitioning_to  # pyright: ignore[reportAttributeAccessIssue] (we can guarantee self.transition_to is not None)
         self.transitioning_to = None
