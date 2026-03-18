@@ -1,5 +1,7 @@
 """Sorting layer definitions for rendering order in the game."""
 
+from game.error import DataAlreadyExistsError
+
 
 class SortingLayer:
     """Represents a named sorting layer with a specific render order value."""
@@ -36,7 +38,7 @@ class SortingLayerManager:
         """Create and register a new sorting layer."""
         if name in self.layers_by_name:
             msg = f"Sorting layer with name '{name}' already exists."
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
         layer = SortingLayer(name, value, self._next_id)
         self._next_id += 1
         self.layers_by_id[layer.id] = layer

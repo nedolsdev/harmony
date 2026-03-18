@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Self, TypeVar
 
 from core.packages.animation.animatable import Animatable
 from core.packages.collision.collision_manager import CollisionInteraction
+from game.error import DataAlreadyExistsError
 
 if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
@@ -52,7 +53,7 @@ class GameObject:
         # check if the component is already added
         if not self.is_component_allowed(component):
             msg = f"Component {type(component).__name__} already exists in the game object."
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         self.components.append(component)
 

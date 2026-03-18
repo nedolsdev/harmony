@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
 from core.packages.animation.frame import AnimationFrame
-from game.error import InvalidArgumentCombinationError
+from game.error import DataAlreadyExistsError, InvalidArgumentCombinationError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -78,7 +78,7 @@ class StateMachine(Generic[NodeT, DataT]):
         """Add a transition to the graph. Automatically adds 'start' and 'end' StateNodes if not present."""
         if self.has_transition(start, end):
             msg = f"There already exists a StateTransition between StateNodes '{start}' and '{end}'"
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         # add nodes if they don't exist
         if not self.has_node(start):
