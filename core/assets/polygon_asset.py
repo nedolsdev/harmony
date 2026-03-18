@@ -9,6 +9,7 @@ import pygame
 import pygame.gfxdraw
 
 from core.assets.surface_asset import ScalableSurfaceAsset
+from game.error import InvalidArgumentCombinationError
 
 if TYPE_CHECKING:
     from core.packages.geometry.polygon import Polygon
@@ -31,7 +32,7 @@ class PolygonAsset(ScalableSurfaceAsset):
         # should have a fill or outline
         if fill_color is None and outline_color is None:
             msg = "No fill_color or outline_color was given. At least one must be present."
-            raise ValueError(msg)
+            raise InvalidArgumentCombinationError(msg)
 
         self.polygon = polygon
         self.fill_color = fill_color

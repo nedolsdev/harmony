@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic, Self, TypeVar
+from typing import TYPE_CHECKING, Self, TypeVar
 
+from game.error import DataAlreadyExistsError
 from game.object import GameObject
 from game.prefab import Prefab
 
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound=GameObject)
 
 
-class GameObjectBuilder(Generic[T]):
+class GameObjectBuilder[T: GameObject]:
     """A base class for building game objects."""
 
     def __init__(self, t: type[T]) -> None:
@@ -49,6 +50,6 @@ class GameObjectBuilder(Generic[T]):
         """Add a component to the game object."""
         if component in self._components:
             msg = f"Component {type(component).__name__} already exists in the game object."
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
         self._components.append(component)
         return self

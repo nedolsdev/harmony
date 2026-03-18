@@ -11,6 +11,10 @@ from game.scene import Scene
 from game.sorting_layer import SortingLayerManager
 
 
+class NoCameraError(RuntimeError):
+    """Exception raised when no camera exists in the scene."""
+
+
 class RenderPipeline:
     """Handles rendering of the game."""
 
@@ -28,7 +32,7 @@ class RenderPipeline:
         # if there are no cameras then there is no point drawing anything
         if len(cameras) == 0:
             msg = "There are no active cameras in the scene."
-            raise ValueError(msg)
+            raise NoCameraError(msg)
 
         # TODO: Fix performance here, matrixes / other point mapping to avoid looping for each camera  # noqa: TD003
 

@@ -1,6 +1,6 @@
 """An AnimationClip defines the sequence of AnimationFrames played by the animation."""
 
-from typing import Generic, TypeVar, override
+from typing import TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
 from game.component import GameComponent
@@ -8,7 +8,7 @@ from game.component import GameComponent
 T = TypeVar("T", bound=AnimationFrame)
 
 
-class AnimationClip(Generic[T]):
+class AnimationClip[T: AnimationFrame]:
     """An AnimationClip defines the sequence of AnimationFrames played by the animation at a given fps."""
 
     def __init__(
@@ -62,7 +62,7 @@ class AnimationClip(Generic[T]):
         return self.fps
 
 
-class KeyFrame(Generic[T]):
+class KeyFrame[T: AnimationFrame]:
     """A KeyFrame defines an AnimationFrame played at a particular frame number within an AnimationClip."""
 
     def __init__(self, frame: T, frame_number: int) -> None:
@@ -72,7 +72,7 @@ class KeyFrame(Generic[T]):
         self.frame_number = frame_number
 
 
-class KeyFrameBlender(Generic[T]):
+class KeyFrameBlender[T: AnimationFrame]:
     """A KeyFrame Blender defines how to fill the AnimationFrames between two KeyFrames."""
 
     def blend(self, frame_number: int, current_frame: KeyFrame[T], next_key_frame: KeyFrame[T]) -> T:

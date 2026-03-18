@@ -8,6 +8,7 @@ import pygame
 
 from core.packages.audio.volume import check_volume
 from core.packages.timing.delta_time import Singleton
+from game.error import DataAlreadyExistsError
 
 if TYPE_CHECKING:
     from core.packages.audio.audio_bus import AudioBus
@@ -66,15 +67,15 @@ class AudioManager(metaclass=Singleton):
         """Register the AudioSource."""
         if source in self.sources:
             msg = "Source is already added."
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         self.sources.append(source)
 
     def unregister_source(self, source: AudioSource) -> None:
         """Unregister the AudioSource."""
         if source not in self.sources:
-            msg = "AudioSource is not registered and therefore cannot be removed."
-            raise ValueError(msg)
+            msg = "Could not find AudioSource to remove."
+            raise LookupError(msg)
 
         self.sources.remove(source)
 
@@ -82,7 +83,7 @@ class AudioManager(metaclass=Singleton):
         """Register the AudioBus."""
         if bus in self.buses:
             msg = f"AudioBus already registered. ({bus})"
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         self.buses.append(bus)
 

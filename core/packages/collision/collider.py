@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Literal, override
 from core.components.transform import Transform
 from game.behavior import Behavior
 from game.dirty import Dirtyable
+from game.error import MissingComponentDependencyError
 
 if TYPE_CHECKING:
     from core.packages.collision.collision import Collision
@@ -47,6 +48,6 @@ class Collider(Behavior, Dirtyable):
         """Event call when the script instance is created."""
         if not self.game_object.has_component(Transform):
             msg = "ColliderRect does not have necessary 'Transform' component attached."
-            raise ValueError(msg)
+            raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)

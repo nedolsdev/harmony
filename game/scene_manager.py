@@ -27,7 +27,7 @@ class SceneManager:
             if scene.name == name:
                 return i
         msg = f"Could not find scene with name '{name}'"
-        raise ValueError(msg)
+        raise LookupError(msg)
 
     def set_active_scene_from_name(self, name: str) -> None:
         """Set the active scene by its name."""

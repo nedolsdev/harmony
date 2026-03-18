@@ -12,6 +12,10 @@ from game.scene import Scene
 from game.scene_manager import SceneManager
 
 
+class NoActiveSceneError(RuntimeError):
+    """Exception raised when the game tries to run a step but no active scene is set."""
+
+
 class Runner:
     """Runs the game by initializing the renderer and starting the main loop."""
 
@@ -116,7 +120,7 @@ class Runner:
 
             if scene is None:
                 msg = "No active scene exists so the game step has failed."
-                raise ValueError(msg)
+                raise NoActiveSceneError(msg)
 
             if not loaded:
                 self.load_scene(scene)

@@ -10,6 +10,7 @@ from core.packages.audio.audio_clip import AudioClip
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.audio.spatializer import AudioSpatializer2D
 from game.behavior import Behavior
+from game.error import MissingComponentDependencyError
 from game.event_handler import EventHandler
 
 
@@ -40,7 +41,7 @@ class AudioSource(Behavior):
         """Event call when the script instance is created."""
         if self.spatializer is not None and not self.game_object.has_component(Transform):
             msg = "Spatial AudioSource does not have necessary 'Transform' component attached."
-            raise ValueError(msg)
+            raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
 

@@ -39,4 +39,4 @@ class EventHandler:
                 del self.event_listeners[event_type]
         else:
             msg = f"No listeners registered for event type: {event_type}"
-            raise ValueError(msg)
+            raise LookupError(msg)
