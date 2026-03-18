@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic, Self, TypeVar
+from typing import TYPE_CHECKING, Self, TypeVar
 
 from game.error import DataAlreadyExistsError
 from game.object import GameObject
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound=GameObject)
 
 
-class GameObjectBuilder(Generic[T]):
+class GameObjectBuilder[T: GameObject]:
     """A base class for building game objects."""
 
     def __init__(self, t: type[T]) -> None:

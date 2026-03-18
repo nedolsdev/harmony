@@ -30,7 +30,7 @@ NodeT = TypeVar("NodeT", bound=StateNode)
 DataT = TypeVar("DataT", bound=Any)
 
 
-class StateTransition(Generic[NodeT, DataT]):
+class StateTransition[NodeT: StateNode, DataT: Any]:
     """A transition between two StateNodes."""
 
     def begin(
@@ -54,7 +54,7 @@ class IllegalTransitionResolutionError(RuntimeError):
     """Exception raised a StateTransition is resolved while not running."""
 
 
-class StateMachine(Generic[NodeT, DataT]):
+class StateMachine[NodeT: StateNode, DataT: Any]:
     """State machine base class."""
 
     def __init__(self, initial_state: NodeT) -> None:
@@ -181,7 +181,7 @@ class StateMachine(Generic[NodeT, DataT]):
 FrameT = TypeVar("FrameT", bound=AnimationFrame)
 
 
-class AnimationState(StateNode, Generic[FrameT]):
+class AnimationState[FrameT: AnimationFrame](StateNode):
     """Node for an animation state within an AnimationLayer state machine."""
 
     def __init__(self, name: str, clip: AnimationClip[FrameT]) -> None:
@@ -190,7 +190,7 @@ class AnimationState(StateNode, Generic[FrameT]):
         self.clip = clip
 
 
-class AnimationTransition(StateTransition[AnimationState[FrameT], DataT], Generic[DataT, FrameT]):
+class AnimationTransition[DataT: Any, FrameT: AnimationFrame](StateTransition[AnimationState[FrameT], DataT]):
     """A transition between two StateNodes in the AnimationController."""
 
     def __init__(self, condition: Callable[[DataT], bool] | None = None) -> None:
@@ -273,7 +273,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
         target.set_animation_frame(frame, clip.target)
 
 
-class AnimationController(Generic[DataT]):
+class AnimationController[DataT: Any]:
     """The AnimationController controls the layer and parameters passed to the layers for state transitions."""
 
     def __init__(self, data: DataT, *, init_default_layer: bool = True) -> None:
