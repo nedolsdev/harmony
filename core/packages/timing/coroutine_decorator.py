@@ -2,16 +2,16 @@
 
 from collections.abc import Callable
 from functools import wraps
-from typing import ParamSpec, TypeAlias
+from typing import ParamSpec
 
 from core.packages.timing.coroutine import Coroutine, CoroutineGenerator
 
 P = ParamSpec("P")
 
-CoroutineFactory: TypeAlias = Callable[P, Coroutine]
+type CoroutineFactory[**P] = Callable[P, Coroutine]
 
 
-def coroutine(func: Callable[P, CoroutineGenerator]) -> CoroutineFactory[P]:
+def coroutine[**P](func: Callable[P, CoroutineGenerator]) -> CoroutineFactory[P]:
     """Wrap a generator function into a Coroutine."""
 
     @wraps(func)
