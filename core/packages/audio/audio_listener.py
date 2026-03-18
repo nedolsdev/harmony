@@ -4,6 +4,7 @@ from typing import override
 
 from core.components.transform import Transform
 from game.behavior import Behavior
+from game.error import MissingComponentDependencyError
 from game.event_handler import EventHandler
 
 
@@ -17,7 +18,7 @@ class AudioListener(Behavior):
         """Event call when the script instance is created."""
         if not self.game_object.has_component(Transform):
             msg = "AudioListener does not have necessary 'Transform' component attached."
-            raise ValueError(msg)
+            raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
 

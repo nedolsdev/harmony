@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
 from core.packages.animation.frame import AnimationFrame
+from game.error import InvalidArgumentCombinationError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -285,7 +286,7 @@ class AnimationController(Generic[DataT]):
         """Get a specific layer by index or name in the AnimationController. Defaults as the first layer."""
         if index is not None and name is not None:
             msg = "Invalid parameters. Only set one of 'index' or 'name'."
-            raise ValueError(msg)
+            raise InvalidArgumentCombinationError(msg)
 
         if name is not None:
             for layer in self.layers:
