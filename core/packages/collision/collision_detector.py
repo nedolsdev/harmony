@@ -60,7 +60,7 @@ class CollisionDetector(metaclass=Singleton):
 
         if detector is None:
             msg = f"Collision detection between type '{type_a}' and '{type_b}' does not exist."
-            raise ValueError(msg)
+            raise LookupError(msg)
 
         return detector
 

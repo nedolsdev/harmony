@@ -73,8 +73,8 @@ class AudioManager(metaclass=Singleton):
     def unregister_source(self, source: AudioSource) -> None:
         """Unregister the AudioSource."""
         if source not in self.sources:
-            msg = "AudioSource is not registered and therefore cannot be removed."
-            raise ValueError(msg)
+            msg = "Could not find AudioSource to remove."
+            raise LookupError(msg)
 
         self.sources.remove(source)
 

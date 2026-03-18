@@ -48,7 +48,7 @@ class SortingLayerManager:
         layer = self.layers_by_name.get(name)
         if layer is None:
             msg = f"Sorting layer with name '{name}' does not exist."
-            raise ValueError(msg)
+            raise LookupError(msg)
         return layer
 
     def get_layers_sorted(self) -> list[SortingLayer]:
@@ -66,5 +66,5 @@ class SortingLayerManager:
         layer = self.get_layer(name)
         if not layer:
             msg = f"Sorting layer with name '{name}' does not exist."
-            raise ValueError(msg)
+            raise LookupError(msg)
         return layer.value

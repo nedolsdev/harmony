@@ -89,7 +89,7 @@ class GameObject:
             if isinstance(component, component_type):
                 return component
         msg = f"Component {component_type.__name__} not found in the game object."
-        raise ValueError(msg)
+        raise LookupError(msg)
 
     def get_components_of_type(self, component_type: type[T]) -> list[T]:
         """Get all components of a specific type from the game object."""
@@ -175,7 +175,7 @@ class GameObject:
             self.children.remove(child)
         else:
             msg = f"Child {child.__class__.__name__} not found in the game object's children."
-            raise ValueError(msg)
+            raise LookupError(msg)
 
     def get_parent(self) -> GameObject | None:
         """Return the parent game object."""

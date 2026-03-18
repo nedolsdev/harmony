@@ -134,7 +134,7 @@ class StateMachine(Generic[NodeT, DataT]):
                 return
 
         msg = f"StateMachine does not contain StateTransition '{transition}'"
-        raise ValueError(msg)
+        raise LookupError(msg)
 
     def is_in_transition(self) -> bool:
         """Check whether the StateMachine is transitioning between StateNodes."""
@@ -145,7 +145,7 @@ class StateMachine(Generic[NodeT, DataT]):
         # check there is a valid transition between nodes
         if not self.has_transition(self.current_state, new_state):
             msg = f"There is no valid StateTransition between '{self.current_state}' and '{new_state}'"
-            raise ValueError(msg)
+            raise LookupError(msg)
 
         self.transitioning_to = new_state
         transition = self.transitions[(self.current_state, new_state)]
@@ -293,7 +293,7 @@ class AnimationController(Generic[DataT]):
                 if layer.name == name:
                     return layer
             msg = f"Could not find AnimationLayer with name '{name}'."
-            raise ValueError(msg)
+            raise LookupError(msg)
 
         return self.layers[index]
 
