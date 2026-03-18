@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
 from core.packages.animation.frame import AnimationFrame
+from game.error import DataAlreadyExistsError, InvalidArgumentCombinationError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -29,7 +30,7 @@ NodeT = TypeVar("NodeT", bound=StateNode)
 DataT = TypeVar("DataT", bound=Any)
 
 
-class StateTransition(Generic[NodeT, DataT]):
+class StateTransition[NodeT: StateNode, DataT: Any]:
     """A transition between two StateNodes."""
 
     def begin(
@@ -49,7 +50,11 @@ class StateTransition(Generic[NodeT, DataT]):
         raise NotImplementedError(msg)
 
 
-class StateMachine(Generic[NodeT, DataT]):
+class IllegalTransitionResolutionError(RuntimeError):
+    """Exception raised a StateTransition is resolved while not running."""
+
+
+class StateMachine[NodeT: StateNode, DataT: Any]:
     """State machine base class."""
 
     def __init__(self, initial_state: NodeT) -> None:
@@ -77,7 +82,7 @@ class StateMachine(Generic[NodeT, DataT]):
         """Add a transition to the graph. Automatically adds 'start' and 'end' StateNodes if not present."""
         if self.has_transition(start, end):
             msg = f"There already exists a StateTransition between StateNodes '{start}' and '{end}'"
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         # add nodes if they don't exist
         if not self.has_node(start):
@@ -133,7 +138,7 @@ class StateMachine(Generic[NodeT, DataT]):
                 return
 
         msg = f"StateMachine does not contain StateTransition '{transition}'"
-        raise ValueError(msg)
+        raise LookupError(msg)
 
     def is_in_transition(self) -> bool:
         """Check whether the StateMachine is transitioning between StateNodes."""
@@ -144,7 +149,7 @@ class StateMachine(Generic[NodeT, DataT]):
         # check there is a valid transition between nodes
         if not self.has_transition(self.current_state, new_state):
             msg = f"There is no valid StateTransition between '{self.current_state}' and '{new_state}'"
-            raise ValueError(msg)
+            raise LookupError(msg)
 
         self.transitioning_to = new_state
         transition = self.transitions[(self.current_state, new_state)]
@@ -155,7 +160,7 @@ class StateMachine(Generic[NodeT, DataT]):
         """Finish the current StateTransition marking the targeted state as the current state."""
         if not self.is_in_transition():
             msg = "Cannot resolve transition as the StateMachine is not performing a StateTransition."
-            raise ValueError(msg)
+            raise IllegalTransitionResolutionError(msg)
 
         self.current_state = self.transitioning_to  # pyright: ignore[reportAttributeAccessIssue] (we can guarantee self.transition_to is not None)
         self.transitioning_to = None
@@ -176,7 +181,7 @@ class StateMachine(Generic[NodeT, DataT]):
 FrameT = TypeVar("FrameT", bound=AnimationFrame)
 
 
-class AnimationState(StateNode, Generic[FrameT]):
+class AnimationState[FrameT: AnimationFrame](StateNode):
     """Node for an animation state within an AnimationLayer state machine."""
 
     def __init__(self, name: str, clip: AnimationClip[FrameT]) -> None:
@@ -185,7 +190,7 @@ class AnimationState(StateNode, Generic[FrameT]):
         self.clip = clip
 
 
-class AnimationTransition(StateTransition[AnimationState[FrameT], DataT], Generic[DataT, FrameT]):
+class AnimationTransition[DataT: Any, FrameT: AnimationFrame](StateTransition[AnimationState[FrameT], DataT]):
     """A transition between two StateNodes in the AnimationController."""
 
     def __init__(self, condition: Callable[[DataT], bool] | None = None) -> None:
@@ -268,7 +273,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
         target.set_animation_frame(frame, clip.target)
 
 
-class AnimationController(Generic[DataT]):
+class AnimationController[DataT: Any]:
     """The AnimationController controls the layer and parameters passed to the layers for state transitions."""
 
     def __init__(self, data: DataT, *, init_default_layer: bool = True) -> None:
@@ -285,14 +290,14 @@ class AnimationController(Generic[DataT]):
         """Get a specific layer by index or name in the AnimationController. Defaults as the first layer."""
         if index is not None and name is not None:
             msg = "Invalid parameters. Only set one of 'index' or 'name'."
-            raise ValueError(msg)
+            raise InvalidArgumentCombinationError(msg)
 
         if name is not None:
             for layer in self.layers:
                 if layer.name == name:
                     return layer
             msg = f"Could not find AnimationLayer with name '{name}'."
-            raise ValueError(msg)
+            raise LookupError(msg)
 
         return self.layers[index]
 

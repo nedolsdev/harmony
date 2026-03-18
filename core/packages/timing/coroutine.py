@@ -1,11 +1,10 @@
 """Coroutine base class."""
 
 from collections.abc import Generator
-from typing import TypeAlias
 
 from core.packages.timing.yield_instruction import YieldInstruction
 
-CoroutineGenerator: TypeAlias = Generator[YieldInstruction, None, None]
+type CoroutineGenerator = Generator[YieldInstruction, None, None]
 
 
 class Coroutine:

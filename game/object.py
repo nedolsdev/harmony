@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Self, TypeVar
 
 from core.packages.animation.animatable import Animatable
 from core.packages.collision.collision_manager import CollisionInteraction
+from game.error import DataAlreadyExistsError
 
 if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
@@ -52,7 +53,7 @@ class GameObject:
         # check if the component is already added
         if not self.is_component_allowed(component):
             msg = f"Component {type(component).__name__} already exists in the game object."
-            raise ValueError(msg)
+            raise DataAlreadyExistsError(msg)
 
         self.components.append(component)
 
@@ -89,7 +90,7 @@ class GameObject:
             if isinstance(component, component_type):
                 return component
         msg = f"Component {component_type.__name__} not found in the game object."
-        raise ValueError(msg)
+        raise LookupError(msg)
 
     def get_components_of_type(self, component_type: type[T]) -> list[T]:
         """Get all components of a specific type from the game object."""
@@ -175,7 +176,7 @@ class GameObject:
             self.children.remove(child)
         else:
             msg = f"Child {child.__class__.__name__} not found in the game object's children."
-            raise ValueError(msg)
+            raise LookupError(msg)
 
     def get_parent(self) -> GameObject | None:
         """Return the parent game object."""

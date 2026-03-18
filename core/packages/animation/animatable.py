@@ -1,13 +1,13 @@
 """An interface for components that can be animated to produce an AnimationClip."""
 
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from core.packages.animation.clip import AnimationFrame
 
 T = TypeVar("T", bound=AnimationFrame)
 
 
-class Animatable(Generic[T]):
+class Animatable[T: AnimationFrame]:
     """An interface for components that can be animated to produce an AnimationClip."""
 
     def set_animation_frame(self, frame: T) -> None:

@@ -5,6 +5,7 @@ from typing import override
 from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
+from game.error import MissingComponentDependencyError
 from game.event_handler import EventHandler
 
 
@@ -41,7 +42,7 @@ class Camera(Behavior):
         """Event call when the script instance is created."""
         if not self.game_object.has_component(Transform):
             msg = "Camera does not have necessary 'Transform' component attached."
-            raise ValueError(msg)
+            raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
 

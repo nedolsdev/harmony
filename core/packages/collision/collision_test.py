@@ -37,12 +37,12 @@ class CollisionTest(Behavior):
 
     @override
     def on_collision_enter(self, collision: Collision) -> None:
-        print("Collision enter!")
+        print("Collision enter!")  # noqa: T201
 
     @override
     def on_collision_stay(self, collision: Collision) -> None:
-        print("Collision stay!")
+        print("Collision stay!")  # noqa: T201
 
     @override
     def on_collision_exit(self, collision: Collision) -> None:
-        print("Collision exit!")
+        print("Collision exit!")  # noqa: T201

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 # parameter types are Trigger, Int, Float, Bool
 
 
-class Animator(Behavior, Generic[DataT]):
+class Animator(Behavior, Generic[DataT]):  # noqa: UP046
     """The animator component that acts on the animation controller."""
 
     def __init__(self, controller: AnimationController[DataT]) -> None:
