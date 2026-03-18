@@ -1,6 +1,6 @@
 """The prefab module defines the prefab class for the game."""
 
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from game.behavior import Behavior
 from game.component import GameComponent
@@ -9,7 +9,7 @@ from game.object import GameObject
 T = TypeVar("T", bound=GameObject)
 
 
-class Prefab(Generic[T]):
+class Prefab[T: GameObject]:
     """A prefab is a reusable game object template."""
 
     def __init__(self, game_object: T) -> None:
