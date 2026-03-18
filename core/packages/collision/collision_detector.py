@@ -1,13 +1,12 @@
 """Detect collisions between two colliders."""
 
 from collections.abc import Callable
-from typing import TypeAlias
 
 from core.packages.collision.collider import Collider, ColliderType
 from core.packages.collision.collision import Collision
 from core.packages.timing.delta_time import Singleton
 
-CollisionFunc: TypeAlias = Callable[[Collider, Collider], Collision | None]
+type CollisionFunc = Callable[[Collider, Collider], Collision | None]
 
 
 class CollisionDetector(metaclass=Singleton):
