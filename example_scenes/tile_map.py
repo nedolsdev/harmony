@@ -1,6 +1,6 @@
 """Tile map example scene."""
 
-from agent_world.objects.test_tile_map import grid, tile_map, tile_map_renderer
+from agent_world.objects.test_tile_map import get_example_tile_grid
 from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.objects.empty import Empty
@@ -15,13 +15,15 @@ def create_tile_map_scene(window_size: int, layers: SortingLayerManager) -> Scen
     """Return a Scene configured for testing the tile map."""
     scene = Scene()
 
+    tile_grid = get_example_tile_grid()
+
     # parent object for the grid and tile map
     grid_obj = (
         GameObjectBuilder(Empty)
         .add_component(Transform(local_position=Vector2(50, 50)))
-        .add_component(grid)
-        .add_component(tile_map)
-        .add_component(tile_map_renderer)
+        .add_component(tile_grid.grid)
+        .add_component(tile_grid.tile_map)
+        .add_component(tile_grid.tile_map_renderer)
         .add_component(RenderLayer(layers.get_layer("Background")))
         .build()
     )
