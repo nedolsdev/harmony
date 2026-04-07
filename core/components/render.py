@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
-import pygame
-
-from core.components.transform import Transform
-from core.packages.camera.camera_component import Camera
 from game.component import GameComponent
+
+if TYPE_CHECKING:
+    import pygame
+
+    from core.components.transform import Transform
+    from core.packages.camera.camera_component import Camera
 
 
 class Render(GameComponent):

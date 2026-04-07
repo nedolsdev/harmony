@@ -1,14 +1,18 @@
 """Create a test camera object."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
-from game.object import GameObject
 from game.object_builder import GameObjectBuilder
-from game.sorting_layer import SortingLayer
+
+if TYPE_CHECKING:
+    from game.object import GameObject
+    from game.sorting_layer import SortingLayer
 
 
 def create_camera_game_object(window_size: int, layer: SortingLayer) -> GameObject:

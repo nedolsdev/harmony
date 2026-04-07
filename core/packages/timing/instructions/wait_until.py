@@ -1,9 +1,12 @@
 """Wait until a condition is met."""
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from core.packages.timing.yield_instruction import YieldInstruction
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class WaitUntil(YieldInstruction):

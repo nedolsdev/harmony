@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 from itertools import combinations
+from typing import TYPE_CHECKING
 
-from core.packages.collision.collider import Collider
-from core.packages.collision.collision_grouper import CollisionGrouper
-from core.packages.collision.collision_layer import CollisionLayer
+if TYPE_CHECKING:
+    from core.packages.collision.collider import Collider
+    from core.packages.collision.collision_grouper import CollisionGrouper
+    from core.packages.collision.collision_layer import CollisionLayer
 
 
 class CollisionRule:

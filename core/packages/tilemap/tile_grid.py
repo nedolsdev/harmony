@@ -1,10 +1,13 @@
 """TileGrid encapsulates the tile map, grid, palette and renderer into a single class."""
 from __future__ import annotations
 
-from core.packages.tilemap.grid import Grid
-from core.packages.tilemap.tile_map import TileMap
-from core.packages.tilemap.tile_map_renderer import TileMapRenderer
-from core.packages.tilemap.tile_palette import TilePalette
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.packages.tilemap.grid import Grid
+    from core.packages.tilemap.tile_map import TileMap
+    from core.packages.tilemap.tile_map_renderer import TileMapRenderer
+    from core.packages.tilemap.tile_palette import TilePalette
 
 
 class TileGrid:

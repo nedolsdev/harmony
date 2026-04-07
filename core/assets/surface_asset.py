@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-
-import pygame
+from typing import TYPE_CHECKING
 
 from core.packages.geometry.vector2 import Vector2
 from game.asset import Asset
+
+if TYPE_CHECKING:
+    import pygame
 
 
 class SurfaceAsset(Asset):

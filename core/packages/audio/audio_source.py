@@ -1,17 +1,19 @@
 """Audio source component plays and controls an AudioClip."""
 from __future__ import annotations
 
-from typing import override
-
-import pygame
+from typing import TYPE_CHECKING, override
 
 from core.components.transform import Transform
-from core.packages.audio.audio_bus import AudioBus
-from core.packages.audio.audio_clip import AudioClip
 from core.packages.audio.audio_manager import AudioManager
-from core.packages.audio.spatializer import AudioSpatializer2D
 from game.behavior import Behavior
 from game.error import MissingComponentDependencyError
+
+if TYPE_CHECKING:
+    import pygame
+
+    from core.packages.audio.audio_bus import AudioBus
+    from core.packages.audio.audio_clip import AudioClip
+    from core.packages.audio.spatializer import AudioSpatializer2D
 
 
 class AudioSource(Behavior):

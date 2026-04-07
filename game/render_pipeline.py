@@ -1,15 +1,19 @@
 """The draw module contains functions for rendering the game world visually."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame
 
 from core.components.render import Render
 from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.packages.camera.camera_component import Camera
-from game.object import GameObject
-from game.scene import Scene
 from game.sorting_layer import SortingLayerManager
+
+if TYPE_CHECKING:
+    from game.object import GameObject
+    from game.scene import Scene
 
 
 class NoCameraError(RuntimeError):

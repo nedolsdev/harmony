@@ -1,9 +1,13 @@
 """Render layer component to manage rendering order of objects."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from game.component import GameComponent
-from game.event_handler import EventHandler
-from game.sorting_layer import SortingLayer
+
+if TYPE_CHECKING:
+    from game.event_handler import EventHandler
+    from game.sorting_layer import SortingLayer
 
 
 class RenderLayer(GameComponent):

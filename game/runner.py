@@ -1,16 +1,20 @@
 """The game runner module runs the renderer and handles the main game loop."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pygame
 
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
-from game.event_handler import EventHandler
-from game.render_pipeline import RenderPipeline
-from game.scene import Scene
-from game.scene_manager import SceneManager
+
+if TYPE_CHECKING:
+    from game.event_handler import EventHandler
+    from game.render_pipeline import RenderPipeline
+    from game.scene import Scene
+    from game.scene_manager import SceneManager
 
 
 class NoActiveSceneError(RuntimeError):

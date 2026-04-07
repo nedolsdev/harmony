@@ -2,9 +2,10 @@
 from __future__ import annotations
 
 import math
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
-from core.packages.geometry.vector2 import Vector2
+if TYPE_CHECKING:
+    from core.packages.geometry.vector2 import Vector2
 
 
 class Geometry:

@@ -1,16 +1,18 @@
 """2D line component."""
 from __future__ import annotations
 
-from typing import override
+from typing import TYPE_CHECKING, override
 
 import pygame
 
 from core.components.render import Render
-from core.components.transform import Transform
-from core.packages.camera.camera_component import Camera
-from core.packages.geometry.vector2 import Vector2
-from game.event_handler import EventHandler
-from game.material import Material
+
+if TYPE_CHECKING:
+    from core.components.transform import Transform
+    from core.packages.camera.camera_component import Camera
+    from core.packages.geometry.vector2 import Vector2
+    from game.event_handler import EventHandler
+    from game.material import Material
 
 
 class Line2D(Render):
