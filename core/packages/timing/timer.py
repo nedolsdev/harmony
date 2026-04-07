@@ -10,28 +10,15 @@ from game.behavior import Behavior
 
 if TYPE_CHECKING:
     from core.packages.timing.coroutine import CoroutineGenerator
-    from game.event_handler import EventHandler
 
 
 class ComponentUsingTimer(Behavior):
     """A component that uses a timer."""
 
     @override
-    def awake(self) -> None:
-        """Event call when the script instance is created."""
-
-    @override
     def start(self) -> None:
         """Initialize the sprite component."""
         self.start_coroutine(self.example_coroutine())
-
-    @override
-    def update(self) -> None:
-        """Update the sprite component."""
-
-    @override
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Add events to the event handler for this component."""
 
     @override
     def copy(self) -> ComponentUsingTimer:

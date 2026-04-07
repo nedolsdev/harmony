@@ -20,10 +20,6 @@ class Behavior(GameComponent):
         """Set the owner of the behavior."""
         self.game_object = owner
 
-
-class CoreBehavior(Behavior):
-    """A behavior that will not implement its own start, update, etc. methods."""
-
     @override
     def awake(self) -> None:
         """Event call when the script instance is created."""

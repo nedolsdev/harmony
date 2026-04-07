@@ -11,7 +11,6 @@ from core.packages.audio.audio_manager import AudioManager
 from core.packages.audio.spatializer import AudioSpatializer2D
 from game.behavior import Behavior
 from game.error import MissingComponentDependencyError
-from game.event_handler import EventHandler
 
 
 class AudioSource(Behavior):
@@ -98,10 +97,6 @@ class AudioSource(Behavior):
             else:
                 self.channel.set_volume(base_volume)
 
-    @override
-    def update(self) -> None:
-        """Update the component.."""
-
     def update_source(self) -> None:
         """Update the AudioSource, releasing the channel if needed."""
         if self.channel:
@@ -110,11 +105,3 @@ class AudioSource(Behavior):
             else:
                 AudioManager().release_channel(self.channel)
                 self.channel = None
-
-    @override
-    def start(self) -> None:
-        """Initialize the sprite component."""
-
-    @override
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Add events to the event handler for this component."""

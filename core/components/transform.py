@@ -7,14 +7,14 @@ from typing import TYPE_CHECKING, override
 from core.components.transform_base import TransformBase
 from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
-from game.behavior import CoreBehavior
+from game.behavior import Behavior
 from game.dirty import Dirtyable
 
 if TYPE_CHECKING:
     from core.packages.geometry.vector2 import Vector2
 
 
-class Transform(CoreBehavior, Animatable[VectorFrame], TransformBase):
+class Transform(Behavior, Animatable[VectorFrame], TransformBase):
     """Defines local and world spatial relationships."""
 
     def __init__(
@@ -54,6 +54,7 @@ class Transform(CoreBehavior, Animatable[VectorFrame], TransformBase):
             return None
         return parent.get_component(Transform)
 
+    @override
     def copy(self) -> Transform:
         """Create a copy of the Transform component."""
         transform = Transform(self._local_position, self._local_scale, self._local_rotation)
@@ -64,6 +65,7 @@ class Transform(CoreBehavior, Animatable[VectorFrame], TransformBase):
         return transform
 
     # TODO: Use fields or similar to allow control for animating scale, position, rotation separately  # noqa: TD003
+    @override
     def set_animation_frame(self, frame: VectorFrame) -> None:
         """Set the animation frame."""
         self.local_position = frame.vector
