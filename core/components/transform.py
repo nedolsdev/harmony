@@ -7,15 +7,14 @@ from typing import TYPE_CHECKING, override
 from core.components.transform_base import TransformBase
 from core.packages.animation.animatable import Animatable
 from core.packages.animation.frame import VectorFrame
-from game.behavior import Behavior
+from game.behavior import CoreBehavior
 from game.dirty import Dirtyable
 
 if TYPE_CHECKING:
     from core.packages.geometry.vector2 import Vector2
-    from game.event_handler import EventHandler
 
 
-class Transform(Behavior, Animatable[VectorFrame], TransformBase):
+class Transform(CoreBehavior, Animatable[VectorFrame], TransformBase):
     """Defines local and world spatial relationships."""
 
     def __init__(
@@ -63,22 +62,6 @@ class Transform(Behavior, Animatable[VectorFrame], TransformBase):
         transform._world_scale = self._world_scale
         transform._dirty = self._dirty
         return transform
-
-    @override
-    def awake(self) -> None:
-        """Event call when the script instance is created."""
-
-    @override
-    def start(self) -> None:
-        """Initialize the sprite component."""
-
-    @override
-    def update(self) -> None:
-        """Update the sprite component."""
-
-    @override
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Add events to the event handler for this component."""
 
     # TODO: Use fields or similar to allow control for animating scale, position, rotation separately  # noqa: TD003
     def set_animation_frame(self, frame: VectorFrame) -> None:
