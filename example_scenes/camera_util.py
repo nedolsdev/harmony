@@ -1,4 +1,5 @@
 """Create a test camera object."""
+from __future__ import annotations
 
 from core.components.render_layer import RenderLayer
 from core.components.transform import Transform

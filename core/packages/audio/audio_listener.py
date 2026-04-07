@@ -1,4 +1,5 @@
 """Audio listener component computes the spatial audio of the scene from a given point."""
+from __future__ import annotations
 
 from typing import override
 

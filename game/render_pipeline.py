@@ -1,4 +1,5 @@
 """The draw module contains functions for rendering the game world visually."""
+from __future__ import annotations
 
 import pygame
 

@@ -1,4 +1,5 @@
 """A CollisionRule defines which other layers a CollisionLayer can interact with."""
+from __future__ import annotations
 
 from itertools import combinations
 

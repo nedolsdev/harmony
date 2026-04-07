@@ -1,4 +1,5 @@
 """Main entry point for the Agent World game."""
+from __future__ import annotations
 
 import pygame
 from rich.traceback import install

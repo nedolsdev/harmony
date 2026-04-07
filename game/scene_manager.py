@@ -1,4 +1,5 @@
 """Manages different scenes within the game."""
+from __future__ import annotations
 
 from game.lazy_scene import LazyScene
 from game.scene import Scene

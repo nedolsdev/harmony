@@ -1,4 +1,5 @@
 """The shape geometry primitive."""
+from __future__ import annotations
 
 from core.packages.geometry.geometry import Geometry
 from core.packages.geometry.vector2 import Vector2

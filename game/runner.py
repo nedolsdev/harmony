@@ -1,4 +1,5 @@
 """The game runner module runs the renderer and handles the main game loop."""
+from __future__ import annotations
 
 import pygame
 

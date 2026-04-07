@@ -1,4 +1,5 @@
 """Wait until a condition is met."""
+from __future__ import annotations
 
 from collections.abc import Callable
 

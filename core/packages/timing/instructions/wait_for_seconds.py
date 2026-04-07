@@ -1,4 +1,5 @@
 """Wait for seconds (scaled delta time) YieldInstruction."""
+from __future__ import annotations
 
 from core.packages.timing.delta_time import DeltaTime
 from core.packages.timing.yield_instruction import YieldInstruction

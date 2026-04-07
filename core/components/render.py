@@ -1,4 +1,5 @@
 """A render component is a component that handles the rendering its object."""
+from __future__ import annotations
 
 from abc import abstractmethod
 

@@ -1,4 +1,5 @@
 """The game manager module contains the game object that manages the game state."""
+from __future__ import annotations
 
 from core.objects.empty import Empty
 

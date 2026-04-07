@@ -1,4 +1,5 @@
 """Groups objects that should check collisions with each other."""
+from __future__ import annotations
 
 
 class CollisionGrouper:

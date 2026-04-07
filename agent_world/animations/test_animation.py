@@ -1,4 +1,5 @@
 """A test animation."""
+from __future__ import annotations
 
 from core.components.transform import Transform
 from core.packages.animation.clip import NO_ANIMATION, KeyFrame, KeyFrameBlender, KeyFramedAnimationClip

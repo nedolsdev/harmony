@@ -1,4 +1,5 @@
 """2D line component."""
+from __future__ import annotations
 
 from typing import override
 
@@ -73,7 +74,7 @@ class Line2D(Render):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
-    def copy(self) -> "Line2D":
+    def copy(self) -> Line2D:
         """Create a copy of the Line2D component."""
         return Line2D(
             start=self.start_pos,

@@ -1,4 +1,5 @@
 """Rect/Rect collision detection."""
+from __future__ import annotations
 
 from core.packages.collision.collider_rect import ColliderRect
 from core.packages.collision.collision import Collision

@@ -1,4 +1,5 @@
 """Wait for another coroutine to be complete."""
+from __future__ import annotations
 
 from core.packages.timing.coroutine import Coroutine
 from core.packages.timing.yield_instruction import YieldInstruction

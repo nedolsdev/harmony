@@ -1,4 +1,5 @@
 """Manager for a component's coroutines."""
+from __future__ import annotations
 
 from core.packages.timing.coroutine import Coroutine
 

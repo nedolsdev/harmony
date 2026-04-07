@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from typing import Self
 
 from core.packages.geometry.vector2 import Vector2
 
@@ -73,6 +74,11 @@ class TransformBase:
         msg = "Should be implemented in subclasses."
         raise NotImplementedError(msg)
 
+    def get_parent_transform(self) -> Self | None:
+        """Get the parent transform from a given transform (that may not exist)."""
+        msg = "Should be implemented in subclasses."
+        raise NotImplementedError(msg)
+
     def _recalculate_if_needed(self) -> None:
         if not self._dirty:
             return
@@ -104,11 +110,6 @@ class TransformBase:
             self._world_position = parent_t._world_position + rotated  # noqa: SLF001
 
         self._dirty = False
-
-    def get_parent_transform(self) -> TransformBase | None:
-        """Get the parent transform from a given transform (that may not exist)."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
     @property
     def world_position(self) -> Vector2:

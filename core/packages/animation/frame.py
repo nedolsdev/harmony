@@ -1,4 +1,5 @@
 """An AnimationFrame is a single state in time of an AnimationClip in progress."""
+from __future__ import annotations
 
 from core.packages.geometry.vector2 import Vector2
 

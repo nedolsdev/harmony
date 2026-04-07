@@ -1,4 +1,5 @@
 """Collision example scene."""
+from __future__ import annotations
 
 from agent_world.components.rotate_around import RotateAround
 from core.components.render_layer import RenderLayer

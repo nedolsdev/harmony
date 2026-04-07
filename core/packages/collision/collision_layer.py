@@ -1,4 +1,5 @@
 """A CollisionLayer defines a layer where objects can collide."""
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 

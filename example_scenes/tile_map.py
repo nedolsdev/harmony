@@ -1,4 +1,5 @@
 """Tile map example scene."""
+from __future__ import annotations
 
 from agent_world.objects.test_tile_map import get_example_tile_grid
 from core.components.render_layer import RenderLayer

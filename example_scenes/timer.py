@@ -1,4 +1,5 @@
 """Timer example scene."""
+from __future__ import annotations
 
 from core.components.transform import Transform
 from core.objects.empty import Empty

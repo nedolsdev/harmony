@@ -1,4 +1,5 @@
 """The collision manager controls which collisions need to be checked."""
+from __future__ import annotations
 
 from enum import Enum, auto
 from typing import TYPE_CHECKING
