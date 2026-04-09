@@ -1,4 +1,5 @@
 """Main entry point for the Agent World game."""
+
 from __future__ import annotations
 
 import pygame
@@ -10,6 +11,7 @@ from example_scenes.rotation import create_rotation_scene
 from example_scenes.sound import create_sound_test_scene
 from example_scenes.tile_map import create_tile_map_scene
 from example_scenes.timer import create_timer_scene
+from example_scenes.ui import create_ui_scene
 from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.lazy_scene import SimpleLazyScene
@@ -42,6 +44,7 @@ def main() -> None:
 
     scene_manager = SceneManager()
     scenes = [
+        SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),
