@@ -1,0 +1,1 @@
+"""A simple tap interaction."""
