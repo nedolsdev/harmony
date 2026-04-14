@@ -7,16 +7,16 @@ from core.packages.input.interaction import Interaction
 from core.packages.input.processor import InputProcessor
 
 
-class KeyBinding(InputBinding):
+class KeyBinding(InputBinding[float]):
     """A KeyBinding connects input to one or more keys."""
 
     def __init__(
         self,
         key: int,
-        action: InputAction,
-        interaction: Interaction,
+        action: InputAction[float],
+        interaction: Interaction[float],
         *,
-        processors: list[InputProcessor] | None = None,
+        processors: list[InputProcessor[float]] | None = None,
     ) -> None:
         """Initialize the KeyBinding."""
         control = KeyControl(key=key)

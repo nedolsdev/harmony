@@ -7,16 +7,16 @@ from core.packages.input.interaction import Interaction
 from core.packages.input.processor import InputProcessor
 
 
-class MouseClickBinding(InputBinding):
+class MouseClickBinding(InputBinding[float]):
     """A MouseClickBinding connects a button click to an input action."""
 
     def __init__(
         self,
         button_key: int,
-        action: InputAction,
-        interaction: Interaction,
+        action: InputAction[float],
+        interaction: Interaction[float],
         *,
-        processors: list[InputProcessor] | None = None,
+        processors: list[InputProcessor[float]] | None = None,
     ) -> None:
         """Initialize the MouseClickBinding."""
         control = MouseClickControl(key=button_key)

@@ -13,7 +13,7 @@ class ActionMap:
         self.bindings: list[InputBinding] = []
         self.active = True
 
-    def create_action(self, name: str) -> InputAction:
+    def add_action(self, name: str) -> InputAction:
         """Create an InputAction for a given name."""
         input_action = InputAction(name)
         self.actions[input_action.name] = input_action

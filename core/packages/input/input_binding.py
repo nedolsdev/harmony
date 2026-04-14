@@ -3,20 +3,21 @@
 from core.packages.input.control import InputControl
 from core.packages.input.controls.device import Device
 from core.packages.input.input_action import InputAction
+from core.packages.input.input_value import InputValue
 from core.packages.input.interaction import Interaction
 from core.packages.input.processor import InputProcessor
 
 
-class InputBinding:
+class InputBinding[InputValueT: InputValue]:
     """An InputBinding connects an InputAction to one or many Controls."""
 
     def __init__(
         self,
-        control: InputControl,
-        action: InputAction,
-        interaction: Interaction,
+        control: InputControl[InputValueT],
+        action: InputAction[InputValueT],
+        interaction: Interaction[InputValueT],
         *,
-        processors: list[InputProcessor] | None = None,
+        processors: list[InputProcessor[InputValueT]] | None = None,
     ) -> None:
         """Initialize the InputBinding."""
         self.control = control

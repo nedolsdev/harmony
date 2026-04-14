@@ -3,18 +3,20 @@
 from __future__ import annotations
 
 import time
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from core.packages.input.action_phase import ActionPhase
+from core.packages.input.input_value import InputValue
 
-type PhaseCallback = Callable[[InputAction], None]
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
-class InputAction:
+class InputAction[InputValueT: InputValue]:
     """An action that is updated by an input."""
 
     # last value
-    value: float
+    value: InputValueT
 
     def __init__(self, name: str) -> None:
         """Initialize the InputAction."""
@@ -23,9 +25,9 @@ class InputAction:
         self.start_time: float | None = None
 
         # callbacks
-        self._on_started: list[PhaseCallback] = []
-        self._on_performed: list[PhaseCallback] = []
-        self._on_cancelled: list[PhaseCallback] = []
+        self._on_started: list[Callable[[InputAction[InputValueT]], None]] = []
+        self._on_performed: list[Callable[[InputAction[InputValueT]], None]] = []
+        self._on_cancelled: list[Callable[[InputAction[InputValueT]], None]] = []
 
     def start(self) -> None:
         """Start the input action."""
@@ -61,14 +63,14 @@ class InputAction:
         return self.start_time is not None
 
     # callbacks register functions
-    def on_started(self, callback: PhaseCallback) -> None:
+    def on_started(self, callback: Callable[[InputAction[InputValueT]], None]) -> None:
         """Add callback for when InputAction is started."""
         self._on_started.append(callback)
 
-    def on_performed(self, callback: PhaseCallback) -> None:
+    def on_performed(self, callback: Callable[[InputAction[InputValueT]], None]) -> None:
         """Add callback for when InputAction is performed."""
         self._on_performed.append(callback)
 
-    def on_cancelled(self, callback: PhaseCallback) -> None:
+    def on_cancelled(self, callback: Callable[[InputAction[InputValueT]], None]) -> None:
         """Add callback for when InputAction is cancelled."""
         self._on_cancelled.append(callback)

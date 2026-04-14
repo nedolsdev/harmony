@@ -15,7 +15,7 @@ class PressBehavior(Enum):
     PRESS_AND_RELEASE = auto()
 
 
-class PressInteraction(Interaction):
+class PressInteraction(Interaction[float]):
     """A simple press interaction."""
 
     def __init__(self, press_point: float = 0.5, behavior: PressBehavior = PressBehavior.PRESS_ONLY) -> None:

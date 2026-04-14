@@ -1,5 +1,7 @@
 """Input example scene."""
 
+from typing import TYPE_CHECKING
+
 import pygame
 
 from core.packages.input.action_map import ActionMap
@@ -11,13 +13,16 @@ from example_scenes.camera_util import create_camera_game_object
 from game.scene import Scene
 from game.sorting_layer import SortingLayerManager
 
+if TYPE_CHECKING:
+    from core.packages.input.input_action import InputAction
+
 
 def create_gameplay_action_map() -> ActionMap:
     """Create a test input system."""
     gameplay = ActionMap()
 
-    jump = gameplay.create_action("jump")
-    move = gameplay.create_action("move")
+    jump: InputAction[float] = gameplay.add_action("jump")
+    move: InputAction[float] = gameplay.add_action("move")
 
     gameplay.add_binding(KeyBinding(pygame.K_SPACE, jump, PressInteraction()))
     gameplay.add_binding(KeyBinding(pygame.K_w, jump, PressInteraction()))
