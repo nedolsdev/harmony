@@ -1,12 +1,13 @@
 """The Camera component."""
 
+from __future__ import annotations
+
 from typing import override
 
 from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
 from game.error import MissingComponentDependencyError
-from game.event_handler import EventHandler
 
 
 class Viewport:
@@ -45,15 +46,3 @@ class Camera(Behavior):
             raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
-
-    @override
-    def start(self) -> None:
-        """Initialize the sprite component."""
-
-    @override
-    def update(self) -> None:
-        """Update the sprite component."""
-
-    @override
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Add events to the event handler for this component."""

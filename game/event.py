@@ -1,8 +1,13 @@
 """The event module defines events and event listeners for the game."""
 
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 import pygame
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class Event:

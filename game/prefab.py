@@ -1,10 +1,14 @@
 """The prefab module defines the prefab class for the game."""
 
-from typing import TypeVar
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, TypeVar
 
 from game.behavior import Behavior
-from game.component import GameComponent
 from game.object import GameObject
+
+if TYPE_CHECKING:
+    from game.component import GameComponent
 
 T = TypeVar("T", bound=GameObject)
 

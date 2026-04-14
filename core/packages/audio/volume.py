@@ -1,5 +1,7 @@
 """Volume helpers."""
 
+from __future__ import annotations
+
 
 def check_volume(volume: float) -> None:
     """Raise error if volume is out of range."""

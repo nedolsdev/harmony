@@ -1,5 +1,7 @@
 """Detect collisions between two colliders."""
 
+from __future__ import annotations
+
 from collections.abc import Callable
 
 from core.packages.collision.collider import Collider, ColliderType

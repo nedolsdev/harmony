@@ -1,5 +1,7 @@
 """A component that keeps track of time between frames."""
 
+from __future__ import annotations
+
 
 class Singleton(type):
     """An implementation of the Singleton pattern as a 'type' / 'metaclass'."""

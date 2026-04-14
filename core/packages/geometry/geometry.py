@@ -1,9 +1,12 @@
 """The base geometry primitive."""
 
-import math
-from typing import Self
+from __future__ import annotations
 
-from core.packages.geometry.vector2 import Vector2
+import math
+from typing import TYPE_CHECKING, Self
+
+if TYPE_CHECKING:
+    from core.packages.geometry.vector2 import Vector2
 
 
 class Geometry:

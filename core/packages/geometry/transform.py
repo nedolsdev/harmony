@@ -1,11 +1,16 @@
 """Transform utils for different geometries."""
 
-import math
+from __future__ import annotations
 
-from core.components.transform import Transform
+import math
+from typing import TYPE_CHECKING
+
 from core.packages.geometry.circle import Circle
 from core.packages.geometry.polygon import Polygon
 from core.packages.geometry.rectangle import Rectangle
+
+if TYPE_CHECKING:
+    from core.components.transform import Transform
 
 
 def transform_polygon(polygon: Polygon, transform: Transform) -> Polygon:

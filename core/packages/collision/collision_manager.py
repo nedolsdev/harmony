@@ -1,16 +1,18 @@
 """The collision manager controls which collisions need to be checked."""
 
+from __future__ import annotations
+
 from enum import Enum, auto
 from typing import TYPE_CHECKING
 
 from core.packages.collision.collision import Collision
 from core.packages.collision.collision_detector import CollisionDetector
-from core.packages.collision.collision_layer import CollisionLayer
-from core.packages.collision.collision_rule import CollisionRule
 from core.packages.collision.detectors.rect_rect import rect_rect_collision
 
 if TYPE_CHECKING:
     from core.packages.collision.collider import Collider
+    from core.packages.collision.collision_layer import CollisionLayer
+    from core.packages.collision.collision_rule import CollisionRule
 
 
 class CollisionInteraction(Enum):

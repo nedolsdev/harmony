@@ -1,5 +1,7 @@
 """Input example scene."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pygame
@@ -7,15 +9,15 @@ import pygame
 from core.packages.input.action_map import ActionMap
 from core.packages.input.bindings.key_binding import KeyBinding
 from core.packages.input.bindings.mouse_binding import MouseMoveBinding
-from core.packages.input.input_system import InputSystem
 from core.packages.input.interactions.default import DefaultInteraction
 from core.packages.input.interactions.press import PressInteraction
 from example_scenes.camera_util import create_camera_game_object
 from game.scene import Scene
-from game.sorting_layer import SortingLayerManager
 
 if TYPE_CHECKING:
     from core.packages.input.input_action import InputAction
+    from core.packages.input.input_system import InputSystem
+    from game.sorting_layer import SortingLayerManager
 
 
 def create_gameplay_action_map() -> ActionMap:

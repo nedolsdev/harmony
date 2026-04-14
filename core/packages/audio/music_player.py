@@ -1,15 +1,19 @@
 """Music player component."""
 
-from typing import override
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
 
 import pygame
 
-from core.packages.audio.audio_bus import AudioBus
 from core.packages.audio.audio_manager import AudioManager
-from core.packages.audio.music_track import MusicTrack
 from core.packages.audio.volume import check_volume
 from game.component import GameComponent
-from game.event_handler import EventHandler
+
+if TYPE_CHECKING:
+    from core.packages.audio.audio_bus import AudioBus
+    from core.packages.audio.music_track import MusicTrack
+    from game.event_handler import EventHandler
 
 
 class MusicPlayer(GameComponent):

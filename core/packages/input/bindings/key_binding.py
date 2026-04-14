@@ -1,10 +1,16 @@
 """A KeyBinding connects input to one or more keys."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from core.packages.input.controls.key_control import KeyControl
-from core.packages.input.input_action import InputAction
 from core.packages.input.input_binding import InputBinding
-from core.packages.input.interaction import Interaction
-from core.packages.input.processor import InputProcessor
+
+if TYPE_CHECKING:
+    from core.packages.input.input_action import InputAction
+    from core.packages.input.interaction import Interaction
+    from core.packages.input.processor import InputProcessor
 
 
 class KeyBinding(InputBinding[float]):

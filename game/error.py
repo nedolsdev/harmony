@@ -1,5 +1,7 @@
 """Some base errors that are useful for many different parts of the engine."""
 
+from __future__ import annotations
+
 
 class InvalidArgumentCombinationError(RuntimeError):
     """Exception raised when an illegal combination of arguments is used."""

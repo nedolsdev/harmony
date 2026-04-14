@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from game.component import GameComponent
 
 if TYPE_CHECKING:
+    from game.event_handler import EventHandler
     from game.object import GameObject
 
 
@@ -18,3 +19,19 @@ class Behavior(GameComponent):
     def set_owner(self, owner: GameObject) -> None:
         """Set the owner of the behavior."""
         self.game_object = owner
+
+    @override
+    def awake(self) -> None:
+        """Event call when the script instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the sprite component."""
+
+    @override
+    def update(self) -> None:
+        """Update the sprite component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""

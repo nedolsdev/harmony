@@ -1,5 +1,7 @@
 """The image cache module contains the ImageCache class for managing image loading and caching."""
 
+from __future__ import annotations
+
 import logging
 import os
 from collections import OrderedDict

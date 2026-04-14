@@ -12,7 +12,13 @@ dependencies = [
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["FIX002", "TD002"]
+ignore = ["FIX002", "TD002", "D203", "D213"]
 
 [tool.ruff]
 line-length = 120
+
+[lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]

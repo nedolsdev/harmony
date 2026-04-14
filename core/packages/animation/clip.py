@@ -1,9 +1,13 @@
 """An AnimationClip defines the sequence of AnimationFrames played by the animation."""
 
-from typing import TypeVar, override
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
-from game.component import GameComponent
+
+if TYPE_CHECKING:
+    from game.component import GameComponent
 
 T = TypeVar("T", bound=AnimationFrame)
 

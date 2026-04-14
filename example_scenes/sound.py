@@ -1,5 +1,9 @@
 """Sound example scene."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.audio.audio_bus import AudioBus
@@ -15,7 +19,9 @@ from core.packages.geometry.vector2 import Vector2
 from example_scenes.camera_util import create_camera_game_object
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
-from game.sorting_layer import SortingLayerManager
+
+if TYPE_CHECKING:
+    from game.sorting_layer import SortingLayerManager
 
 
 def create_sound_test_scene(window_size: int, layers: SortingLayerManager) -> Scene:

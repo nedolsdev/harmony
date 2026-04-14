@@ -1,6 +1,11 @@
 """Manager for a component's coroutines."""
 
-from core.packages.timing.coroutine import Coroutine
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.packages.timing.coroutine import Coroutine
 
 
 class CoroutineManager:

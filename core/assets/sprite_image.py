@@ -1,5 +1,7 @@
 """A SpriteImage Asset."""
 
+from __future__ import annotations
+
 import pygame
 
 from core.assets.surface_asset import SurfaceAsset

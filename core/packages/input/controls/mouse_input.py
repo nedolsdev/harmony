@@ -1,5 +1,7 @@
 """The reference to the actual input from a mouse."""
 
+from __future__ import annotations
+
 from typing import override
 
 from core.packages.input.control import InputControl

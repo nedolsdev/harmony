@@ -1,7 +1,13 @@
 """A collection of Tiles that can be used to create a TileMap."""
 
-from core.packages.tilemap.tile import Tile
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from game.asset import Asset
+
+if TYPE_CHECKING:
+    from core.packages.tilemap.tile import Tile
 
 
 class TilePalette(Asset):

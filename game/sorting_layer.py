@@ -1,5 +1,7 @@
 """Sorting layer definitions for rendering order in the game."""
 
+from __future__ import annotations
+
 from game.error import DataAlreadyExistsError
 
 

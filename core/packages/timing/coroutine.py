@@ -1,5 +1,7 @@
 """Coroutine base class."""
 
+from __future__ import annotations
+
 from collections.abc import Generator
 
 from core.packages.timing.yield_instruction import YieldInstruction

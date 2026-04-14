@@ -1,5 +1,9 @@
 """Rotation example scene."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from agent_world.components.rotate_around import RotateAround
 from core.components.render_layer import RenderLayer
 from core.components.sprite_2d import Sprite2D
@@ -10,7 +14,9 @@ from example_scenes.camera_util import create_camera_game_object
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
-from game.sorting_layer import SortingLayerManager
+
+if TYPE_CHECKING:
+    from game.sorting_layer import SortingLayerManager
 
 
 def create_rotation_scene(window_size: int, layers: SortingLayerManager) -> Scene:

@@ -1,15 +1,19 @@
 """2D line component."""
 
-from typing import override
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
 
 import pygame
 
 from core.components.render import Render
-from core.components.transform import Transform
-from core.packages.camera.camera_component import Camera
-from core.packages.geometry.vector2 import Vector2
-from game.event_handler import EventHandler
-from game.material import Material
+
+if TYPE_CHECKING:
+    from core.components.transform import Transform
+    from core.packages.camera.camera_component import Camera
+    from core.packages.geometry.vector2 import Vector2
+    from game.event_handler import EventHandler
+    from game.material import Material
 
 
 class Line2D(Render):
@@ -73,7 +77,7 @@ class Line2D(Render):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
-    def copy(self) -> "Line2D":
+    def copy(self) -> Line2D:
         """Create a copy of the Line2D component."""
         return Line2D(
             start=self.start_pos,

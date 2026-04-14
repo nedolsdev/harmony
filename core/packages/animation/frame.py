@@ -1,6 +1,11 @@
 """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
-from core.packages.geometry.vector2 import Vector2
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.packages.geometry.vector2 import Vector2
 
 
 class AnimationFrame:

@@ -1,5 +1,7 @@
 """Wait for a given number of frames."""
 
+from __future__ import annotations
+
 from core.packages.timing.yield_instruction import YieldInstruction
 
 

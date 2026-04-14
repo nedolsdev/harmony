@@ -1,5 +1,7 @@
 """The game runner module runs the renderer and handles the main game loop."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pygame
@@ -7,14 +9,16 @@ import pygame
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.input.controls.devices.keyboard import PygameKeyboard
 from core.packages.input.controls.devices.mouse import PygameMouse
-from core.packages.input.input_system import InputSystem
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
-from game.event_handler import EventHandler
-from game.render_pipeline import RenderPipeline
-from game.scene import Scene
-from game.scene_manager import SceneManager
+
+if TYPE_CHECKING:
+    from core.packages.input.input_system import InputSystem
+    from game.event_handler import EventHandler
+    from game.render_pipeline import RenderPipeline
+    from game.scene import Scene
+    from game.scene_manager import SceneManager
 
 if TYPE_CHECKING:
     from core.packages.input.controls.device import Device

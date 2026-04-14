@@ -1,8 +1,13 @@
 """The event handler module manages input events for the game."""
 
-from collections.abc import Callable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from game.event import Event, EventListener
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class EventHandler:

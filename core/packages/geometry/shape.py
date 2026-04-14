@@ -1,7 +1,13 @@
 """The shape geometry primitive."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from core.packages.geometry.geometry import Geometry
-from core.packages.geometry.vector2 import Vector2
+
+if TYPE_CHECKING:
+    from core.packages.geometry.vector2 import Vector2
 
 
 class Shape(Geometry):

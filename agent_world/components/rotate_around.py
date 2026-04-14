@@ -3,13 +3,9 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING
 
 from core.components.transform import Transform
 from game.behavior import Behavior
-
-if TYPE_CHECKING:
-    from game.event_handler import EventHandler
 
 
 class RotateAround(Behavior):
@@ -29,15 +25,9 @@ class RotateAround(Behavior):
         """Event call when the script instance is created."""
         self.transform = self.game_object.get_component(Transform)
 
-    def start(self) -> None:
-        """Initialize the rotate around behavior."""
-
     def update(self) -> None:
         """Update the rotate around behavior."""
         self.transform.local_rotation += math.radians(self.angular_speed)
-
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Register rotate event listeners with the event handler."""
 
     def copy(self) -> RotateAround:
         """Create a copy of the rotate around behavior."""

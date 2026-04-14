@@ -1,5 +1,7 @@
 """Coroutine decorator."""
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from functools import wraps
 from typing import ParamSpec

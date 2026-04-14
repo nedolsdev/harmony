@@ -1,9 +1,15 @@
 """Rect/Rect collision detection."""
 
-from core.packages.collision.collider_rect import ColliderRect
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from core.packages.collision.collision import Collision
 from core.packages.collision.collision_detector import CollisionDetector
-from core.packages.geometry.vector2 import Vector2
+
+if TYPE_CHECKING:
+    from core.packages.collision.collider_rect import ColliderRect
+    from core.packages.geometry.vector2 import Vector2
 
 
 def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision | None:

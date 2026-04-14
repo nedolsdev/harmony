@@ -1,11 +1,15 @@
 """A surface asset can return a pygame Surface to render."""
 
-from abc import abstractmethod
+from __future__ import annotations
 
-import pygame
+from abc import abstractmethod
+from typing import TYPE_CHECKING
 
 from core.packages.geometry.vector2 import Vector2
 from game.asset import Asset
+
+if TYPE_CHECKING:
+    import pygame
 
 
 class SurfaceAsset(Asset):

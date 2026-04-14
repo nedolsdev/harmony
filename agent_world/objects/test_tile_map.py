@@ -1,5 +1,7 @@
 """Test tile map."""
 
+from __future__ import annotations
+
 import random
 from typing import Literal
 

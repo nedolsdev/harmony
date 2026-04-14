@@ -1,5 +1,7 @@
 """Play sound on start test component."""
 
+from __future__ import annotations
+
 from typing import override
 
 from core.components.transform import Transform
@@ -7,7 +9,6 @@ from core.packages.audio.audio_source import AudioSource
 from core.packages.geometry.vector2 import Vector2
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
-from game.event_handler import EventHandler
 
 
 class PlaySoundTest(Behavior):
@@ -59,7 +60,3 @@ class PlaySoundTest(Behavior):
             self.move_direction = 1
 
         self.transform.local_position = self.point1 + (self.point2 - self.point1) * self.t
-
-    @override
-    def add_events(self, event_handler: EventHandler) -> None:
-        """Add events to the event handler for this component."""

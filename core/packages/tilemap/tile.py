@@ -1,10 +1,16 @@
 """A Tile is a cell of a TileMap."""
 
-import pygame
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from core.assets.surface_asset import ScalableSurfaceAsset
-from core.packages.geometry.vector2 import Vector2
-from game.material import Material
+
+if TYPE_CHECKING:
+    import pygame
+
+    from core.packages.geometry.vector2 import Vector2
+    from game.material import Material
 
 
 class Tile(ScalableSurfaceAsset):

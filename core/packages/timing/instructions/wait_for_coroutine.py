@@ -1,7 +1,13 @@
 """Wait for another coroutine to be complete."""
 
-from core.packages.timing.coroutine import Coroutine
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from core.packages.timing.yield_instruction import YieldInstruction
+
+if TYPE_CHECKING:
+    from core.packages.timing.coroutine import Coroutine
 
 
 class WaitForCoroutine(YieldInstruction):

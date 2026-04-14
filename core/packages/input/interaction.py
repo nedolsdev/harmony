@@ -1,9 +1,14 @@
 """An interaction is a specific input pattern."""
 
-from abc import abstractmethod
+from __future__ import annotations
 
-from core.packages.input.input_action import InputAction
+from abc import abstractmethod
+from typing import TYPE_CHECKING
+
 from core.packages.input.input_value import InputValue
+
+if TYPE_CHECKING:
+    from core.packages.input.input_action import InputAction
 
 
 class Interaction[InputValueT: InputValue]:
