@@ -4,6 +4,7 @@ from core.packages.input.control import InputControl
 from core.packages.input.controls.device import Device
 from core.packages.input.input_action import InputAction
 from core.packages.input.interaction import Interaction
+from core.packages.input.processor import InputProcessor
 
 
 class InputBinding:
@@ -14,11 +15,15 @@ class InputBinding:
         control: InputControl,
         action: InputAction,
         interaction: Interaction,
+        *,
+        processors: list[InputProcessor] | None = None,
     ) -> None:
         """Initialize the InputBinding."""
         self.control = control
         self.action = action
         self.interaction = interaction
+
+        self.processors = processors or []
 
     def update(self, devices: list[Device]) -> None:
         """Update the binding."""
@@ -28,7 +33,13 @@ class InputBinding:
             msg = f"Could not find suitable device for input binding '{self}'"
             raise ValueError(msg)
 
-        input_value = self.control.read_value(best_device)
+        raw_value = self.control.read_value(best_device)
+
+        input_value = raw_value
+
+        for processor in self.processors:
+            input_value = processor.process(input_value)
+
         self.action.value = input_value
         self.interaction.process(self.action, input_value=input_value)
 
