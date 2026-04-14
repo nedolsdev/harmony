@@ -3,9 +3,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from typing import TYPE_CHECKING
+
 import pygame
 
 from core.packages.audio.audio_manager import AudioManager
+from core.packages.input.controls.devices.keyboard import PygameKeyboard
+from core.packages.input.controls.devices.mouse import PygameMouse
+from core.packages.input.input_system import InputSystem
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
@@ -15,6 +20,9 @@ if TYPE_CHECKING:
     from game.render_pipeline import RenderPipeline
     from game.scene import Scene
     from game.scene_manager import SceneManager
+
+if TYPE_CHECKING:
+    from core.packages.input.controls.device import Device
 
 
 class NoActiveSceneError(RuntimeError):
@@ -31,6 +39,7 @@ class Runner:
         render_pipeline: RenderPipeline,
         event_handler: EventHandler,
         scene_manager: SceneManager,
+        input_system: InputSystem,
     ) -> None:
         """Initialize the runner with a renderer and an event handler."""
         self.renderer = render_pipeline
@@ -50,18 +59,37 @@ class Runner:
         # delta time
         self.delta_time = DeltaTime()
 
+        # inputs
+        self.input_system = input_system
+
+        # basic pygame devices (maybe temp)
+        self.keyboard: PygameKeyboard = PygameKeyboard()
+        self.mouse: PygameMouse = PygameMouse()
+
+        # devices
+        self.devices: list[Device] = [self.keyboard, self.mouse]
+
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
         events: list[Event] = []
 
-        for event in pygame.event.get():
+        pygame_events = pygame.event.get()
+
+        for event in pygame_events:
             # check if event is a keydown event
             if event.type == pygame.KEYDOWN:
-                events.append(PygameKeydownEvent(event))
+                key_down_event = PygameKeydownEvent(event)
+                events.append(key_down_event)
             else:
                 events.append(PygameEvent(event))
 
         self.event_handler.handle_events(events)
+
+        # TODO: Refactor this out later  # noqa: TD003
+        self.keyboard.events = pygame_events
+        self.mouse.events = pygame_events
+        # update the inputs
+        self.input_system.update(self.devices)
 
         # update audio manager
         AudioManager().update()
@@ -77,6 +105,9 @@ class Runner:
 
         for game_object in objs:
             game_object.update_coroutines()
+
+        # late update
+        self.input_system.late_update()
 
         if not self.running:
             return
