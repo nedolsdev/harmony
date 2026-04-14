@@ -6,6 +6,7 @@ import pygame
 
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.input.controls.devices.keyboard import PygameKeyboard
+from core.packages.input.controls.devices.mouse import PygameMouse
 from core.packages.input.input_system import InputSystem
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
@@ -56,11 +57,12 @@ class Runner:
         # inputs
         self.input_system = input_system
 
-        # keyboard
+        # basic pygame devices (maybe temp)
         self.keyboard: PygameKeyboard = PygameKeyboard()
+        self.mouse: PygameMouse = PygameMouse()
 
         # devices
-        self.devices: list[Device] = [self.keyboard]
+        self.devices: list[Device] = [self.keyboard, self.mouse]
 
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
@@ -80,6 +82,7 @@ class Runner:
 
         # TODO: Refactor this out later  # noqa: TD003
         self.keyboard.events = pygame_events
+        self.mouse.events = pygame_events
         # update the inputs
         self.input_system.update(self.devices)
 

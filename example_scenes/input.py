@@ -4,6 +4,7 @@ import pygame
 
 from core.packages.input.action_map import ActionMap
 from core.packages.input.bindings.key_binding import KeyBinding
+from core.packages.input.bindings.mouse_binding import MouseClickBinding
 from core.packages.input.input_system import InputSystem
 from core.packages.input.interactions.press import PressInteraction
 from example_scenes.camera_util import create_camera_game_object
@@ -20,6 +21,8 @@ def create_gameplay_action_map() -> ActionMap:
 
     gameplay.add_binding(KeyBinding(pygame.K_SPACE, jump, PressInteraction()))
     gameplay.add_binding(KeyBinding(pygame.K_w, jump, PressInteraction()))
+
+    gameplay.add_binding(MouseClickBinding(pygame.BUTTON_LEFT, move, PressInteraction()))
 
     jump.on_performed(lambda action: print("jump performed"))  # noqa: ARG005, T201
     move.on_performed(lambda action: print(f"move: {action.value}"))  # noqa: T201
