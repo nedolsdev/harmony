@@ -1,11 +1,16 @@
 """Some MouseBindings that connects an InputAction to inputs on a mouse."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from core.packages.input.controls.mouse_control import MouseClickControl, MouseMoveControl, MouseScrollControl
-from core.packages.input.input_action import InputAction
 from core.packages.input.input_binding import InputBinding
-from core.packages.input.interaction import Interaction
 from core.packages.input.interactions.default import DefaultInteraction
-from core.packages.input.processor import InputProcessor
+
+if TYPE_CHECKING:
+    from core.packages.input.input_action import InputAction
+    from core.packages.input.interaction import Interaction
+    from core.packages.input.processor import InputProcessor
 
 
 class MouseClickBinding(InputBinding[float]):

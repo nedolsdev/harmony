@@ -1,10 +1,13 @@
 """A simple press interaction."""
+from __future__ import annotations
 
 from enum import Enum, auto
-from typing import override
+from typing import TYPE_CHECKING, override
 
-from core.packages.input.input_action import InputAction
 from core.packages.input.interaction import Interaction
+
+if TYPE_CHECKING:
+    from core.packages.input.input_action import InputAction
 
 
 class PressBehavior(Enum):

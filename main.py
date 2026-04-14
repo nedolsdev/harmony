@@ -50,8 +50,8 @@ def main() -> None:
     game = Runner(renderer, event_handler, scene_manager, input_system)
 
     scenes = [
-        SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, input_system)),
+        SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),

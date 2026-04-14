@@ -1,4 +1,5 @@
 """A simple input processor that inverts the input."""
+from __future__ import annotations
 
 from core.packages.input.processor import InputProcessor
 

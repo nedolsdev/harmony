@@ -1,4 +1,5 @@
 """The reference to the actual input on a keyboard."""
+from __future__ import annotations
 
 from typing import override
 

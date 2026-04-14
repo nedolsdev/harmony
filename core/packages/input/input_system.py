@@ -1,7 +1,12 @@
 """The central controller for the input system."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from core.packages.input.action_map import ActionMap
-from core.packages.input.controls.device import Device
+
+if TYPE_CHECKING:
+    from core.packages.input.controls.device import Device
 
 
 class InputSystem:

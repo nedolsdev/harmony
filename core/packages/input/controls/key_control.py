@@ -1,9 +1,12 @@
 """A control defined as a key on a keyboard."""
+from __future__ import annotations
 
-from typing import override
+from typing import TYPE_CHECKING, override
 
-from core.packages.input.controls.devices.keyboard import Keyboard
 from core.packages.input.controls.keyboard_input import KeyboardInputControl
+
+if TYPE_CHECKING:
+    from core.packages.input.controls.devices.keyboard import Keyboard
 
 
 class KeyControl(KeyboardInputControl):

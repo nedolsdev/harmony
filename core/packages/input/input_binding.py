@@ -1,11 +1,16 @@
 """An InputBinding connects an InputAction to one or many Controls."""
+from __future__ import annotations
 
-from core.packages.input.control import InputControl
-from core.packages.input.controls.device import Device
-from core.packages.input.input_action import InputAction
+from typing import TYPE_CHECKING
+
 from core.packages.input.input_value import InputValue
-from core.packages.input.interaction import Interaction
-from core.packages.input.processor import InputProcessor
+
+if TYPE_CHECKING:
+    from core.packages.input.control import InputControl
+    from core.packages.input.controls.device import Device
+    from core.packages.input.input_action import InputAction
+    from core.packages.input.interaction import Interaction
+    from core.packages.input.processor import InputProcessor
 
 
 class InputBinding[InputValueT: InputValue]:

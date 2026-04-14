@@ -1,9 +1,12 @@
 """Some different mouse controls."""
+from __future__ import annotations
 
-from typing import override
+from typing import TYPE_CHECKING, override
 
-from core.packages.input.controls.devices.mouse import Mouse
 from core.packages.input.controls.mouse_input import MouseInputControl
+
+if TYPE_CHECKING:
+    from core.packages.input.controls.devices.mouse import Mouse
 
 
 class MouseClickControl(MouseInputControl[bool]):
