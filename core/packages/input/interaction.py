@@ -1,4 +1,5 @@
 """An interaction is a specific input pattern."""
+
 from __future__ import annotations
 
 from abc import abstractmethod

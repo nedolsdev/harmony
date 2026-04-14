@@ -1,4 +1,5 @@
 """The event handler module manages input events for the game."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

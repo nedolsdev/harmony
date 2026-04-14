@@ -1,4 +1,5 @@
 """Some MouseBindings that connects an InputAction to inputs on a mouse."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

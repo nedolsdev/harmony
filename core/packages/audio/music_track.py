@@ -1,4 +1,5 @@
 """Music track asset."""
+
 from __future__ import annotations
 
 from game.asset import Asset

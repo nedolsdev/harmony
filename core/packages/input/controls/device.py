@@ -1,4 +1,5 @@
 """A device that can record inputs."""
+
 from __future__ import annotations
 
 from enum import Enum, auto

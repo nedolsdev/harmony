@@ -1,4 +1,5 @@
 """An AnimationClip defines the sequence of AnimationFrames played by the animation."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, TypeVar, override

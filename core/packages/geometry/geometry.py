@@ -1,4 +1,5 @@
 """The base geometry primitive."""
+
 from __future__ import annotations
 
 import math

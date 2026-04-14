@@ -1,4 +1,5 @@
 """An action map defines a set of related input actions."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

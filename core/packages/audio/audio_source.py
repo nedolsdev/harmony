@@ -1,4 +1,5 @@
 """Audio source component plays and controls an AudioClip."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, override

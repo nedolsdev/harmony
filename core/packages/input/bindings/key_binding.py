@@ -1,4 +1,5 @@
 """A KeyBinding connects input to one or more keys."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

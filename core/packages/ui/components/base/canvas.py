@@ -1,4 +1,5 @@
 """Basic Canvas component for the UI package."""
+
 from __future__ import annotations
 
 from enum import Enum, auto

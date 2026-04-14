@@ -1,4 +1,5 @@
 """A material module that defines a simple material class for rendering."""
+
 from __future__ import annotations
 
 import numpy as np

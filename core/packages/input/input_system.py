@@ -1,4 +1,5 @@
 """The central controller for the input system."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

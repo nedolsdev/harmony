@@ -1,4 +1,5 @@
 """An InputBinding connects an InputAction to one or many Controls."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

@@ -1,4 +1,5 @@
 """Represents the current scene of the game, managing game objects within it."""
+
 from __future__ import annotations
 
 from typing import TypeVar

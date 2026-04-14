@@ -1,4 +1,5 @@
 """Music player component."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, override

@@ -1,4 +1,5 @@
 """Something that can be dirtied (usually by Transform)."""
+
 from __future__ import annotations
 
 

@@ -1,4 +1,5 @@
 """A component that keeps track of time between frames."""
+
 from __future__ import annotations
 
 

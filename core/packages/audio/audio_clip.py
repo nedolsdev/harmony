@@ -1,4 +1,5 @@
 """Audio clip asset."""
+
 from __future__ import annotations
 
 import pygame

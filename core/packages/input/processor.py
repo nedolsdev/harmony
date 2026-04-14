@@ -1,4 +1,5 @@
 """An input processor modifies the data from a control."""
+
 from __future__ import annotations
 
 from core.packages.input.input_value import InputValue

@@ -1,4 +1,5 @@
 """A control defined as a key on a keyboard."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, override

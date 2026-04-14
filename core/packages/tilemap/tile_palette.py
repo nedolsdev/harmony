@@ -1,4 +1,5 @@
 """A collection of Tiles that can be used to create a TileMap."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

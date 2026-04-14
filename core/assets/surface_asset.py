@@ -1,4 +1,5 @@
 """A surface asset can return a pygame Surface to render."""
+
 from __future__ import annotations
 
 from abc import abstractmethod

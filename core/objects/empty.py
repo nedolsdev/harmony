@@ -1,4 +1,5 @@
 """An empty object."""
+
 from __future__ import annotations
 
 from game.object import GameObject
