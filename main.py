@@ -4,6 +4,7 @@ import pygame
 from rich.traceback import install
 
 from core.packages.audio.audio_manager import AudioManager
+from core.packages.input.input_system import InputSystem
 from example_scenes.collision import create_collision_scene
 from example_scenes.input import create_input_scene
 from example_scenes.rotation import create_rotation_scene
@@ -40,11 +41,13 @@ def main() -> None:
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)
 
+    input_system = InputSystem()
+
     scene_manager = SceneManager()
-    game = Runner(renderer, event_handler, scene_manager)
+    game = Runner(renderer, event_handler, scene_manager, input_system)
 
     scenes = [
-        SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, game)),
+        SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, input_system)),
         SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),

@@ -33,6 +33,7 @@ class Runner:
         render_pipeline: RenderPipeline,
         event_handler: EventHandler,
         scene_manager: SceneManager,
+        input_system: InputSystem,
     ) -> None:
         """Initialize the runner with a renderer and an event handler."""
         self.renderer = render_pipeline
@@ -53,7 +54,7 @@ class Runner:
         self.delta_time = DeltaTime()
 
         # inputs
-        self.input_system = InputSystem()
+        self.input_system = input_system
 
         # keyboard
         self.keyboard: PygameKeyboard = PygameKeyboard()
