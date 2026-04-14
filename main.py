@@ -5,6 +5,7 @@ from rich.traceback import install
 
 from core.packages.audio.audio_manager import AudioManager
 from example_scenes.collision import create_collision_scene
+from example_scenes.input import create_input_scene
 from example_scenes.rotation import create_rotation_scene
 from example_scenes.sound import create_sound_test_scene
 from example_scenes.tile_map import create_tile_map_scene
@@ -40,7 +41,10 @@ def main() -> None:
     renderer.sorting_layers.create_layer("UI", 100)
 
     scene_manager = SceneManager()
+    game = Runner(renderer, event_handler, scene_manager)
+
     scenes = [
+        SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, game)),
         SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),
@@ -50,8 +54,6 @@ def main() -> None:
 
     for scene in scenes:
         scene_manager.add_scene(scene)
-
-    game = Runner(renderer, event_handler, scene_manager)
 
     EngineLogger.setup()
 

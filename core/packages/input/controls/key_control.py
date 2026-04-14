@@ -2,12 +2,11 @@
 
 from typing import override
 
-from core.packages.input.control import InputControl
-from core.packages.input.controls.device import Device, DeviceType
 from core.packages.input.controls.devices.keyboard import Keyboard
+from core.packages.input.controls.keyboard_input import KeyboardInputControl
 
 
-class KeyControl(InputControl):
+class KeyControl(KeyboardInputControl):
     """A control defined as a key on a keyboard."""
 
     def __init__(self, key: int) -> None:
@@ -16,9 +15,6 @@ class KeyControl(InputControl):
         self.key = key
 
     @override
-    def read_value(self, device: Device) -> bool:
+    def read_value_from_keyboard(self, keyboard: Keyboard) -> bool:
         """Read the value of the input."""
-        if device.device_type != DeviceType.KEYBOARD or not isinstance(device, Keyboard):
-            msg = "Tried to read KeyControl from non-keyboard device."
-            raise ValueError(msg)
-        return device.key_state[self.key]
+        return keyboard.key_state.get(self.key, False)
