@@ -36,6 +36,10 @@ class RenderPipeline:
         self.sorting_layers = SortingLayerManager()
         pygame.display.set_caption(title)
 
+    def get_screen_size(self) -> tuple[int, int]:
+        """Get the screen size."""
+        return self.screen.size
+
     def fullscreen(self) -> None:
         """Turn on fullscreen."""
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)

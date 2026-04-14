@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from game.sorting_layer import SortingLayerManager
 
 
-def create_main_scene(window_size: int, layers: SortingLayerManager) -> Scene:
+def create_main_scene(window_size: tuple[int, int], layers: SortingLayerManager) -> Scene:
     """Return the main scene for the evolution game."""
     scene = Scene()
 
@@ -27,8 +27,8 @@ def create_main_scene(window_size: int, layers: SortingLayerManager) -> Scene:
         .add_component(
             Camera(
                 Viewport(
-                    window_size,
-                    window_size,
+                    window_size[0],
+                    window_size[1],
                 ),
             ),
         )

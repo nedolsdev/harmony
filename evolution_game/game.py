@@ -25,14 +25,13 @@ def create_evolution_game() -> Runner:
 
     event_handler = EventHandler()
 
-    window_size = 640
-
     renderer = RenderPipeline(
         title="Evolution Game",
-        window_width=window_size,
-        window_height=window_size,
+        window_width=1080,
+        window_height=920,
         fullscreen=True,
     )
+
     renderer.sorting_layers.create_layer("Background", 0)
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)
@@ -42,7 +41,7 @@ def create_evolution_game() -> Runner:
     scene_manager = SceneManager()
 
     scenes = [
-        SimpleLazyScene("Main Scene", lambda: create_main_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene("Main Scene", lambda: create_main_scene(renderer.get_screen_size(), renderer.sorting_layers)),
     ]
 
     for scene in scenes:
