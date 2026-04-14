@@ -24,11 +24,27 @@ class NoCameraError(RuntimeError):
 class RenderPipeline:
     """Handles rendering of the game."""
 
-    def __init__(self, title: str, window_width: int, window_height: int) -> None:
+    def __init__(self, title: str, window_width: int, window_height: int, *, fullscreen: bool = False) -> None:
         """Initialize the renderer."""
-        self.screen = pygame.display.set_mode((window_width, window_height))
+        if fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((window_width, window_height))
+
+        self.target_window_size = (window_width, window_height)
+
         self.sorting_layers = SortingLayerManager()
         pygame.display.set_caption(title)
+
+    def fullscreen(self) -> None:
+        """Turn on fullscreen."""
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+    def exit_fullscreen(self, *, window_width: int | None = None, window_height: int | None = None) -> None:
+        """Exit fullscreen."""
+        self.screen = pygame.display.set_mode(
+            (window_width or self.target_window_size[0], window_height or self.target_window_size[1]),
+        )
 
     def draw_objects(self, objects: list[GameObject], cameras: list[Camera]) -> None:
         """Draw game objects on the screen."""

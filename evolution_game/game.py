@@ -27,7 +27,12 @@ def create_evolution_game() -> Runner:
 
     window_size = 640
 
-    renderer = RenderPipeline(title="Evolution Game", window_width=window_size, window_height=window_size)
+    renderer = RenderPipeline(
+        title="Evolution Game",
+        window_width=window_size,
+        window_height=window_size,
+        fullscreen=True,
+    )
     renderer.sorting_layers.create_layer("Background", 0)
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)
