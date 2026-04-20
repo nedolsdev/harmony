@@ -59,6 +59,12 @@ class GameComponent:
         msg = f"'{self.__class__.__name__}' does not implement 'add_events' method."
         raise NotImplementedError(msg)
 
+    @abstractmethod
+    def fixed_update(self) -> None:
+        """Update the component in the physics / fixed loop."""
+        msg = f"'{self.__class__.__name__}' does not implement 'fixed_update' method."
+        raise NotImplementedError(msg)
+
     def activate(self) -> None:
         """Activate the component."""
         self.active = True

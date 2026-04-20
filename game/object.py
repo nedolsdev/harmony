@@ -127,6 +127,11 @@ class GameObject:
         for component in self.components:
             component.update()
 
+    def fixed_update(self) -> None:
+        """Update the game object's physics / fixed loop by updating its components."""
+        for component in self.components:
+            component.update()
+
     def update_coroutines(self) -> None:
         """Update the coroutines for each component."""
         for component in self.components:

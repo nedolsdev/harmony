@@ -9,6 +9,7 @@ from core.packages.audio.audio_manager import AudioManager
 from core.packages.input.input_system import InputSystem
 from example_scenes.collision import create_collision_scene
 from example_scenes.input import create_input_scene
+from example_scenes.physics import create_physics_scene
 from example_scenes.rotation import create_rotation_scene
 from example_scenes.sound import create_sound_test_scene
 from example_scenes.tile_map import create_tile_map_scene
@@ -50,6 +51,7 @@ def main() -> None:
     game = Runner(renderer, event_handler, scene_manager, input_system)
 
     scenes = [
+        SimpleLazyScene("Physics Scene", lambda: create_physics_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, input_system)),
         SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),

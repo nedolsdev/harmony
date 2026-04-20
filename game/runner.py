@@ -39,6 +39,8 @@ class Runner:
         event_handler: EventHandler,
         scene_manager: SceneManager,
         input_system: InputSystem,
+        *,
+        max_fixed_update_calls: int = 5,
     ) -> None:
         """Initialize the runner with a renderer and an event handler."""
         self.renderer = render_pipeline
@@ -67,6 +69,9 @@ class Runner:
 
         # devices
         self.devices: list[Device] = [self.keyboard, self.mouse]
+
+        # max fixed update calls
+        self.max_fixed_update_calls = max_fixed_update_calls
 
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
@@ -99,6 +104,13 @@ class Runner:
         # update all game objects
         objs = scene.get_flattened_game_objects()
 
+        # run the fixed update
+        fixed_update_calls = self.get_number_of_fixed_update_calls()
+
+        for _ in range(fixed_update_calls):
+            for game_object in objs:
+                game_object.fixed_update()
+
         for game_object in objs:
             game_object.update()
 
@@ -114,6 +126,12 @@ class Runner:
         self.renderer.draw_frame(scene)
         dt = self.clock.tick(self.FPS) / 1000.0
         self.delta_time.set(dt)
+
+    def get_number_of_fixed_update_calls(self) -> int:
+        """Get the number of fixed update calls for a given frame."""
+        # TODO: Actually compute the number of calls based on the unscaled? delta time  # noqa: TD003
+        number_of_calls = 1
+        return max(number_of_calls, self.max_fixed_update_calls)
 
     def stop(self) -> None:
         """Stop the runner."""

@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import math
+from typing import override
 
 from core.packages.geometry.vector2 import Vector2
+from core.packages.timing.delta_time import DeltaTime
+from game.behavior import Behavior
 
 
-class RigidBody2D:
+class RigidBody2D(Behavior):
     """RigidBody2D component."""
 
     EPSILON = 1e-5
@@ -27,6 +30,7 @@ class RigidBody2D:
         moment_of_inertia: float | None = None,
     ) -> None:
         """RigidBody2D component."""
+        super().__init__(disallow_multiple_of_type=True, disallow_multiple_of_exact_type=True)
         self._mass: float = 0.0
         self.inverse_mass: float = 0.0
 
@@ -75,8 +79,11 @@ class RigidBody2D:
         if value == 0.0:
             self.angular_velocity = 0.0
 
-    def update(self, dt: float) -> None:
+    @override
+    def fixed_update(self) -> None:
         """Advance the rigid body by dt seconds using semi-implicit Euler."""
+        dt = DeltaTime.get_delta_time()
+
         self.acceleration = self.force * self.inverse_mass
         self.velocity += self.acceleration * dt
 
