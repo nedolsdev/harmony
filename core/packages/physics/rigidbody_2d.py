@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from typing import override
 
+from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
@@ -19,8 +20,6 @@ class RigidBody2D(Behavior):
         self,
         *,
         mass: float | None = None,
-        position: Vector2 | None = None,
-        rotation: float | None = None,
         velocity: Vector2 | None = None,
         acceleration: Vector2 | None = None,
         angular_velocity: float | None = None,
@@ -40,8 +39,6 @@ class RigidBody2D(Behavior):
         self.mass = mass or 0.0
         self.moment_of_inertia = moment_of_inertia or 0.0
 
-        self.position: Vector2 = position or Vector2.zero()
-        self.rotation: float = rotation or 0
         self.velocity: Vector2 = velocity or Vector2.zero()
         self.acceleration: Vector2 = acceleration or Vector2.zero()
         self.angular_velocity: float = angular_velocity or 0
@@ -82,6 +79,16 @@ class RigidBody2D(Behavior):
     @override
     def fixed_update(self) -> None:
         """Advance the rigid body by dt seconds using semi-implicit Euler."""
+        # TODO: Fix with explicit dependency  # noqa: TD003
+        if not self.game_object.has_component(Transform):
+            msg = "A GameObject with RigidBody2D requires a Transform."
+            raise ValueError(msg)
+
+        # sync from transform
+        transform = self.game_object.get_component(Transform)
+        position = transform.world_position
+        rotation = transform.world_rotation
+
         dt = DeltaTime.get_delta_time()
 
         self.acceleration = self.force * self.inverse_mass
@@ -94,7 +101,7 @@ class RigidBody2D(Behavior):
         if self.velocity.magnitude_squared() < self.EPSILON:
             self.velocity = Vector2.zero()
 
-        self.position += self.velocity * dt
+        position += self.velocity * dt
 
         angular_acceleration = self.torque * self.inverse_inertia
         self.angular_velocity += angular_acceleration * dt
@@ -106,7 +113,11 @@ class RigidBody2D(Behavior):
         if abs(self.angular_velocity) < self.EPSILON:
             self.angular_velocity = 0.0
 
-        self.rotation += self.angular_velocity * dt
+        rotation += self.angular_velocity * dt
+
+        # resync transform
+        transform.world_position = position
+        transform.world_rotation = rotation
 
         self.force = Vector2.zero()
         self.torque = 0.0
@@ -119,7 +130,14 @@ class RigidBody2D(Behavior):
         """Apply force at world-space point."""
         self.force += force
 
-        offset: Vector2 = point - (self.position + self.center_of_mass)
+        if not self.game_object.has_component(Transform):
+            msg = "A GameObject with RigidBody2D requires a Transform."
+            raise ValueError(msg)
+
+        transform = self.game_object.get_component(Transform)
+        position = transform.world_position
+
+        offset: Vector2 = point - (position + self.center_of_mass)
         self.torque += offset.x * force.y - offset.y * force.x
 
     def apply_torque(self, torque: float) -> None:

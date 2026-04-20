@@ -131,7 +131,7 @@ class Runner:
         """Get the number of fixed update calls for a given frame."""
         # TODO: Actually compute the number of calls based on the unscaled? delta time  # noqa: TD003
         number_of_calls = 1
-        return max(number_of_calls, self.max_fixed_update_calls)
+        return min(number_of_calls, self.max_fixed_update_calls)
 
     def stop(self) -> None:
         """Stop the runner."""

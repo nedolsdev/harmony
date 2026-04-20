@@ -27,10 +27,10 @@ def create_physics_scene(window_size: int, layers: SortingLayerManager) -> Scene
 
     square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform())
+        .add_component(Transform(Vector2(100, 100)))
         .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
         .add_component(RenderLayer(default_layer))
-        .add_component(RigidBody2D(velocity=Vector2(10, 0), position=Vector2(200, 200)))
+        .add_component(RigidBody2D(velocity=Vector2(10, 0)))
         .build()
     )
 

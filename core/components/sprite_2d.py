@@ -55,6 +55,10 @@ class Sprite2D(Render):
         """Update the sprite component."""
 
     @override
+    def fixed_update(self) -> None:
+        """Update the sprite component in the physics / fixed loop."""
+
+    @override
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 

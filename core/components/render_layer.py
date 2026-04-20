@@ -38,6 +38,9 @@ class RenderLayer(GameComponent):
     def update(self) -> None:
         """Update the render layer component."""
 
+    def fixed_update(self) -> None:
+        """Update the render layer component in the physics / fixed loop."""
+
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
