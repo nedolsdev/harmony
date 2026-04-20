@@ -9,6 +9,7 @@ from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
+from core.packages.physics.physics_test import PhysicsTest
 from core.packages.physics.rigidbody_2d import RigidBody2D
 from example_scenes.camera_util import create_camera_game_object
 from game.material import ColorMaterial
@@ -30,7 +31,8 @@ def create_physics_scene(window_size: int, layers: SortingLayerManager) -> Scene
         .add_component(Transform(Vector2(100, 100)))
         .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
         .add_component(RenderLayer(default_layer))
-        .add_component(RigidBody2D(velocity=Vector2(10, 0)))
+        .add_component(PhysicsTest())
+        .add_component(RigidBody2D(velocity=Vector2(100, 0), angular_velocity=1.5, angular_damping=0.2))
         .build()
     )
 

@@ -21,7 +21,6 @@ class RigidBody2D(Behavior):
         *,
         mass: float | None = None,
         velocity: Vector2 | None = None,
-        acceleration: Vector2 | None = None,
         angular_velocity: float | None = None,
         angular_damping: float | None = None,
         linear_damping: float | None = None,
@@ -36,11 +35,11 @@ class RigidBody2D(Behavior):
         self._moment_of_inertia: float = 0.0
         self.inverse_inertia: float = 0.0
 
-        self.mass = mass or 0.0
+        self.mass = mass or 1
         self.moment_of_inertia = moment_of_inertia or 0.0
 
         self.velocity: Vector2 = velocity or Vector2.zero()
-        self.acceleration: Vector2 = acceleration or Vector2.zero()
+        self.acceleration: Vector2 = Vector2.zero()
         self.angular_velocity: float = angular_velocity or 0
         self.angular_damping: float = angular_damping or 0
         self.linear_damping: float = linear_damping or 0
