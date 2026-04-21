@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from core.packages.collision.collision_manager import CollisionManager
 from game.object import GameObject, ObjectAlreadyAwokenError
 
 T = TypeVar("T", bound="GameObject")
@@ -16,9 +15,6 @@ class Scene:
     def __init__(self) -> None:
         """Initialize the scene with an empty list of game objects."""
         self.root_objects: list[GameObject] = []
-
-        # collisions
-        self.collision_manager = CollisionManager()
 
     def add_game_object(self, game_object: GameObject) -> None:
         """Add a game object to the scene."""

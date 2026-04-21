@@ -123,6 +123,19 @@ class TransformBase:
         self._recalculate_if_needed()
         return self._world_rotation
 
+    @world_rotation.setter
+    def world_rotation(self, angle: float) -> None:
+        """Set world rotation in radians."""
+        parent_t = self.get_parent_transform()
+
+        if parent_t is None:
+            self.local_rotation = angle
+        else:
+            parent_t._recalculate_if_needed()  # noqa: SLF001
+            self.local_rotation = angle - parent_t._world_rotation  # noqa: SLF001
+
+        self.mark_dirty()
+
     @property
     def world_scale(self) -> Vector2:
         """Get world scale."""

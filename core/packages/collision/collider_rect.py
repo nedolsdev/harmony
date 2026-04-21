@@ -8,6 +8,7 @@ from core.packages.collision.collider import Collider, ColliderType
 from core.packages.geometry.transform import transform_rectangle
 
 if TYPE_CHECKING:
+    from core.packages.collision.collision_surface import CollisionSurface
     from core.packages.geometry.rectangle import Rectangle
     from game.event_handler import EventHandler
 
@@ -15,9 +16,9 @@ if TYPE_CHECKING:
 class ColliderRect(Collider):
     """The underlying collider that computes collisions between two rectangle colliders."""
 
-    def __init__(self, rect: Rectangle) -> None:
+    def __init__(self, rect: Rectangle, collision_surface: CollisionSurface | None = None) -> None:
         """Initialize the ColliderRect."""
-        super().__init__()
+        super().__init__(collision_surface)
         self.rect = rect
         self._world_rect: Rectangle = None  # pyright: ignore[reportAttributeAccessIssue]
 
