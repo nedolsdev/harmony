@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, override
 
 from core.components.transform import Transform
+from core.packages.collision.collision_surface import DEFAULT_SURFACE, CollisionSurface
 from game.behavior import Behavior
 from game.dirty import Dirtyable
 from game.error import MissingComponentDependencyError
@@ -21,12 +22,12 @@ ColliderType = Literal["rect", "circle", "poly"]
 class Collider(Behavior, Dirtyable):
     """The underlying collider that computes collisions between two like colliders."""
 
-    def __init__(
-        self,
-    ) -> None:
+    def __init__(self, collision_surface: CollisionSurface | None = None) -> None:
         """Initialize the Collider."""
         super().__init__()
         self.layers: set[CollisionLayer] = set()
+
+        self.collision_surface = collision_surface or DEFAULT_SURFACE
 
     @staticmethod
     def get_type() -> ColliderType:

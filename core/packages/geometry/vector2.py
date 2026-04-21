@@ -21,6 +21,14 @@ class Vector2:  # noqa: PLW1641 (unhashable)
         """Get debugging representation."""
         return f"Vector2(x={self.x:.4f}, y={self.y:.4f})"
 
+    def perpendicular(self) -> Vector2:
+        """Return a perpendicular vector (rotated 90 degrees CCW)."""
+        return Vector2(-self.y, self.x)
+
+    def perpendicular_cw(self) -> Vector2:
+        """Return a perpendicular vector (rotated 90 degrees CW)."""
+        return Vector2(self.y, -self.x)
+
     def __str__(self) -> str:
         """Get string representation."""
         return f"({self.x}, {self.y})"

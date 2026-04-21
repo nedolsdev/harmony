@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.packages.collision.collision import Collision
-from core.packages.collision.collision_detector import CollisionDetector
+from core.packages.collision.contact import Contact
 
 if TYPE_CHECKING:
     from core.packages.collision.collider_rect import ColliderRect
@@ -36,12 +36,16 @@ def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision
     b_edge1: Vector2 = bp[1] - bp[0]
     b_edge2: Vector2 = bp[3] - bp[0]
 
+    # SAT
     axes: list[Vector2] = [
-        a_edge1.normalize(),
-        a_edge2.normalize(),
-        b_edge1.normalize(),
-        b_edge2.normalize(),
+        a_edge1.perpendicular().normalize(),
+        a_edge2.perpendicular().normalize(),
+        b_edge1.perpendicular().normalize(),
+        b_edge2.perpendicular().normalize(),
     ]
+
+    min_overlap: float = float("inf")
+    smallest_axis: Vector2 | None = None
 
     for axis in axes:
         a_min, a_max = project(ap, axis)
@@ -50,7 +54,46 @@ def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision
         if not overlap(a_min, a_max, b_min, b_max):
             return None
 
-    return Collision(collider_a=rect_a, collider_b=rect_b)
+        overlap_depth: float = min(a_max, b_max) - max(a_min, b_min)
 
+        if overlap_depth < min_overlap:
+            min_overlap = overlap_depth
+            smallest_axis = axis
 
-CollisionDetector.add_detector("rect", "rect", rect_rect_collision)  # pyright: ignore[reportArgumentType] (simplicity is worth it here)
+    if smallest_axis is None:
+        return None
+
+    # ensure normal points from A to B
+    center_a: Vector2 = a.center
+    center_b: Vector2 = b.center
+
+    direction: Vector2 = center_b - center_a
+    if direction.dot(smallest_axis) < 0.0:
+        smallest_axis = -smallest_axis
+
+    # simple single contact point
+    # TODO: Improve with clipping to have multiple points  # noqa: TD003
+    contact_point: Vector2 = (center_a + center_b) * 0.5
+
+    restitution: float = min(rect_a.collision_surface.restitution, rect_b.collision_surface.restitution)
+    static_friction: float = (
+        rect_a.collision_surface.static_friction * rect_b.collision_surface.static_friction
+    ) ** 0.5
+    dynamic_friction: float = (
+        rect_a.collision_surface.dynamic_friction * rect_b.collision_surface.dynamic_friction
+    ) ** 0.5
+
+    contact = Contact(
+        normal=smallest_axis,
+        penetration=min_overlap,
+        contact_points=[contact_point],
+        restitution=restitution,
+        static_friction=static_friction,
+        dynamic_friction=dynamic_friction,
+    )
+
+    return Collision(
+        collider_a=rect_a,
+        collider_b=rect_b,
+        contact=contact,
+    )

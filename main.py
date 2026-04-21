@@ -50,11 +50,16 @@ def main() -> None:
     scene_manager = SceneManager()
     game = Runner(renderer, event_handler, scene_manager, input_system)
 
+    collision_manager = game.physics.collision_manager
+
     scenes = [
         SimpleLazyScene("Physics Scene", lambda: create_physics_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, input_system)),
         SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
-        SimpleLazyScene("Collision Scene", lambda: create_collision_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene(
+            "Collision Scene",
+            lambda: create_collision_scene(window_size, renderer.sorting_layers, collision_manager),
+        ),
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Rotation Scene", lambda: create_rotation_scene(window_size, renderer.sorting_layers)),

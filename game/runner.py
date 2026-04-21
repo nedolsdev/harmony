@@ -7,8 +7,12 @@ from typing import TYPE_CHECKING
 import pygame
 
 from core.packages.audio.audio_manager import AudioManager
+from core.packages.collision.collision_manager import CollisionManager
+from core.packages.collision.collision_resolver import CollisionResolver
 from core.packages.input.controls.devices.keyboard import PygameKeyboard
 from core.packages.input.controls.devices.mouse import PygameMouse
+from core.packages.physics.physics_manager import PhysicsManager
+from core.packages.physics.rigidbody_2d import RigidBody2D
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import Event, PygameEvent, PygameKeydownEvent
@@ -39,8 +43,6 @@ class Runner:
         event_handler: EventHandler,
         scene_manager: SceneManager,
         input_system: InputSystem,
-        *,
-        max_fixed_update_calls: int = 5,
     ) -> None:
         """Initialize the runner with a renderer and an event handler."""
         self.renderer = render_pipeline
@@ -70,11 +72,14 @@ class Runner:
         # devices
         self.devices: list[Device] = [self.keyboard, self.mouse]
 
-        # max fixed update calls
-        self.max_fixed_update_calls = max_fixed_update_calls
+        # physics
+        self.physics = PhysicsManager(collision_manager=CollisionManager(), collision_resolver=CollisionResolver())
 
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
+        dt = self.clock.tick(self.FPS) / 1000.0
+        self.delta_time.set(dt)
+
         events: list[Event] = []
 
         pygame_events = pygame.event.get()
@@ -98,16 +103,19 @@ class Runner:
         # update audio manager
         AudioManager().update()
 
-        # update collisions
-        scene.collision_manager.update()
-
         # update all game objects
         objs = scene.get_flattened_game_objects()
 
         # run the fixed update
-        fixed_update_calls = self.get_number_of_fixed_update_calls()
+        physics_steps = self.get_number_of_physics_steps()
 
-        for _ in range(fixed_update_calls):
+        rigid_bodies: list[RigidBody2D] = []
+        if physics_steps > 0:
+            rigid_bodies = [obj for obj in objs if isinstance(obj, RigidBody2D)]
+
+        for _ in range(physics_steps):
+            self.physics.run_physics_step(rigid_bodies, dt)
+
             for game_object in objs:
                 game_object.fixed_update()
 
@@ -124,14 +132,12 @@ class Runner:
             return
 
         self.renderer.draw_frame(scene)
-        dt = self.clock.tick(self.FPS) / 1000.0
-        self.delta_time.set(dt)
 
-    def get_number_of_fixed_update_calls(self) -> int:
-        """Get the number of fixed update calls for a given frame."""
+    def get_number_of_physics_steps(self) -> int:
+        """Get the number of physics steps for a given frame."""
         # TODO: Actually compute the number of calls based on the unscaled? delta time  # noqa: TD003
         number_of_calls = 1
-        return min(number_of_calls, self.max_fixed_update_calls)
+        return min(number_of_calls, self.physics.max_physics_steps)
 
     def stop(self) -> None:
         """Stop the runner."""

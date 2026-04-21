@@ -75,6 +75,42 @@ class RigidBody2D(Behavior):
         if value == 0.0:
             self.angular_velocity = 0.0
 
+    def integrate_forces(self, dt: float) -> None:
+        """Integrate forces."""
+        self.acceleration = self.force * self.inverse_mass
+        self.velocity += self.acceleration * dt
+
+        if self.linear_damping > 0.0:
+            self.velocity *= math.exp(-self.linear_damping * dt)
+
+        angular_acceleration = self.torque * self.inverse_inertia
+        self.angular_velocity += angular_acceleration * dt
+
+        if self.angular_damping > 0.0:
+            self.angular_velocity *= math.exp(-self.angular_damping * dt)
+
+    def integrate_velocity(self, dt: float) -> None:
+        """Integrate velocity."""
+        transform = self.game_object.get_component(Transform)
+        position = transform.world_position
+        rotation = transform.world_rotation
+
+        if self.velocity.magnitude_squared() < self.EPSILON:
+            self.velocity = Vector2.zero()
+
+        position += self.velocity * dt
+
+        if abs(self.angular_velocity) < self.EPSILON:
+            self.angular_velocity = 0.0
+
+        rotation += self.angular_velocity * dt
+
+        transform.world_position = position
+        transform.world_rotation = rotation
+
+        self.force = Vector2.zero()
+        self.torque = 0.0
+
     @override
     def fixed_update(self) -> None:
         """Advance the rigid body by dt seconds using semi-implicit Euler."""
