@@ -3,11 +3,9 @@
 from __future__ import annotations
 
 import math
-from typing import override
 
 from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
-from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 
 
@@ -105,52 +103,6 @@ class RigidBody2D(Behavior):
 
         rotation += self.angular_velocity * dt
 
-        transform.world_position = position
-        transform.world_rotation = rotation
-
-        self.force = Vector2.zero()
-        self.torque = 0.0
-
-    @override
-    def fixed_update(self) -> None:
-        """Advance the rigid body by dt seconds using semi-implicit Euler."""
-        # TODO: Fix with explicit dependency  # noqa: TD003
-        if not self.game_object.has_component(Transform):
-            msg = "A GameObject with RigidBody2D requires a Transform."
-            raise ValueError(msg)
-
-        # sync from transform
-        transform = self.game_object.get_component(Transform)
-        position = transform.world_position
-        rotation = transform.world_rotation
-
-        dt = DeltaTime.get_delta_time()
-
-        self.acceleration = self.force * self.inverse_mass
-        self.velocity += self.acceleration * dt
-
-        if self.linear_damping > 0.0:
-            self.velocity *= math.exp(-self.linear_damping * dt)
-
-        # stop micro movement
-        if self.velocity.magnitude_squared() < self.EPSILON:
-            self.velocity = Vector2.zero()
-
-        position += self.velocity * dt
-
-        angular_acceleration = self.torque * self.inverse_inertia
-        self.angular_velocity += angular_acceleration * dt
-
-        if self.angular_damping > 0.0:
-            self.angular_velocity *= math.exp(-self.angular_damping * dt)
-
-        # stop micro rotations
-        if abs(self.angular_velocity) < self.EPSILON:
-            self.angular_velocity = 0.0
-
-        rotation += self.angular_velocity * dt
-
-        # resync transform
         transform.world_position = position
         transform.world_rotation = rotation
 

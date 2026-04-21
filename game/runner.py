@@ -111,7 +111,7 @@ class Runner:
 
         rigid_bodies: list[RigidBody2D] = []
         if physics_steps > 0:
-            rigid_bodies = [obj for obj in objs if isinstance(obj, RigidBody2D)]
+            rigid_bodies = [obj.get_component(RigidBody2D) for obj in objs if obj.has_component(RigidBody2D)]
 
         for _ in range(physics_steps):
             self.physics.run_physics_step(rigid_bodies, dt)
