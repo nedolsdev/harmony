@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from core.packages.collision.collision import Collision
 from core.packages.collision.contact import Contact
+from core.packages.collision.manifold.builder import ManifoldBuilder
 
 if TYPE_CHECKING:
     from core.packages.collision.collider_rect import ColliderRect
@@ -13,15 +14,13 @@ if TYPE_CHECKING:
 
 
 def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision | None:
-    """Get rect/rect collision if exists."""
+    """Get rect/rect collision if it exists (SAT + manifold generation)."""
 
     def project(points: list[Vector2], axis: Vector2) -> tuple[float, float]:
-        """Project points onto an axis."""
         projections = [p.dot(axis) for p in points]
         return min(projections), max(projections)
 
     def overlap(a_min: float, a_max: float, b_min: float, b_max: float) -> bool:
-        """Check if two 1D intervals overlap."""
         return not (a_max < b_min or b_max < a_min)
 
     a = rect_a.world_rect
@@ -36,7 +35,7 @@ def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision
     b_edge1: Vector2 = bp[1] - bp[0]
     b_edge2: Vector2 = bp[3] - bp[0]
 
-    # SAT
+    # SAT axes
     axes: list[Vector2] = [
         a_edge1.perpendicular().normalize(),
         a_edge2.perpendicular().normalize(),
@@ -63,30 +62,38 @@ def rect_rect_collision(rect_a: ColliderRect, rect_b: ColliderRect) -> Collision
     if smallest_axis is None:
         return None
 
-    # ensure normal points from A to B
-    center_a: Vector2 = a.center
-    center_b: Vector2 = b.center
-
-    direction: Vector2 = center_b - center_a
-    if direction.dot(smallest_axis) < 0.0:
+    # ensure normal points
+    center_dir: Vector2 = b.center - a.center
+    if center_dir.dot(smallest_axis) < 0.0:
         smallest_axis = -smallest_axis
 
-    # simple single contact point
-    # TODO: Improve with clipping to have multiple points  # noqa: TD003
-    contact_point: Vector2 = (center_a + center_b) * 0.5
+    # build manifold
+    manifold = ManifoldBuilder.build_rect_rect(rect_a, rect_b, smallest_axis, min_overlap)
 
-    restitution: float = min(rect_a.collision_surface.restitution, rect_b.collision_surface.restitution)
+    # fallback if manifold fails
+    if not manifold.contacts:
+        contact_point = a.center + smallest_axis * (min_overlap * 0.5)
+        contacts = [contact_point]
+    else:
+        contacts = manifold.contacts
+
+    restitution: float = min(
+        rect_a.collision_surface.restitution,
+        rect_b.collision_surface.restitution,
+    )
+
     static_friction: float = (
         rect_a.collision_surface.static_friction * rect_b.collision_surface.static_friction
     ) ** 0.5
+
     dynamic_friction: float = (
         rect_a.collision_surface.dynamic_friction * rect_b.collision_surface.dynamic_friction
     ) ** 0.5
 
     contact = Contact(
-        normal=smallest_axis,
-        penetration=min_overlap,
-        contact_points=[contact_point],
+        normal=manifold.normal,
+        penetration=manifold.penetration,
+        contact_points=contacts,
         restitution=restitution,
         static_friction=static_friction,
         dynamic_friction=dynamic_friction,

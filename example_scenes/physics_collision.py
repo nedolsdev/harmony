@@ -46,12 +46,12 @@ def create_physics_collision_scene(
 
     static_square = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(400, 300)))
+        .add_component(Transform(local_position=Vector2(400, 300), local_rotation=1.1))
         .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
         .add_component(RenderLayer(default_layer))
         .add_component(static_collider)
         .add_component(
-            RigidBody2D(),
+            RigidBody2D(moment_of_inertia=0.9),
         )
         .build()
     )
@@ -67,8 +67,8 @@ def create_physics_collision_scene(
         .add_component(moving_collider)
         .add_component(
             RigidBody2D(
-                velocity=Vector2(120, 0),
-                angular_velocity=0.0,
+                velocity=Vector2(200, 0),
+                angular_velocity=10,
                 angular_damping=0.1,
             ),
         )
