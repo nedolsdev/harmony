@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Literal, override
 
 from core.components.transform import Transform
 from core.packages.collision.collision_surface import DEFAULT_SURFACE, CollisionSurface
+from core.packages.physics.rigidbody_2d import RigidBody2D
 from game.behavior import Behavior
 from game.dirty import Dirtyable
 from game.error import MissingComponentDependencyError
@@ -28,6 +29,8 @@ class Collider(Behavior, Dirtyable):
         self.layers: set[CollisionLayer] = set()
 
         self.collision_surface = collision_surface or DEFAULT_SURFACE
+
+        self.rigid_body_2d: RigidBody2D | None = None
 
     @staticmethod
     def get_type() -> ColliderType:
@@ -52,3 +55,6 @@ class Collider(Behavior, Dirtyable):
             raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
+
+        if self.game_object.has_component(RigidBody2D):
+            self.rigid_body_2d = self.game_object.get_component(RigidBody2D)
