@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar, override
+from typing import TYPE_CHECKING, Any, TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
 
@@ -111,7 +111,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         self,
         fps: int,
         blender: KeyFrameBlender[T],
-        target: ComponentField,
+        target: ComponentField[T, Any],
         *,
         loop: bool = True,
     ) -> None:

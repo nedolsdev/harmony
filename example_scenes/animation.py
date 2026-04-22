@@ -10,7 +10,7 @@ from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
 from example_scenes.helpers.camera_util import create_camera_game_object
-from example_scenes.helpers.test_animation import create_test_animator
+from example_scenes.helpers.test_animation import create_test_rotation_animator
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
@@ -30,7 +30,7 @@ def create_animation_scene(window_size: int, layers: SortingLayerManager) -> Sce
         .add_component(Transform(local_position=Vector2(400, 300)))
         .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
         .add_component(RenderLayer(default_layer))
-        .add_component(create_test_animator())
+        .add_component(create_test_rotation_animator())
         .build()
     )
 
