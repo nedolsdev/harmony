@@ -105,7 +105,7 @@ def create_test_animator() -> Animator:
     """Create a test animator component for the example scene."""
     blender = BasicVector2LERP()
 
-    clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform.get_fields().local_position)
+    clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform.get_fields().local_scale)
 
     clip.add_key_frame(
         KeyFrame(
