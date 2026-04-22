@@ -21,31 +21,42 @@ class AnimationClip[T: AnimationFrame]:
         target: ComponentField | None,
         *,
         loop: bool = False,
+        skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
     ) -> None:
         """Initialize the AnimationClip with an FPS."""
-        self.current_frame: int = 0
+        # -1 indicates that even frame 0 has not been loaded
+        self.current_frame: int = -1
+
         self.fps = fps
         self.target = target
         self.loop = loop
+        self.skip_last_frame_if_identical_to_first_frame_in_loop = skip_last_frame_if_identical_to_first_frame_in_loop
 
     def get_next_animation_frame(self) -> T | None:
         """Get the next animation frame if it exists. Returns 'None' when at the end."""
         if self.animation_complete():
             if not self.loop:
                 return None
-            # go back to the starting frame
-            self.current_frame = -1
+
+            # check that first and last frame match
+            first_frame = self.get_frame(0)
+            last_frame = self.get_frame(self.get_number_of_frames())
+
+            self.reset()
+
+            if self.skip_last_frame_if_identical_to_first_frame_in_loop and first_frame == last_frame:
+                self.current_frame = 0
 
         self.current_frame += 1
         return self.get_frame(self.current_frame)
 
     def reset(self) -> None:
-        """Reset the animation back to the beginning frame."""
-        self.current_frame = 0
+        """Reset the animation."""
+        self.current_frame = -1
 
     def animation_complete(self) -> bool:
         """Check whether the animation is on the last frame."""
-        return self.current_frame == self.get_number_of_frames() - 1
+        return self.current_frame == self.get_number_of_frames()
 
     def get_animation_time(self) -> float:
         """Get the animation time in seconds."""
@@ -114,9 +125,15 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         target: ComponentField[T, Any],
         *,
         loop: bool = True,
+        skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
     ) -> None:
         """Initialize the KeyFramedAnimationClip with an FPS and a KeyFrameMixer."""
-        super().__init__(fps, target, loop=loop)
+        super().__init__(
+            fps,
+            target,
+            loop=loop,
+            skip_last_frame_if_identical_to_first_frame_in_loop=skip_last_frame_if_identical_to_first_frame_in_loop,
+        )
         self.key_frames: list[KeyFrame[T]] = []
         self.blender = blender
 

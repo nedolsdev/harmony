@@ -20,6 +20,5 @@ class ComponentField[T: AnimationFrame, U: GameComponent]:
     component_type: type[U]
 
 
-@dataclass(frozen=True)
 class ComponentFields:
     """A set of component fields that can be targeted by an animation."""

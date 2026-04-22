@@ -11,6 +11,16 @@ if TYPE_CHECKING:
 class AnimationFrame:
     """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
+    def __eq__(self, other: object) -> bool:
+        """Equality comparison."""
+        msg = "Should be implemented in subclasses."
+        raise NotImplementedError(msg)
+
+    def __hash__(self) -> int:
+        """Hash."""
+        msg = "Should be implemented in subclasses."
+        raise NotImplementedError(msg)
+
 
 class Vector2Frame(AnimationFrame):
     """Frame with a Vector2."""
@@ -19,6 +29,16 @@ class Vector2Frame(AnimationFrame):
         """Frame with a Vector2."""
         self.vector = vector
 
+    def __eq__(self, other: object) -> bool:
+        """Equality comparison."""
+        if not isinstance(other, Vector2Frame):
+            return False
+        return self.vector == other.vector
+
+    def __hash__(self) -> int:
+        """Hash."""
+        return hash((self.vector.x, self.vector.y))
+
 
 class ScalarFrame(AnimationFrame):
     """Frame with a single scalar value."""
@@ -26,3 +46,13 @@ class ScalarFrame(AnimationFrame):
     def __init__(self, value: float) -> None:
         """Frame with a single scalar value."""
         self.value = value
+
+    def __eq__(self, other: object) -> bool:
+        """Equality comparison."""
+        if not isinstance(other, ScalarFrame):
+            return False
+        return self.value == other.value
+
+    def __hash__(self) -> int:
+        """Hash."""
+        return hash(self.value)

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, override
 
 from core.components.transform_base import TransformBase
@@ -70,8 +69,8 @@ class Transform(Behavior, Animatable["TransformFields"], TransformBase):
 
     @override
     @staticmethod
-    def get_fields() -> TransformFields:
-        return TransformFields()
+    def get_fields() -> type[TransformFields]:
+        return TransformFields
 
     def animation_position(self, frame: Vector2Frame) -> None:
         """Animation position."""
@@ -86,19 +85,18 @@ class Transform(Behavior, Animatable["TransformFields"], TransformBase):
         self.local_rotation = frame.value
 
 
-@dataclass(frozen=True)
 class TransformFields(ComponentFields):
     """The animatable component fields for the Transform component."""
 
-    local_position: ComponentField[Vector2Frame, Transform] = ComponentField(  # noqa: RUF009
+    local_position: ComponentField[Vector2Frame, Transform] = ComponentField(
         lambda transform, frame: transform.animation_position(frame),
         component_type=Transform,
     )
-    local_scale: ComponentField[Vector2Frame, Transform] = ComponentField(  # noqa: RUF009
+    local_scale: ComponentField[Vector2Frame, Transform] = ComponentField(
         lambda transform, frame: transform.animate_scale(frame),
         component_type=Transform,
     )
-    local_rotation: ComponentField[ScalarFrame, Transform] = ComponentField(  # noqa: RUF009
+    local_rotation: ComponentField[ScalarFrame, Transform] = ComponentField(
         lambda transform, frame: transform.animate_rotation(frame),
         component_type=Transform,
     )

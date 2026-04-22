@@ -75,7 +75,7 @@ def create_test_rotation_animator() -> Animator:
     clip.add_key_frame(
         KeyFrame(
             ScalarFrame(0),
-            60,
+            10,
         ),
     )
 

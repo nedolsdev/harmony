@@ -35,7 +35,7 @@ class NoActiveSceneError(RuntimeError):
 class Runner:
     """Runs the game by initializing the renderer and starting the main loop."""
 
-    FPS: int = 60
+    FPS: int = 5
     PHYSICS_TPS: int = 60
 
     def __init__(
