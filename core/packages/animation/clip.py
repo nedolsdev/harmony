@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, TypeVar, override
 from core.packages.animation.frame import AnimationFrame
 
 if TYPE_CHECKING:
-    from game.component import GameComponent
+    from game.component_field import ComponentField
 
 T = TypeVar("T", bound=AnimationFrame)
 
@@ -18,7 +18,7 @@ class AnimationClip[T: AnimationFrame]:
     def __init__(
         self,
         fps: int,
-        target: type[GameComponent] | None,
+        target: ComponentField | None,
         *,
         loop: bool = False,
     ) -> None:
@@ -111,7 +111,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         self,
         fps: int,
         blender: KeyFrameBlender[T],
-        target: type[GameComponent],
+        target: ComponentField,
         *,
         loop: bool = True,
     ) -> None:

@@ -12,9 +12,17 @@ class AnimationFrame:
     """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
 
-class VectorFrame(AnimationFrame):
+class Vector2Frame(AnimationFrame):
     """Frame with a Vector2."""
 
     def __init__(self, vector: Vector2) -> None:
         """Frame with a Vector2."""
         self.vector = vector
+
+
+class ScalarFrame(AnimationFrame):
+    """Frame with a single scalar value."""
+
+    def __init__(self, value: float) -> None:
+        """Frame with a single scalar value."""
+        self.value = value

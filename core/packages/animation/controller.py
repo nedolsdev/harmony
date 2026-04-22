@@ -269,8 +269,10 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
         if frame is None or clip.target is None:
             return
 
+        component_type = clip.target.component_type
+
         # apply the animation frame
-        target.set_animation_frame(frame, clip.target)
+        target.set_animation_frame(frame, clip.target, component_type)
 
 
 class AnimationController[DataT: Any]:

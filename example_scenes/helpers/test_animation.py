@@ -12,49 +12,49 @@ from core.packages.animation.controller import (
     AnimationState,
     AnimationTransition,
 )
-from core.packages.animation.frame import VectorFrame
+from core.packages.animation.frame import Vector2Frame
 from core.packages.geometry.vector2 import Vector2
 
 
-class BasicPositionLERP(KeyFrameBlender[VectorFrame]):
+class BasicPositionLERP(KeyFrameBlender[Vector2Frame]):
     """Test blender for basic LERP between two positions."""
 
     def blend(
         self,
         frame_number: int,
-        current_frame: KeyFrame[VectorFrame],
-        next_key_frame: KeyFrame[VectorFrame],
-    ) -> VectorFrame:
+        current_frame: KeyFrame[Vector2Frame],
+        next_key_frame: KeyFrame[Vector2Frame],
+    ) -> Vector2Frame:
         """Produce an AnimationFrame between the current and next frame."""
         # basic LERP
         percentage = self.get_percentage_of_transition(frame_number, current_frame, next_key_frame)
         v1 = current_frame.frame.vector
         v2 = next_key_frame.frame.vector
         v3 = v1 + (v2 - v1) * percentage
-        return VectorFrame(v3)
+        return Vector2Frame(v3)
 
 
 def create_test_animator() -> Animator:
     """Create a test animator component for the example scene."""
     blender = BasicPositionLERP()
 
-    clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform)
+    clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform.get_fields().local_scale)
 
     clip.add_key_frame(
         KeyFrame(
-            VectorFrame(Vector2(0, 0)),
+            Vector2Frame(Vector2(0, 0)),
             0,
         ),
     )
     clip.add_key_frame(
         KeyFrame(
-            VectorFrame(Vector2(25, 25)),
+            Vector2Frame(Vector2(25, 25)),
             30,
         ),
     )
     clip.add_key_frame(
         KeyFrame(
-            VectorFrame(Vector2(0, 0)),
+            Vector2Frame(Vector2(0, 0)),
             60,
         ),
     )

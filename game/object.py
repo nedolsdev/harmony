@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from core.packages.animation.frame import AnimationFrame
     from core.packages.collision.collision import Collision
     from game.component import GameComponent
+    from game.component_field import ComponentField
     from game.event_handler import EventHandler
 
 T = TypeVar("T", bound="GameComponent")
@@ -190,16 +191,17 @@ class GameObject:
     def set_animation_frame(
         self,
         frame: AnimationFrame,
-        target: type[GameComponent],
+        field: ComponentField,
+        component_type: type[GameComponent],
     ) -> None:
         """Set the animation frame to the first component that matches."""
-        component = self.get_component(target)
+        component = self.get_component(component_type)
 
         if not isinstance(component, Animatable):
             msg = f"Tried to animate a component that cannot be animated. Component '{component}'"
             raise TypeError(msg)
 
-        component.set_animation_frame(frame)
+        field.update(component, frame)
 
     def handle_collision(self, collision: Collision, interaction: CollisionInteraction) -> None:
         """Handle a Collision upon this object."""

@@ -2,19 +2,21 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, override
 
 from core.components.transform_base import TransformBase
 from core.packages.animation.animatable import Animatable
-from core.packages.animation.frame import VectorFrame
 from game.behavior import Behavior
+from game.component_field import ComponentField, ComponentFields
 from game.dirty import Dirtyable
 
 if TYPE_CHECKING:
+    from core.packages.animation.frame import ScalarFrame, Vector2Frame
     from core.packages.geometry.vector2 import Vector2
 
 
-class Transform(Behavior, Animatable[VectorFrame], TransformBase):
+class Transform(Behavior, Animatable["TransformFields"], TransformBase):
     """Defines local and world spatial relationships."""
 
     def __init__(
@@ -64,8 +66,39 @@ class Transform(Behavior, Animatable[VectorFrame], TransformBase):
         transform._dirty = self._dirty
         return transform
 
-    # TODO: Use fields or similar to allow control for animating scale, position, rotation separately  # noqa: TD003
+    # animation
+
     @override
-    def set_animation_frame(self, frame: VectorFrame) -> None:
-        """Set the animation frame."""
+    @staticmethod
+    def get_fields() -> TransformFields:
+        return TransformFields()
+
+    def animation_position(self, frame: Vector2Frame) -> None:
+        """Animation position."""
         self.local_position = frame.vector
+
+    def animate_scale(self, frame: Vector2Frame) -> None:
+        """Animation scale."""
+        self.local_scale = frame.vector
+
+    def animate_rotation(self, frame: ScalarFrame) -> None:
+        """Animation rotation."""
+        self.local_rotation = frame.value
+
+
+@dataclass(frozen=True)
+class TransformFields(ComponentFields):
+    """The animatable component fields for the Transform component."""
+
+    local_position: ComponentField[Vector2Frame, Transform] = ComponentField(  # noqa: RUF009
+        lambda transform, frame: transform.animation_position(frame),
+        component_type=Transform,
+    )
+    local_scale: ComponentField[Vector2Frame, Transform] = ComponentField(  # noqa: RUF009
+        lambda transform, frame: transform.animate_scale(frame),
+        component_type=Transform,
+    )
+    local_rotation: ComponentField[ScalarFrame, Transform] = ComponentField(  # noqa: RUF009
+        lambda transform, frame: transform.animate_rotation(frame),
+        component_type=Transform,
+    )
