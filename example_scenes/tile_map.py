@@ -9,7 +9,7 @@ from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
-from example_scenes.camera_util import create_camera_game_object
+from example_scenes.helpers.camera_util import create_camera_game_object
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
 

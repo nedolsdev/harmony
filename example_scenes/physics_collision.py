@@ -15,7 +15,7 @@ from core.packages.collision.collision_rule import CollisionRule
 from core.packages.geometry.rectangle import Rectangle
 from core.packages.geometry.vector2 import Vector2
 from core.packages.physics.rigidbody_2d import RigidBody2D
-from example_scenes.camera_util import create_camera_game_object
+from example_scenes.helpers.camera_util import create_camera_game_object
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene

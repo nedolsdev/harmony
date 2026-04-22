@@ -2,17 +2,14 @@
 
 from __future__ import annotations
 
-from typing import TypeVar
-
-from core.packages.animation.clip import AnimationFrame
-
-T = TypeVar("T", bound=AnimationFrame)
+from game.component_field import ComponentFields
 
 
-class Animatable[T: AnimationFrame]:
+class Animatable[T: ComponentFields]:
     """An interface for components that can be animated to produce an AnimationClip."""
 
-    def set_animation_frame(self, frame: T) -> None:
-        """Set or update the component based on the frame."""
-        msg = "The 'set_animation_frame' method should be implemented in subclasses."
+    @staticmethod
+    def get_fields() -> type[T]:
+        """Get the field types."""
+        msg = "Should be implemented in subclasses."
         raise NotImplementedError(msg)
