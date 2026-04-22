@@ -11,7 +11,7 @@ from core.packages.input.bindings.key_binding import KeyBinding
 from core.packages.input.bindings.mouse_binding import MouseMoveBinding
 from core.packages.input.interactions.default import DefaultInteraction
 from core.packages.input.interactions.press import PressInteraction
-from example_scenes.camera_util import create_camera_game_object
+from example_scenes.helpers.camera_util import create_camera_game_object
 from game.scene import Scene
 
 if TYPE_CHECKING:
