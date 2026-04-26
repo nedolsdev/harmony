@@ -26,7 +26,7 @@ def create_animation_scene(window_size: int, layers: SortingLayerManager) -> Sce
 
     default_layer = layers.get_layer("Default")
 
-    DeltaTime().set_time_scale(scale=0.1)
+    DeltaTime().set_time_scale(scale=1)
 
     static_square = (
         GameObjectBuilder(Empty)
