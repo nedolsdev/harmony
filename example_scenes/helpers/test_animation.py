@@ -23,13 +23,13 @@ class BasicVector2LERP(KeyFrameBlender[Vector2Frame]):
 
     def blend(
         self,
-        frame_number: int,
+        frame_position: float,
         current_frame: KeyFrame[Vector2Frame],
         next_key_frame: KeyFrame[Vector2Frame],
     ) -> Vector2Frame:
         """Produce an AnimationFrame between the current and next frame."""
         # basic LERP
-        percentage = self.get_percentage_of_transition(frame_number, current_frame, next_key_frame)
+        percentage = self.get_percentage_of_transition(frame_position, current_frame, next_key_frame)
         v1 = current_frame.frame.vector
         v2 = next_key_frame.frame.vector
         v3 = v1 + (v2 - v1) * percentage
@@ -41,13 +41,13 @@ class BasicScalarLERP(KeyFrameBlender[ScalarFrame]):
 
     def blend(
         self,
-        frame_number: int,
+        frame_position: float,
         current_frame: KeyFrame[ScalarFrame],
         next_key_frame: KeyFrame[ScalarFrame],
     ) -> ScalarFrame:
         """Produce an AnimationFrame between the current and next frame."""
         # basic LERP
-        percentage = self.get_percentage_of_transition(frame_number, current_frame, next_key_frame)
+        percentage = self.get_percentage_of_transition(frame_position, current_frame, next_key_frame)
         v1 = current_frame.frame.value
         v2 = next_key_frame.frame.value
         v3 = v1 + (v2 - v1) * percentage
@@ -105,7 +105,7 @@ def create_test_animator() -> Animator:
     """Create a test animator component for the example scene."""
     blender = BasicVector2LERP()
 
-    clip = KeyFramedAnimationClip(fps=60, blender=blender, target=Transform.get_fields().local_scale)
+    clip = KeyFramedAnimationClip(fps=10, blender=blender, target=Transform.get_fields().local_scale)
 
     clip.add_key_frame(
         KeyFrame(
@@ -115,7 +115,7 @@ def create_test_animator() -> Animator:
     )
     clip.add_key_frame(
         KeyFrame(
-            Vector2Frame(Vector2(25, 25)),
+            Vector2Frame(Vector2(10, 10)),
             30,
         ),
     )

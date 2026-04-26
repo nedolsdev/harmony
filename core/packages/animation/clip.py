@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import math
 from typing import TYPE_CHECKING, Any, TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
+from core.packages.timing.delta_time import DeltaTime
 
 if TYPE_CHECKING:
     from game.component_field import ComponentField
@@ -22,15 +24,17 @@ class AnimationClip[T: AnimationFrame]:
         *,
         loop: bool = False,
         skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
+        choppy: bool = False,
     ) -> None:
         """Initialize the AnimationClip with an FPS."""
         # -1 indicates that even frame 0 has not been loaded
-        self.current_frame: int = -1
+        self.current_frame_position: float = -1
 
         self.fps = fps
         self.target = target
         self.loop = loop
         self.skip_last_frame_if_identical_to_first_frame_in_loop = skip_last_frame_if_identical_to_first_frame_in_loop
+        self.choppy = choppy
 
     def get_next_animation_frame(self) -> T | None:
         """Get the next animation frame if it exists. Returns 'None' when at the end."""
@@ -45,18 +49,30 @@ class AnimationClip[T: AnimationFrame]:
             self.reset()
 
             if self.skip_last_frame_if_identical_to_first_frame_in_loop and first_frame == last_frame:
-                self.current_frame = 0
+                self.current_frame_position = 0
 
-        self.current_frame += 1
-        return self.get_frame(self.current_frame)
+        self.current_frame_position += self.get_frame_increment()
+
+        # wrap around
+        self.current_frame_position = self.current_frame_position % self.get_number_of_frames()
+
+        return self.get_frame(
+            self.current_frame_position if not self.choppy else math.floor(self.current_frame_position),
+        )
+
+    def get_frame_increment(self) -> float:
+        """Get the increment for the frame position based on animation FPS and time scale."""
+        dt = DeltaTime().delta_time
+        time_in_one_frame = 1 / self.fps
+        return dt / time_in_one_frame
 
     def reset(self) -> None:
         """Reset the animation."""
-        self.current_frame = -1
+        self.current_frame_position = -1
 
     def animation_complete(self) -> bool:
         """Check whether the animation is on the last frame."""
-        return self.current_frame == self.get_number_of_frames()
+        return self.current_frame_position >= self.get_number_of_frames()
 
     def get_animation_time(self) -> float:
         """Get the animation time in seconds."""
@@ -67,7 +83,7 @@ class AnimationClip[T: AnimationFrame]:
         msg = "The 'get_number_of_frames' method should be implemented in subclasses."
         raise NotImplementedError(msg)
 
-    def get_frame(self, frame: int) -> T:
+    def get_frame(self, frame_position: float) -> T:
         """Get the AnimationFrame for a given frame number."""
         msg = "The 'get_frame' method should be implemented in subclasses."
         raise NotImplementedError(msg)
@@ -90,7 +106,7 @@ class KeyFrame[T: AnimationFrame]:
 class KeyFrameBlender[T: AnimationFrame]:
     """A KeyFrame Blender defines how to fill the AnimationFrames between two KeyFrames."""
 
-    def blend(self, frame_number: int, current_frame: KeyFrame[T], next_key_frame: KeyFrame[T]) -> T:
+    def blend(self, frame_position: float, current_frame: KeyFrame[T], next_key_frame: KeyFrame[T]) -> T:
         """Produce an AnimationFrame between the current and next frame."""
         msg = "This method should be implemented in subclasses."
         raise NotImplementedError(msg)
@@ -99,26 +115,26 @@ class KeyFrameBlender[T: AnimationFrame]:
         """Get the number of frames between each frame. (e.g. start=50, end=60 => count=10)."""
         return next_key_frame.frame_number - current_frame.frame_number
 
-    def get_current_step_of_frame(self, frame_number: int, current_frame: KeyFrame) -> int:
+    def get_current_step_of_frame(self, frame_position: float, current_frame: KeyFrame) -> float:
         """Get the current frame step between frames. (e.g. frame=53, start=50, end=60 => step=3)."""
-        return frame_number - current_frame.frame_number
+        return frame_position - current_frame.frame_number
 
     def get_percentage_of_transition(
         self,
-        frame_number: int,
+        frame_position: float,
         current_frame: KeyFrame,
         next_key_frame: KeyFrame,
     ) -> float:
         """Get the percentage of how far the current frame is along the transition between KeyFrames."""
         count = self.get_frame_count_between_key_frames(current_frame, next_key_frame)
-        step = self.get_current_step_of_frame(frame_number, current_frame)
+        step = self.get_current_step_of_frame(frame_position, current_frame)
         return step / count
 
 
 class KeyFramedAnimationClip(AnimationClip[T]):
     """A KeyFramedAnimationClip defines KeyFrames that are transitioned between in sequence."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         fps: int,
         blender: KeyFrameBlender[T],
@@ -126,6 +142,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         *,
         loop: bool = True,
         skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
+        choppy: bool = False,
     ) -> None:
         """Initialize the KeyFramedAnimationClip with an FPS and a KeyFrameMixer."""
         super().__init__(
@@ -133,6 +150,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
             target,
             loop=loop,
             skip_last_frame_if_identical_to_first_frame_in_loop=skip_last_frame_if_identical_to_first_frame_in_loop,
+            choppy=choppy,
         )
         self.key_frames: list[KeyFrame[T]] = []
         self.blender = blender
@@ -155,8 +173,9 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         """Get the KeyFrame at a given index."""
         return self.key_frames[index]
 
-    def get_frame(self, frame: int) -> T:
+    def get_frame(self, frame_position: float) -> T:
         """Get the AnimationFrame for a given frame number."""
+        frame = math.floor(frame_position)
         current_key_frame_index = self.get_current_key_frame_index(frame)
         current_key_frame = self.get_key_frame(current_key_frame_index)
 
@@ -168,7 +187,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         next_key_frame = self.get_key_frame(current_key_frame_index + 1)
 
         # and then use the mixer to produce the next intermediate frame
-        return self.blender.blend(frame, current_key_frame, next_key_frame)
+        return self.blender.blend(frame_position, current_key_frame, next_key_frame)
 
     def add_key_frame(self, key_frame: KeyFrame[T]) -> None:
         """Add an AnimationFrame to the AnimationClip."""
@@ -187,7 +206,7 @@ class EmptyAnimationClip(AnimationClip):
         return 0
 
     @override
-    def get_frame(self, frame: int) -> AnimationFrame:
+    def get_frame(self, frame_position: float) -> AnimationFrame:
         """Get the AnimationFrame for a given frame number."""
         return AnimationFrame()
 
