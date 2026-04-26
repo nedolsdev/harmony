@@ -9,6 +9,7 @@ from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
+from core.packages.timing.delta_time import DeltaTime
 from example_scenes.helpers.camera_util import create_camera_game_object
 from example_scenes.helpers.test_animation import create_test_animator
 from game.material import ColorMaterial
@@ -24,6 +25,8 @@ def create_animation_scene(window_size: int, layers: SortingLayerManager) -> Sce
     scene = Scene()
 
     default_layer = layers.get_layer("Default")
+
+    DeltaTime().set_time_scale(scale=0.1)
 
     static_square = (
         GameObjectBuilder(Empty)

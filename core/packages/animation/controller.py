@@ -240,10 +240,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
             return
 
         # otherwise we will check if we can transition to a new animation
-
-        current = self.current_state
-
-        transitions = self.get_transitions_from_node(current)
+        transitions = self.get_transitions_from_node(self.current_state)
 
         # check if we can transition
         for transition in transitions:
@@ -256,12 +253,13 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
                 _, end = self.start_end[transition]
 
                 self.transition_to(end, data)
-                return
+                break
 
-        # no transition possible so we just continue with our animation
+        # continue with our animation
+        self.update_clip(self.current_state.clip, target)
 
-        clip = current.clip
-
+    def update_clip(self, clip: AnimationClip, target: GameObject) -> None:
+        """Update the current animation clip."""
         frame = clip.get_next_animation_frame()
 
         # end of the animation don't do anything
