@@ -24,6 +24,7 @@ class AnimationClip[T: AnimationFrame]:
         *,
         loop: bool = False,
         skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
+        choppy: bool = False,
     ) -> None:
         """Initialize the AnimationClip with an FPS."""
         # -1 indicates that even frame 0 has not been loaded
@@ -33,6 +34,7 @@ class AnimationClip[T: AnimationFrame]:
         self.target = target
         self.loop = loop
         self.skip_last_frame_if_identical_to_first_frame_in_loop = skip_last_frame_if_identical_to_first_frame_in_loop
+        self.choppy = choppy
 
     def get_next_animation_frame(self) -> T | None:
         """Get the next animation frame if it exists. Returns 'None' when at the end."""
@@ -54,7 +56,9 @@ class AnimationClip[T: AnimationFrame]:
         # wrap around
         self.current_frame_position = self.current_frame_position % self.get_number_of_frames()
 
-        return self.get_frame(self.current_frame_position)
+        return self.get_frame(
+            self.current_frame_position if not self.choppy else math.floor(self.current_frame_position),
+        )
 
     def get_frame_increment(self) -> float:
         """Get the increment for the frame position based on animation FPS and time scale."""
@@ -130,7 +134,7 @@ class KeyFrameBlender[T: AnimationFrame]:
 class KeyFramedAnimationClip(AnimationClip[T]):
     """A KeyFramedAnimationClip defines KeyFrames that are transitioned between in sequence."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         fps: int,
         blender: KeyFrameBlender[T],
@@ -138,6 +142,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
         *,
         loop: bool = True,
         skip_last_frame_if_identical_to_first_frame_in_loop: bool = True,
+        choppy: bool = False,
     ) -> None:
         """Initialize the KeyFramedAnimationClip with an FPS and a KeyFrameMixer."""
         super().__init__(
@@ -145,6 +150,7 @@ class KeyFramedAnimationClip(AnimationClip[T]):
             target,
             loop=loop,
             skip_last_frame_if_identical_to_first_frame_in_loop=skip_last_frame_if_identical_to_first_frame_in_loop,
+            choppy=choppy,
         )
         self.key_frames: list[KeyFrame[T]] = []
         self.blender = blender
