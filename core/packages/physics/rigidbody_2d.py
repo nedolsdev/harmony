@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from typing import override
 
 from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
@@ -138,3 +139,16 @@ class RigidBody2D(Behavior):
     def apply_angular_impulse(self, impulse: float) -> None:
         """Apply instantaneous angular impulse."""
         self.angular_velocity += impulse * self.inverse_inertia
+
+    @override
+    def copy(self) -> RigidBody2D:
+        """Copy the component."""
+        return RigidBody2D(
+            mass=self.mass,
+            velocity=self.velocity.copy(),
+            angular_velocity=self.angular_velocity,
+            angular_damping=self.angular_damping,
+            linear_damping=self.linear_damping,
+            center_of_mass=self.center_of_mass.copy(),
+            moment_of_inertia=self.moment_of_inertia,
+        )

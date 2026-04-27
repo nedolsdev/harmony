@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
@@ -30,9 +31,10 @@ NodeT = TypeVar("NodeT", bound=StateNode)
 DataT = TypeVar("DataT", bound=Any)
 
 
-class StateTransition[NodeT: StateNode, DataT: Any]:
+class StateTransition[NodeT: StateNode, DataT: Any](ABC):
     """A transition between two StateNodes."""
 
+    @abstractmethod
     def begin(
         self,
         current_state: NodeT,
@@ -41,13 +43,10 @@ class StateTransition[NodeT: StateNode, DataT: Any]:
         data: DataT,
     ) -> None:
         """Begin the transition between StateNodes with 'resolve' to finish the transition."""
-        msg = "The 'begin' method from StateTransition is to be implemented by the subclass."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def update(self, data: DataT, resolve: Callable[[DataT], None]) -> None:
         """Update the transition, potentially calling 'resolve' to end the transition."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
 
 class IllegalTransitionResolutionError(RuntimeError):
@@ -215,6 +214,10 @@ class AnimationTransition[DataT: Any, FrameT: AnimationFrame](StateTransition[An
         # for now, just immediately resolve
         # TODO: Resolve based on exit_time or other  # noqa: TD003
         resolve(data)
+
+    @override
+    def update(self, data: DataT, resolve: Callable[[DataT], None]) -> None:
+        """Update the transition, potentially calling 'resolve' to end the transition."""
 
 
 ENTRY_STATE = AnimationState("ENTRY", NO_ANIMATION)

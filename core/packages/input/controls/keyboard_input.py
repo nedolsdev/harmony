@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import override
 
 from core.packages.input.control import InputControl
@@ -9,7 +10,7 @@ from core.packages.input.controls.device import Device, DeviceType
 from core.packages.input.controls.devices.keyboard import Keyboard
 
 
-class KeyboardInputControl(InputControl):
+class KeyboardInputControl(InputControl, ABC):
     """The reference to the actual input on a keyboard."""
 
     def __init__(self) -> None:
@@ -24,7 +25,6 @@ class KeyboardInputControl(InputControl):
             raise ValueError(msg)
         return self.read_value_from_keyboard(device)
 
+    @abstractmethod
     def read_value_from_keyboard(self, keyboard: Keyboard) -> float:
         """Read the value of the input from a keyboard."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)

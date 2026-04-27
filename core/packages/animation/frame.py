@@ -2,24 +2,23 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from core.packages.geometry.vector2 import Vector2
 
 
-class AnimationFrame:
+class AnimationFrame(ABC):
     """An AnimationFrame is a single state in time of an AnimationClip in progress."""
 
+    @abstractmethod
     def __eq__(self, other: object) -> bool:
         """Equality comparison."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def __hash__(self) -> int:
         """Hash."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
 
 class Vector2Frame(AnimationFrame):

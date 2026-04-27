@@ -3,51 +3,47 @@
 from __future__ import annotations
 
 import math
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Self
 
 if TYPE_CHECKING:
     from core.packages.geometry.vector2 import Vector2
 
 
-class Geometry:
+class Geometry(ABC):
     """The base geometry primitive."""
 
+    @abstractmethod
     def copy(self) -> Self:
         """Create a copy of the geometry."""
-        msg = f"'{self.__class__.__name__}' does not implement 'copy' method."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def bounds(self) -> tuple[float, float, float, float]:
         """Get the rectangular bounds of the geometry (min_x, max_x, min_y, max_y)."""
-        msg = f"'{self.__class__.__name__}' does not implement 'bounds' method."
-        raise NotImplementedError(msg)
 
 
-class ScalableVector1:
+class ScalableVector1(ABC):
     """A geometry that is scalable by a constant."""
 
+    @abstractmethod
     def scale(self, factor: float) -> Self:
         """Create a new geometry from a given scale."""
-        msg = f"'{self.__class__.__name__}' does not implement 'scale' method."
-        raise NotImplementedError(msg)
 
 
-class ScalableVector2:
+class ScalableVector2(ABC):
     """A geometry that is scalable by a Vector2."""
 
+    @abstractmethod
     def scale(self, factor: Vector2) -> Self:
         """Create a new geometry from a given scale."""
-        msg = f"'{self.__class__.__name__}' does not implement 'scale' method."
-        raise NotImplementedError(msg)
 
 
-class Rotatable:
+class Rotatable(ABC):
     """A geometry that is rotatable."""
 
+    @abstractmethod
     def rotate_radians(self, radians: float) -> Self:
         """Create a new geometry from a given rotation in radians."""
-        msg = f"'{self.__class__.__name__}' does not implement 'rotate' method."
-        raise NotImplementedError(msg)
 
     def rotate_degrees(self, degrees: float) -> Self:
         """Create a new geometry from a given rotation in degrees."""

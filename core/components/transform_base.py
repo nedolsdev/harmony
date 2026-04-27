@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import math
+from abc import ABC, abstractmethod
 from typing import Self
 
 from core.packages.geometry.vector2 import Vector2
 
 
-class TransformBase:
+class TransformBase(ABC):
     """A base for basic transform operations independent of the Transform component."""
 
     def __init__(
@@ -69,15 +70,13 @@ class TransformBase:
         self._local_scale = value
         self.mark_dirty()
 
+    @abstractmethod
     def mark_dirty(self) -> None:
         """Mark the transform as dirty, needs to recompute the world position."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def get_parent_transform(self) -> Self | None:
         """Get the parent transform from a given transform (that may not exist)."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
     def _recalculate_if_needed(self) -> None:
         if not self._dirty:

@@ -50,3 +50,8 @@ class ColliderRect(Collider):
     @override
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
+
+    @override
+    def copy(self) -> ColliderRect:
+        """Copy the component."""
+        return ColliderRect(self.rect.copy(), self.collision_surface)

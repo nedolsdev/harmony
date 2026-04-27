@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, TypeVar, override
 
 from core.packages.animation.frame import AnimationFrame
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound=AnimationFrame)
 
 
-class AnimationClip[T: AnimationFrame]:
+class AnimationClip[T: AnimationFrame](ABC):
     """An AnimationClip defines the sequence of AnimationFrames played by the animation at a given fps."""
 
     def __init__(
@@ -78,15 +79,13 @@ class AnimationClip[T: AnimationFrame]:
         """Get the animation time in seconds."""
         return self.get_number_of_frames() / self.fps
 
+    @abstractmethod
     def get_number_of_frames(self) -> int:
         """Get the number of frames the clip contains."""
-        msg = "The 'get_number_of_frames' method should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def get_frame(self, frame_position: float) -> T:
         """Get the AnimationFrame for a given frame number."""
-        msg = "The 'get_frame' method should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
     def get_fps(self) -> int:
         """Get the number of AnimationFrames played every second."""
@@ -103,13 +102,12 @@ class KeyFrame[T: AnimationFrame]:
         self.frame_number = frame_number
 
 
-class KeyFrameBlender[T: AnimationFrame]:
+class KeyFrameBlender[T: AnimationFrame](ABC):
     """A KeyFrame Blender defines how to fill the AnimationFrames between two KeyFrames."""
 
+    @abstractmethod
     def blend(self, frame_position: float, current_frame: KeyFrame[T], next_key_frame: KeyFrame[T]) -> T:
         """Produce an AnimationFrame between the current and next frame."""
-        msg = "This method should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
     def get_frame_count_between_key_frames(self, current_frame: KeyFrame, next_key_frame: KeyFrame) -> int:
         """Get the number of frames between each frame. (e.g. start=50, end=60 => count=10)."""

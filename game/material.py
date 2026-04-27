@@ -2,19 +2,20 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
+
 import numpy as np
 import pygame
 
 from game.asset import Asset
 
 
-class Material(Asset):
+class Material(Asset, ABC):
     """The base material class for render components."""
 
+    @abstractmethod
     def apply(self, surface: pygame.Surface) -> None:
         """Apply the material to the given surface."""
-        msg = f"'{self.__class__.__name__}' does not implement 'apply' method."
-        raise NotImplementedError(msg)
 
 
 class NoMaterial(Material):

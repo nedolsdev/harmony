@@ -46,3 +46,8 @@ class Camera(Behavior):
             raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
+
+    @override
+    def copy(self) -> Camera:
+        """Copy the camera component."""
+        return Camera(Viewport(self.viewport.width, self.viewport.height, self.viewport.offset.copy()))

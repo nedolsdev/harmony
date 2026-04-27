@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, override
 
 from core.packages.geometry.vector2 import Vector2
@@ -14,23 +15,20 @@ if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
 
-class GridSystem:
+class GridSystem(ABC):
     """Defines the coordinate system of a Grid."""
 
+    @abstractmethod
     def world_to_cell(self, world_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the world coordinate to cell coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def cell_to_local(self, cell_coord: Vector2, cell_size: float, gap: float) -> Vector2:
         """Convert the cell coordinate to local coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def get_neighbors(self, cell_coord: Vector2) -> list[Vector2]:
         """Get the neighbors of a given cell coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
 
 class SquareGridSystem(GridSystem):

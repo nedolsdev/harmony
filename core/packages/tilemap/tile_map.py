@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, override
 
 from game.component import GameComponent
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
     from game.event_handler import EventHandler
 
 
-class TileMap(GameComponent):
+class TileMap(GameComponent, ABC):
     """Defines an arrangement of Tiles."""
 
     def __init__(self, name: str, width: int, height: int) -> None:
@@ -25,20 +26,17 @@ class TileMap(GameComponent):
         """Check whether the coordinate is in the bounds of the TileMap."""
         return self.width > x >= 0 and self.height > y >= 0
 
+    @abstractmethod
     def set_tile(self, tile: Tile, x: int, y: int) -> None:
         """Set a tile at a given coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def remove_tile_at_coordinate(self, x: int, y: int) -> None:
         """Remove a tile at a given coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
+    @abstractmethod
     def get_tile_at_coordinate(self, x: int, y: int) -> Tile | None:
         """Get a tile at a given coordinate."""
-        msg = "Subclasses should implement this method."
-        raise NotImplementedError(msg)
 
     def get_width(self) -> int:
         """Get an upper bound of the width (assumes the TileMap only grows)."""

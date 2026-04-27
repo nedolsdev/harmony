@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Literal, override
 
 from core.components.transform import Transform
@@ -20,7 +21,7 @@ if TYPE_CHECKING:
 ColliderType = Literal["rect", "circle", "poly"]
 
 
-class Collider(Behavior, Dirtyable):
+class Collider(Behavior, Dirtyable, ABC):
     """The underlying collider that computes collisions between two like colliders."""
 
     def __init__(self, collision_surface: CollisionSurface | None = None) -> None:
@@ -33,10 +34,9 @@ class Collider(Behavior, Dirtyable):
         self.rigid_body_2d: RigidBody2D | None = None
 
     @staticmethod
+    @abstractmethod
     def get_type() -> ColliderType:
         """Get the type of collider (e.g. 'rect')."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
     def add_layer(self, layer: CollisionLayer) -> None:
         """Add a CollisionLayer that the Collider interacts with."""
