@@ -17,6 +17,7 @@ class DefaultInteraction[InputValueT: InputValue](Interaction[InputValueT]):
     def __init__(self) -> None:
         """Initialise the DefaultInteraction."""
         self._is_actuated: bool = False
+        self._last_value: InputValueT | None = None
 
     def _is_non_zero(self, value: InputValueT) -> bool:
         """Determine if input is actuated."""
@@ -33,10 +34,15 @@ class DefaultInteraction[InputValueT: InputValue](Interaction[InputValueT]):
 
         if is_actuated:
             if not self._is_actuated:
+                self._last_value = None
                 action.start()
-            action.perform()
+
+            if self._last_value != input_value:
+                self._last_value = input_value
+                action.perform()
 
         elif self._is_actuated:
+            self._last_value = None
             action.cancel()
 
         self._is_actuated = is_actuated

@@ -32,7 +32,7 @@ class InputAction[InputValueT: InputValue]:
     def start(self) -> None:
         """Start the input action."""
         self.phase = ActionPhase.STARTED
-        self.start_time = time.time()
+        self.start_time = time.monotonic()
 
         for callback in self._on_started:
             callback(self)

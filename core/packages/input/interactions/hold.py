@@ -1,4 +1,4 @@
-"""A tap interaction."""
+"""A hold interaction."""
 
 from __future__ import annotations
 
@@ -11,21 +11,23 @@ if TYPE_CHECKING:
     from core.packages.input.input_action import InputAction
 
 
-class TapInteraction(Interaction[float]):
-    """A tap interaction."""
+class HoldInteraction(Interaction[float]):
+    """A hold interaction."""
 
     def __init__(
         self,
         press_point: float = 0.5,
-        duration: float = 0.2,
+        duration: float = 0.5,
     ) -> None:
-        """Initialize the TapInteraction."""
+        """Initialize the HoldInteraction."""
         super().__init__()
+
         self.press_point: float = press_point
         self.duration: float = duration
 
         self._was_pressed: bool = False
         self._press_time: float | None = None
+        self._performed: bool = False
 
     @override
     def process(self, action: InputAction, *, input_value: float) -> None:
@@ -36,18 +38,21 @@ class TapInteraction(Interaction[float]):
         # pressed
         if is_pressed and not self._was_pressed:
             self._press_time = now
+            self._performed = False
             action.start()
+
+        # held check
+        if is_pressed and self._press_time is not None and not self._performed:
+            if (now - self._press_time) >= self.duration:
+                self._performed = True
+                action.perform()
 
         # released
         elif not is_pressed and self._was_pressed:
-            if self._press_time is not None:
-                held_time: float = now - self._press_time
-
-                if held_time < self.duration:
-                    action.perform()
-                else:
-                    action.cancel()
+            if not self._performed:
+                action.cancel()
 
             self._press_time = None
+            self._performed = False
 
         self._was_pressed = is_pressed
