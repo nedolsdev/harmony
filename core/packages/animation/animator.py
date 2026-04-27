@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic
+from typing import TYPE_CHECKING
 
-from core.packages.animation.controller import AnimationController, DataT
 from game.behavior import Behavior
 
 if TYPE_CHECKING:
+    from core.packages.animation.controller import AnimationController
     from game.event_handler import EventHandler
 
 
 # parameter types are Trigger, Int, Float, Bool
 
 
-class Animator(Behavior, Generic[DataT]):  # noqa: UP046
+class Animator[DataT](Behavior):
     """The animator component that acts on the animation controller."""
 
     def __init__(self, controller: AnimationController[DataT]) -> None:

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 import pygame
@@ -17,13 +18,12 @@ if TYPE_CHECKING:
     from core.packages.audio.audio_source import AudioSource
 
 
-class ChannelStealingPolicy:
+class ChannelStealingPolicy(ABC):
     """Defines a channel stealing policy for the AudioManager."""
 
+    @abstractmethod
     def get_channel(self, channel_sources: dict[pygame.Channel, AudioSource]) -> pygame.Channel | None:
         """Get the channel that should be stolen. Return 'None' if there is no suitable channel to steal."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)
 
 
 class StealFirstNonLoopingSource(ChannelStealingPolicy):

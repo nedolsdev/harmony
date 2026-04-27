@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
+
 from core.components.transform_base import TransformBase
 from core.packages.geometry.vector2 import Vector2
 
 
-class RectTransform(TransformBase):
+class RectTransform(TransformBase, ABC):
     """A special type of Transform that represents the rectangle that a UIElement can be placed inside of."""
 
     def __init__(  # noqa: PLR0913
@@ -30,7 +32,6 @@ class RectTransform(TransformBase):
         """Mark the transform as dirty, needs to recompute the world position."""
         self._dirty = True
 
+    @abstractmethod
     def get_parent_transform(self) -> RectTransform | None:
         """Get the parent transform from a given transform (that may not exist)."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import override
 
 from core.packages.input.control import InputControl
@@ -10,7 +11,7 @@ from core.packages.input.controls.devices.mouse import Mouse
 from core.packages.input.input_value import InputValue
 
 
-class MouseInputControl[InputValueT: InputValue](InputControl[InputValueT]):
+class MouseInputControl[InputValueT: InputValue](InputControl[InputValueT], ABC):
     """The reference to the actual input from a mouse."""
 
     def __init__(self) -> None:
@@ -25,7 +26,6 @@ class MouseInputControl[InputValueT: InputValue](InputControl[InputValueT]):
             raise ValueError(msg)
         return self.read_value_from_mouse(device)
 
+    @abstractmethod
     def read_value_from_mouse(self, mouse: Mouse) -> InputValueT:
         """Read the value of the input from a mouse."""
-        msg = "Should be implemented in subclasses."
-        raise NotImplementedError(msg)

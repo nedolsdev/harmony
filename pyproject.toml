@@ -20,5 +20,8 @@ line-length = 120
 [lint.isort]
 required-imports = ["from __future__ import annotations"]
 
+[dependency-groups]
+dev = []
+
 [tool.ruff.lint.isort]
 required-imports = ["from __future__ import annotations"]

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 from game.component import GameComponent
@@ -14,11 +14,9 @@ if TYPE_CHECKING:
     from core.packages.camera.camera_component import Camera
 
 
-class Render(GameComponent):
+class Render(GameComponent, ABC):
     """A render component that can be added to game objects to handle their rendering."""
 
     @abstractmethod
     def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
         """Render the object."""
-        msg = f"'{self.__class__.__name__}' does not implement 'render' method."
-        raise NotImplementedError(msg)
