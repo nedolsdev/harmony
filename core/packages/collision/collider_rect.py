@@ -20,7 +20,7 @@ class ColliderRect(Collider):
         """Initialize the ColliderRect."""
         super().__init__(collision_surface)
         self.rect = rect
-        self._world_rect: Rectangle = None  # pyright: ignore[reportAttributeAccessIssue]
+        self._world_rect: Rectangle = None  # ty:ignore[invalid-assignment]
 
     # NOTE: This assumes that you self.rect is never changed which can not be guaranteed
 

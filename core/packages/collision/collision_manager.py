@@ -34,7 +34,7 @@ class CollisionManager:
         self.detector = CollisionDetector()
 
         # support rect-rect collision
-        self.detector.add_detector("rect", "rect", rect_rect_collision)  # pyright: ignore[reportArgumentType]
+        self.detector.add_detector("rect", "rect", rect_rect_collision)  # ty:ignore[invalid-argument-type]
 
         # colliders pairs from last frame
         self.last_frame_pairs: set[tuple[Collider, Collider]] = set()

@@ -31,7 +31,7 @@ class LazyScene(ABC):
         """Get the scene, loading it if it doesn't exit."""
         if self.scene is None:
             self.load_scene()
-        return self.scene  # pyright: ignore[reportReturnType] (scene was just loaded it can't be None)
+        return self.scene  # ty:ignore[invalid-return-type] (scene was just loaded it can't be None)
 
     def is_loaded(self) -> bool:
         """Check if the scene is already loaded."""

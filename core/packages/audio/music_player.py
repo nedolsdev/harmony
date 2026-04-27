@@ -99,3 +99,12 @@ class MusicPlayer(GameComponent):
     @override
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
+
+    @override
+    def fixed_update(self) -> None:
+        """Update the component in the physics / fixed loop."""
+
+    @override
+    def copy(self) -> MusicPlayer:
+        """Copy the component."""
+        return MusicPlayer(self.bus)

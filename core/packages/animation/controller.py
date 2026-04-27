@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Generic, TypeVar, override
+from typing import TYPE_CHECKING, Any, TypeVar, override
 
 from core.packages.animation.clip import NO_ANIMATION, AnimationClip
 from core.packages.animation.frame import AnimationFrame
@@ -28,10 +28,9 @@ class StateNode:
 
 
 NodeT = TypeVar("NodeT", bound=StateNode)
-DataT = TypeVar("DataT", bound=Any)
 
 
-class StateTransition[NodeT: StateNode, DataT: Any](ABC):
+class StateTransition[NodeT: StateNode, DataT](ABC):
     """A transition between two StateNodes."""
 
     @abstractmethod
@@ -161,8 +160,9 @@ class StateMachine[NodeT: StateNode, DataT: Any]:
             msg = "Cannot resolve transition as the StateMachine is not performing a StateTransition."
             raise IllegalTransitionResolutionError(msg)
 
-        self.current_state = self.transitioning_to  # pyright: ignore[reportAttributeAccessIssue] (we can guarantee self.transition_to is not None)
-        self.transitioning_to = None
+        self.current_state = (  # ty:ignore[invalid-assignment]
+            self.transitioning_to
+        )  # (we can guarantee self.transition_to is not None)
         self.current_transition = None
 
     def find_node(self, name: str) -> NodeT | None:
@@ -223,7 +223,7 @@ class AnimationTransition[DataT: Any, FrameT: AnimationFrame](StateTransition[An
 ENTRY_STATE = AnimationState("ENTRY", NO_ANIMATION)
 
 
-class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
+class AnimationLayer[DataT](StateMachine[AnimationState, DataT]):
     """The AnimationLayer is a state machine with transitions between animations."""
 
     def __init__(
@@ -251,7 +251,7 @@ class AnimationLayer(StateMachine[AnimationState, Generic[DataT]]):
             # bit scuffed but we force transition to be the correct type
             assert isinstance(transition, AnimationTransition)  # noqa: S101
 
-            if transition.condition(data):
+            if transition.condition(data):  # ty:ignore[invalid-argument-type]
                 # immediately exit, we can't to transition to multiple states
                 _, end = self.start_end[transition]
 

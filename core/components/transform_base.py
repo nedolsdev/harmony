@@ -31,9 +31,9 @@ class TransformBase(ABC):
         self._local_rotation: float = local_rotation or 0
 
         # cached world data (starts dirty so these will always be calculated)
-        self._world_position: Vector2 = None  # pyright: ignore[reportAttributeAccessIssue]
-        self._world_rotation: float = None  # pyright: ignore[reportAttributeAccessIssue]
-        self._world_scale: Vector2 = None  # pyright: ignore[reportAttributeAccessIssue]
+        self._world_position: Vector2 = None  # ty:ignore[invalid-assignment]
+        self._world_rotation: float = None  # ty:ignore[invalid-assignment]
+        self._world_scale: Vector2 = None  # ty:ignore[invalid-assignment]
 
         self._dirty = True
 
