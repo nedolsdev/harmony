@@ -17,3 +17,10 @@ class Interaction[InputValueT: InputValue](ABC):
     @abstractmethod
     def process(self, action: InputAction, *, input_value: InputValueT) -> None:
         """Process input action."""
+
+
+class NoInteraction(Interaction):
+    """An interaction that does nothing."""
+
+    def process(self, action: InputAction, *, input_value: InputValue) -> None:
+        """Process input action."""

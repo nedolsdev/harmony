@@ -15,10 +15,7 @@ if TYPE_CHECKING:
 class InputAction[InputValueT: InputValue]:
     """An action that is updated by an input."""
 
-    # last value
-    value: InputValueT
-
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, default_value: InputValueT) -> None:
         """Initialize the InputAction."""
         self.name = name
         self.phase: ActionPhase = ActionPhase.WAITING
@@ -28,6 +25,8 @@ class InputAction[InputValueT: InputValue]:
         self._on_started: list[Callable[[InputAction[InputValueT]], None]] = []
         self._on_performed: list[Callable[[InputAction[InputValueT]], None]] = []
         self._on_cancelled: list[Callable[[InputAction[InputValueT]], None]] = []
+
+        self.value = default_value
 
     def start(self) -> None:
         """Start the input action."""
@@ -74,3 +73,11 @@ class InputAction[InputValueT: InputValue]:
     def on_cancelled(self, callback: Callable[[InputAction[InputValueT]], None]) -> None:
         """Add callback for when InputAction is cancelled."""
         self._on_cancelled.append(callback)
+
+    def get_value(self) -> InputValueT:
+        """Get the current value of the action."""
+        return self.value
+
+    def as_composite_part[InputValueU: InputValue](self) -> InputValueU:
+        """Return the action as a reference to a composite part."""
+        return self  # ty:ignore[invalid-return-type]
