@@ -9,13 +9,15 @@ import pygame
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.collision.collision_manager import CollisionManager
 from core.packages.collision.collision_resolver import CollisionResolver
-from core.packages.input.controls.devices.keyboard import PygameKeyboard
-from core.packages.input.controls.devices.mouse import PygameMouse
+from core.packages.input.device_discoverer import PygameDeviceDiscoverer
+from core.packages.input.device_manager import DeviceManager
+from core.packages.input.input_backend import PygameInputBackend
 from core.packages.physics.physics_manager import PhysicsManager
 from core.packages.physics.rigidbody_2d import RigidBody2D
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
-from game.event import Event, PygameEvent, PygameKeydownEvent
+from game.event import PygameEvent, PygameKeyStateEvent
+from game.event_backend import PygameEventBackend
 
 if TYPE_CHECKING:
     from core.packages.input.input_system import InputSystem
@@ -23,9 +25,6 @@ if TYPE_CHECKING:
     from game.render_pipeline import RenderPipeline
     from game.scene import Scene
     from game.scene_manager import SceneManager
-
-if TYPE_CHECKING:
-    from core.packages.input.controls.device import Device
 
 
 class NoActiveSceneError(RuntimeError):
@@ -56,15 +55,20 @@ class Runner:
             self.stop()
 
         event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
-        event_handler.register_listener(PygameKeydownEvent.get_name_from_key(pygame.K_ESCAPE), quit_listener)
+        event_handler.register_listener(
+            PygameKeyStateEvent.get_name_from_key(pygame.K_ESCAPE, event_type=pygame.KEYDOWN),
+            quit_listener,
+        )
 
         self.delta_time = DeltaTime()
 
+        self.event_backend = PygameEventBackend()
+
         self.input_system = input_system
 
-        self.keyboard: PygameKeyboard = PygameKeyboard()
-        self.mouse: PygameMouse = PygameMouse()
-        self.devices: list[Device] = [self.keyboard, self.mouse]
+        self.device_manager = DeviceManager(
+            PygameDeviceDiscoverer(PygameInputBackend(self.event_backend)),
+        )
 
         self.physics = PhysicsManager(
             collision_manager=CollisionManager(),
@@ -78,35 +82,31 @@ class Runner:
         """Run a single step of the game loop."""
         frame_dt: float = self.clock.tick(self.FPS) / 1000.0
 
-        # store frame delta separately
         self.delta_time.set(frame_dt)
 
         self.physics_accumulator += frame_dt
 
-        events: list[Event] = []
-        pygame_events = pygame.event.get()
+        self.event_backend.poll()
 
-        for event in pygame_events:
-            if event.type == pygame.KEYDOWN:
-                events.append(PygameKeydownEvent(event))
-            else:
-                events.append(PygameEvent(event))
+        events = self.event_backend.fetch()
+
+        self.input_system.update(self.device_manager)
 
         self.event_handler.handle_events(events)
 
-        self.keyboard.events = pygame_events
-        self.mouse.events = pygame_events
+        self.event_backend.clear()
 
-        self.input_system.update(self.devices)
         AudioManager().update()
 
         objs = scene.get_flattened_game_objects()
 
         self.input_system.late_update()
 
-        rigid_bodies: list[RigidBody2D] = [
-            obj.get_component(RigidBody2D) for obj in objs if obj.has_component(RigidBody2D)
-        ]
+        rigid_bodies: list[RigidBody2D] = []
+
+        # only filter when needed for performance
+        if self.physics_accumulator >= self.physics_fixed_dt:
+            rigid_bodies = [obj.get_component(RigidBody2D) for obj in objs if obj.has_component(RigidBody2D)]
 
         # fixed step physics loop
         steps: int = 0
@@ -159,6 +159,8 @@ class Runner:
 
     def start(self) -> None:
         """Start the main game loop."""
+        self.device_manager.reset()
+
         self.running = True
         self.scene_manager.set_active_scene(0)
 
