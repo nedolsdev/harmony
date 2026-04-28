@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from core.packages.input.input_action import InputAction
 
 if TYPE_CHECKING:
-    from core.packages.input.input_binding import InputBinding
+    from core.packages.input.input_binding import BindingBase
 
 
 class ActionMap:
@@ -16,7 +16,7 @@ class ActionMap:
     def __init__(self) -> None:
         """Initialize the ActionMap."""
         self.actions: dict[str, InputAction] = {}
-        self.bindings: list[InputBinding] = []
+        self.bindings: list[BindingBase] = []
         self.active = True
 
     def add_action(self, name: str) -> InputAction:
@@ -25,7 +25,7 @@ class ActionMap:
         self.actions[input_action.name] = input_action
         return input_action
 
-    def add_binding(self, binding: InputBinding) -> None:
+    def add_binding(self, binding: BindingBase) -> None:
         """Add a binding to the ActionMap."""
         self.bindings.append(binding)
 

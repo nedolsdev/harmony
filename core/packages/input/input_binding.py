@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING, override
 
 from core.packages.input.input_value import InputValue
 
@@ -14,7 +15,15 @@ if TYPE_CHECKING:
     from core.packages.input.processor import InputProcessor
 
 
-class InputBinding[InputValueT: InputValue]:
+class BindingBase(ABC):
+    """A base class for input bindings."""
+
+    @abstractmethod
+    def update(self, devices: list[Device]) -> None:
+        """Update the binding."""
+
+
+class InputBinding[InputValueT: InputValue](BindingBase):
     """An InputBinding connects an InputAction to one or many Controls."""
 
     def __init__(
@@ -31,21 +40,26 @@ class InputBinding[InputValueT: InputValue]:
         self.interaction = interaction
         self.processors: list[InputProcessor[InputValueT]] = processors or []
 
-    def update(self, devices: list[Device]) -> None:
-        """Update the binding."""
-        best_device = self.get_best_device(devices)
+    def evaluate(self, devices: list[Device]) -> InputValueT:
+        """Compute the processed value for this binding."""
+        device = self.get_best_device(devices)
 
-        if best_device is None:
+        if device is None:
             msg = f"Could not find suitable device for input binding '{self}'"
+
             raise ValueError(msg)
 
-        raw_value = self.control.read_value(best_device)
-
-        input_value = raw_value
+        value: InputValueT = self.control.read_value(device)
 
         for processor in self.processors:
-            input_value = processor.process(input_value)
+            value = processor.process(value)
 
+        return value
+
+    @override
+    def update(self, devices: list[Device]) -> None:
+        """Update the binding."""
+        input_value = self.evaluate(devices)
         self.action.value = input_value
         self.interaction.process(self.action, input_value=input_value)
 
