@@ -29,8 +29,7 @@ class InputBinding[InputValueT: InputValue]:
         self.control = control
         self.action = action
         self.interaction = interaction
-
-        self.processors = processors or []
+        self.processors: list[InputProcessor[InputValueT]] = processors or []
 
     def update(self, devices: list[Device]) -> None:
         """Update the binding."""

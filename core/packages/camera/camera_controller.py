@@ -9,7 +9,7 @@ import pygame
 from core.components.transform import Transform
 from core.packages.geometry.vector2 import Vector2
 from game.behavior import Behavior
-from game.event import PygameKeydownEvent
+from game.event import PygameKeyStateEvent
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -44,19 +44,19 @@ class CameraController(Behavior):
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
         event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_key(pygame.K_UP),
+            PygameKeyStateEvent.get_name_from_key(pygame.K_UP, event_type=pygame.KEYDOWN),
             self.move(Vector2(0, -self.speed)),
         )
         event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_key(pygame.K_DOWN),
+            PygameKeyStateEvent.get_name_from_key(pygame.K_DOWN, event_type=pygame.KEYDOWN),
             self.move(Vector2(0, self.speed)),
         )
         event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_key(pygame.K_LEFT),
+            PygameKeyStateEvent.get_name_from_key(pygame.K_LEFT, event_type=pygame.KEYDOWN),
             self.move(Vector2(-self.speed, 0)),
         )
         event_handler.register_listener(
-            PygameKeydownEvent.get_name_from_key(pygame.K_RIGHT),
+            PygameKeyStateEvent.get_name_from_key(pygame.K_RIGHT, event_type=pygame.KEYDOWN),
             self.move(Vector2(self.speed, 0)),
         )
 

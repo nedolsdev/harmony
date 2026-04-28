@@ -33,24 +33,64 @@ class PygameEvent(Event):
         return pygame.event.event_name(pygame_type)
 
 
-class PygameKeydownEvent(PygameEvent):
-    """A Pygame-specific event class for keydown events."""
+class PygameKeyStateEvent(PygameEvent):
+    """A Pygame-specific event class for key up/down events."""
 
     def __init__(self, event: pygame.event.Event) -> None:
         """Initialize the keydown event with the Pygame event object."""
         super().__init__(event)
 
-        key: int = event.key
-        self.key = key
+        self.key: int = event.key
 
-        self.event_type = PygameKeydownEvent.get_name_from_key(key)
+        self.event_type = PygameKeyStateEvent.get_name_from_key(event.key, event.type)
 
     @staticmethod
-    def get_name_from_key(key: int) -> str:
+    def get_name_from_key(key: int, event_type: int) -> str:
         """Get the name of the event from its Pygame type and key."""
-        event_name = PygameEvent.get_name_from_type(pygame.KEYDOWN)
+        event_name = PygameEvent.get_name_from_type(event_type)
         key_name = pygame.key.name(key)
         return f"{event_name} {key_name}"
+
+
+class PygameMouseStateEvent(PygameEvent):
+    """A Pygame-specific event class for mouse button up/down events."""
+
+    def __init__(self, event: pygame.event.Event) -> None:
+        """Initialize the mouse button event with the Pygame event object."""
+        super().__init__(event)
+
+        self.button: int = event.button
+
+        self.event_type = PygameMouseStateEvent.get_name_from_button(self.button, event.type)
+
+    @staticmethod
+    def get_name_from_button(button: int, event_type: int) -> str:
+        """Get the name of the event from its Pygame type and button."""
+        event_name = PygameEvent.get_name_from_type(event_type)
+        button_name = pygame.key.name(button)
+        return f"{event_name} {button_name}"
+
+
+class PygameMouseMoveEvent(PygameEvent):
+    """A Pygame-specific event class for mouse move event."""
+
+    def __init__(self, event: pygame.event.Event) -> None:
+        """Initialize the mouse move event with the Pygame event object."""
+        super().__init__(event)
+
+        self.pos: tuple[int, int] = event.pos
+        self.rel: tuple[int, int] = event.rel
+
+
+class PygameMouseWheelEvent(PygameEvent):
+    """A Pygame-specific event class for mouse wheel scroll event."""
+
+    def __init__(self, event: pygame.event.Event) -> None:
+        """Initialize the mouse wheel scroll event with the Pygame event object."""
+        super().__init__(event)
+
+        self.x: int = event.x
+        self.y: int = event.y
 
 
 class EventListener:

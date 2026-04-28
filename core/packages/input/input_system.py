@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from core.packages.input.action_map import ActionMap
 
 if TYPE_CHECKING:
-    from core.packages.input.controls.device import Device
+    from core.packages.input.device_manager import DeviceManager
 
 
 class InputSystem:
@@ -17,17 +17,16 @@ class InputSystem:
         """Initialize the InputSystem."""
         self.maps: dict[str, ActionMap] = {}
 
-    def update(self, devices: list[Device]) -> None:
+    def update(self, device_manager: DeviceManager) -> None:
         """Update the input system given a list of connected devices."""
-        for device in devices:
-            device.update()
+        device_manager.update()
 
         for action_map in self.maps.values():
             if not action_map.active:
                 continue
 
             for binding in action_map.bindings:
-                binding.update(devices)
+                binding.update(device_manager.devices)
 
     def late_update(self) -> None:
         """Late update the input system, resetting the actions."""
