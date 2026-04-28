@@ -9,6 +9,8 @@ from core.packages.input.input_action import InputAction
 if TYPE_CHECKING:
     from core.packages.input.input_binding import BindingBase
 
+from core.packages.input.input_value import InputValue
+
 
 class ActionMap:
     """An action map defines a set of related input actions."""
@@ -19,9 +21,9 @@ class ActionMap:
         self.bindings: list[BindingBase] = []
         self.active = True
 
-    def add_action(self, name: str) -> InputAction:
+    def add_action[InputValueT: InputValue](self, name: str, default_value: InputValueT) -> InputAction[InputValueT]:
         """Create an InputAction for a given name."""
-        input_action = InputAction(name)
+        input_action = InputAction(name, default_value)
         self.actions[input_action.name] = input_action
         return input_action
 

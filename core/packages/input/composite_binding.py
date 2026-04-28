@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from core.packages.input.controls.device import Device
     from core.packages.input.input_action import InputAction, InputValue
     from core.packages.input.input_binding import InputBinding
-    from core.packages.input.interaction import Interaction
 
 
 class CompositeBinding[CompositeValueT: InputValue, PartValueT: InputValue](BindingBase):
@@ -21,13 +20,11 @@ class CompositeBinding[CompositeValueT: InputValue, PartValueT: InputValue](Bind
     def __init__(
         self,
         action: InputAction[CompositeValueT],
-        interaction: Interaction[CompositeValueT],
         parts: dict[str, InputBinding[PartValueT]],
         compose: Callable[[dict[str, PartValueT]], CompositeValueT],
     ) -> None:
         """Initialize the CompositeBinding."""
         self.action = action
-        self.interaction = interaction
         self.parts = parts
         self.compose = compose
 
@@ -45,4 +42,3 @@ class CompositeBinding[CompositeValueT: InputValue, PartValueT: InputValue](Bind
         result = self.compose(values)
 
         self.action.value = result
-        self.interaction.process(self.action, input_value=result)

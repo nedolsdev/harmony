@@ -20,7 +20,7 @@ class KeyBinding(InputBinding[float]):
         self,
         key: int,
         action: InputAction[float],
-        interaction: Interaction[float],
+        interaction: Interaction[float] | None = None,
         *,
         processors: list[InputProcessor[float]] | None = None,
     ) -> None:

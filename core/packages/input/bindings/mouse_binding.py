@@ -21,7 +21,7 @@ class MouseClickBinding(InputBinding[float]):
         self,
         button_key: int,
         action: InputAction[float],
-        interaction: Interaction[float],
+        interaction: Interaction[float] | None = None,
         *,
         processors: list[InputProcessor[float]] | None = None,
     ) -> None:

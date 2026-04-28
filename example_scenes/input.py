@@ -10,7 +10,6 @@ from core.packages.input.action_map import ActionMap
 from core.packages.input.bindings.key_binding import KeyBinding
 from core.packages.input.bindings.mouse_binding import MouseMoveBinding
 from core.packages.input.composite_binding import CompositeBinding
-from core.packages.input.interactions.default import DefaultInteraction
 from core.packages.input.interactions.tap import TapInteraction
 from example_scenes.helpers.camera_util import create_camera_game_object
 from game.scene import Scene
@@ -26,8 +25,8 @@ def create_gameplay_action_map() -> ActionMap:
     """Create a test input system."""
     gameplay = ActionMap()
 
-    jump: InputAction[float] = gameplay.add_action("jump")
-    move: InputAction[tuple[float, float]] = gameplay.add_action("move")
+    jump: InputAction[float] = gameplay.add_action("jump", 0)
+    move: InputAction[tuple[float, float]] = gameplay.add_action("move", (0, 0))
 
     gameplay.add_binding(KeyBinding(pygame.K_SPACE, jump, TapInteraction()))
     gameplay.add_binding(MouseMoveBinding(move))
@@ -39,16 +38,15 @@ def create_gameplay_action_map() -> ActionMap:
         return (x, y)
 
     wasd_parts: dict[str, InputBinding[float]] = {
-        "up": KeyBinding(pygame.K_w, move, DefaultInteraction()),
-        "down": KeyBinding(pygame.K_s, move, DefaultInteraction()),
-        "left": KeyBinding(pygame.K_a, move, DefaultInteraction()),
-        "right": KeyBinding(pygame.K_d, move, DefaultInteraction()),
+        "up": KeyBinding(pygame.K_w, move.as_composite_part()),
+        "down": KeyBinding(pygame.K_s, move.as_composite_part()),
+        "left": KeyBinding(pygame.K_a, move.as_composite_part()),
+        "right": KeyBinding(pygame.K_d, move.as_composite_part()),
     }
 
     gameplay.add_binding(
         CompositeBinding(
             action=move,
-            interaction=DefaultInteraction(),
             parts=wasd_parts,
             compose=wasd_compose,
         ),

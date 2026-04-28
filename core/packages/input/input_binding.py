@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, override
 
 from core.packages.input.input_value import InputValue
+from core.packages.input.interactions.default import DefaultInteraction
 
 if TYPE_CHECKING:
     from core.packages.input.control import InputControl
@@ -30,14 +31,14 @@ class InputBinding[InputValueT: InputValue](BindingBase):
         self,
         control: InputControl[InputValueT],
         action: InputAction[InputValueT],
-        interaction: Interaction[InputValueT],
+        interaction: Interaction[InputValueT] | None = None,
         *,
         processors: list[InputProcessor[InputValueT]] | None = None,
     ) -> None:
         """Initialize the InputBinding."""
         self.control = control
         self.action = action
-        self.interaction = interaction
+        self.interaction = interaction or DefaultInteraction()
         self.processors: list[InputProcessor[InputValueT]] = processors or []
 
     def evaluate(self, devices: list[Device]) -> InputValueT:
