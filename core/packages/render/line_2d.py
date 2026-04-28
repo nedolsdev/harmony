@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, override
 
 import pygame
 
-from core.components.render import Render
+from core.packages.render.render import Render
 
 if TYPE_CHECKING:
     from core.components.transform import Transform

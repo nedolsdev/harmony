@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
+from core.packages.render.render_layer import RenderLayer
 from game.object_builder import GameObjectBuilder
 
 if TYPE_CHECKING:

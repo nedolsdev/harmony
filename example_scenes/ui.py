@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING
 
 from pygame import Font
 
-from core.components.render_layer import RenderLayer
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
+from core.packages.render.render_layer import RenderLayer
 from core.packages.ui.components.base.visual.text import Text
 from example_scenes.helpers.camera_util import create_camera_game_object
 from game.object_builder import GameObjectBuilder

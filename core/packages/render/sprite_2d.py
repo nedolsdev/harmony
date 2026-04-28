@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, override
 import pygame
 
 from core.assets.sprite_image import SpriteImage
-from core.components.render import Render
 from core.packages.geometry.vector2 import Vector2
+from core.packages.render.render import Render
 
 if TYPE_CHECKING:
     from core.components.transform import Transform

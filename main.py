@@ -7,6 +7,7 @@ from rich.traceback import install
 
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.input.input_system import InputSystem
+from core.packages.render.render_pipeline import RenderPipeline
 from example_scenes.collision import create_collision_scene
 from example_scenes.input import create_input_scene
 from example_scenes.rotation import create_rotation_scene
@@ -18,7 +19,6 @@ from game.event_handler import EventHandler
 from game.image_cache import ImageCache
 from game.lazy_scene import SimpleLazyScene
 from game.logging import EngineLogger
-from game.render_pipeline import RenderPipeline
 from game.runner import Runner
 from game.scene_manager import SceneManager
 

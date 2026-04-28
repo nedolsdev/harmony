@@ -5,11 +5,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from agent_world.components.rotate_around import RotateAround
-from core.components.render_layer import RenderLayer
-from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
+from core.packages.render.render_layer import RenderLayer
+from core.packages.render.sprite_2d import Sprite2D
 from example_scenes.helpers.camera_util import create_camera_game_object
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder

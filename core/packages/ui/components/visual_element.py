@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from core.components.render import Render
+from core.packages.render.render import Render
 from core.packages.ui.components.ui_element import UIElement
 
 

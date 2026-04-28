@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from core.components.render import Render
 from core.packages.geometry.vector2 import Vector2
+from core.packages.render.render import Render
 
 if TYPE_CHECKING:
     import pygame
