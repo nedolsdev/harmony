@@ -13,7 +13,6 @@ from core.packages.input.device_discoverer import PygameDeviceDiscoverer
 from core.packages.input.device_manager import DeviceManager
 from core.packages.input.input_backend import PygameInputBackend
 from core.packages.physics.physics_manager import PhysicsManager
-from core.packages.physics.rigidbody_2d import RigidBody2D
 from core.packages.timing.delta_time import DeltaTime
 from game.behavior import Behavior
 from game.event import PygameEvent, PygameKeyStateEvent
@@ -35,7 +34,6 @@ class Runner:
     """Runs the game by initializing the renderer and starting the main loop."""
 
     FPS: int = 60
-    PHYSICS_TPS: int = 60
 
     def __init__(
         self,
@@ -75,16 +73,11 @@ class Runner:
             collision_resolver=CollisionResolver(),
         )
 
-        self.physics_fixed_dt: float = 1.0 / self.PHYSICS_TPS
-        self.physics_accumulator: float = 0.0
-
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
         frame_dt: float = self.clock.tick(self.FPS) / 1000.0
 
         self.delta_time.set(frame_dt)
-
-        self.physics_accumulator += frame_dt
 
         self.event_backend.poll()
 
@@ -100,29 +93,9 @@ class Runner:
 
         objs = scene.get_flattened_game_objects()
 
+        self.physics.update(objs, frame_dt)
+
         self.input_system.late_update()
-
-        rigid_bodies: list[RigidBody2D] = []
-
-        # only filter when needed for performance
-        if self.physics_accumulator >= self.physics_fixed_dt:
-            rigid_bodies = [obj.get_component(RigidBody2D) for obj in objs if obj.has_component(RigidBody2D)]
-
-        # fixed step physics loop
-        steps: int = 0
-
-        while self.physics_accumulator >= self.physics_fixed_dt:
-            self.physics.run_physics_step(rigid_bodies, self.physics_fixed_dt)
-
-            for obj in objs:
-                obj.fixed_update()
-
-            self.physics_accumulator -= self.physics_fixed_dt
-            steps += 1
-
-            if steps >= self.physics.max_physics_steps:
-                self.physics_accumulator = 0.0
-                break
 
         for obj in objs:
             obj.update()
