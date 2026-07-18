@@ -14,18 +14,20 @@ from game.object_builder import GameObjectBuilder
 if TYPE_CHECKING:
     from game.object import GameObject
     from game.sorting_layer import SortingLayer
+    from game.window import WindowSettings
 
 
-def create_camera_game_object(window_size: int, layer: SortingLayer) -> GameObject:
+def create_camera_game_object(window_settings: WindowSettings, layer: SortingLayer) -> GameObject:
     """Create a test camera object."""
+    width, height = window_settings.resolution
     return (
         GameObjectBuilder(Empty)
         .add_component(Transform())
         .add_component(
             Camera(
                 Viewport(
-                    window_size,
-                    window_size,
+                    width,
+                    height,
                 ),
             ),
         )

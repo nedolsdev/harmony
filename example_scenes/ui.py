@@ -17,9 +17,10 @@ from game.scene import Scene
 
 if TYPE_CHECKING:
     from game.sorting_layer import SortingLayerManager
+    from game.window import WindowSettings
 
 
-def create_ui_scene(window_size: int, layers: SortingLayerManager) -> Scene:
+def create_ui_scene(window_settings: WindowSettings, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing the UI system."""
     scene = Scene()
 
@@ -35,6 +36,6 @@ def create_ui_scene(window_size: int, layers: SortingLayerManager) -> Scene:
 
     scene.add_game_object(ui_obj)
 
-    scene.add_game_object(create_camera_game_object(window_size, default_layer))
+    scene.add_game_object(create_camera_game_object(window_settings, default_layer))
 
     return scene

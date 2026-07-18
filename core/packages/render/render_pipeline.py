@@ -11,6 +11,7 @@ from core.packages.camera.camera_component import Camera
 from core.packages.render.render import Render
 from core.packages.render.render_layer import RenderLayer
 from game.sorting_layer import SortingLayerManager
+from game.window import GameWindow, WindowSettings
 
 if TYPE_CHECKING:
     from game.object import GameObject
@@ -24,11 +25,10 @@ class NoCameraError(RuntimeError):
 class RenderPipeline:
     """Handles rendering of the game."""
 
-    def __init__(self, title: str, window_width: int, window_height: int) -> None:
+    def __init__(self, window_settings: WindowSettings | None = None) -> None:
         """Initialize the renderer."""
-        self.screen = pygame.display.set_mode((window_width, window_height))
+        self.window = GameWindow(window_settings)
         self.sorting_layers = SortingLayerManager()
-        pygame.display.set_caption(title)
 
     def draw_objects(self, objects: list[GameObject], cameras: list[Camera]) -> None:
         """Draw game objects on the screen."""
@@ -42,8 +42,9 @@ class RenderPipeline:
 
         # TODO: Fix performance here, matrixes / other point mapping to avoid looping for each camera  # noqa: TD003
 
+        screen = self.window.get_surface()
         for camera in cameras:
-            camera_surface = self.screen.subsurface(camera.viewport.as_tuple())
+            camera_surface = screen.subsurface(camera.viewport.as_tuple())
             for obj in objects:
                 transform = obj.get_component(Transform)
                 for render_component in obj.get_components_of_type(Render):
@@ -51,7 +52,9 @@ class RenderPipeline:
 
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""
-        self.screen.fill((255, 255, 255))
+        screen = self.window.get_surface()
+
+        screen.fill((255, 255, 255))
 
         objects, cameras = self.get_render_queue(scene)
 

@@ -17,9 +17,10 @@ from game.scene import Scene
 
 if TYPE_CHECKING:
     from game.sorting_layer import SortingLayerManager
+    from game.window import WindowSettings
 
 
-def create_rotation_scene(window_size: int, layers: SortingLayerManager) -> Scene:
+def create_rotation_scene(window_settings: WindowSettings, layers: SortingLayerManager) -> Scene:
     """Return a Scene configured for testing rotation behavior."""
     scene = Scene()
 
@@ -47,6 +48,6 @@ def create_rotation_scene(window_size: int, layers: SortingLayerManager) -> Scen
 
     scene.add_game_object(rotation_parent)
 
-    scene.add_game_object(create_camera_game_object(window_size, layers.get_layer("Default")))
+    scene.add_game_object(create_camera_game_object(window_settings, layers.get_layer("Default")))
 
     return scene

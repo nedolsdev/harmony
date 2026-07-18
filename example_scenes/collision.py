@@ -24,9 +24,14 @@ from game.scene import Scene
 if TYPE_CHECKING:
     from core.packages.collision.collision_manager import CollisionManager
     from game.sorting_layer import SortingLayerManager
+    from game.window import WindowSettings
 
 
-def create_collision_scene(window_size: int, layers: SortingLayerManager, collision_manager: CollisionManager) -> Scene:
+def create_collision_scene(
+    window_settings: WindowSettings,
+    layers: SortingLayerManager,
+    collision_manager: CollisionManager,
+) -> Scene:
     """Return a Scene configured for testing collisions."""
     scene = Scene()
 
@@ -80,6 +85,6 @@ def create_collision_scene(window_size: int, layers: SortingLayerManager, collis
 
     scene.add_game_object(static_square)
 
-    scene.add_game_object(create_camera_game_object(window_size, default_layer))
+    scene.add_game_object(create_camera_game_object(window_settings, default_layer))
 
     return scene
