@@ -26,4 +26,5 @@ class Tile(ScalableSurfaceAsset):
         surface = self.tile_surface.get_surface_of_scale(scale).copy()
         if self.material:
             self.material.apply(surface)
+
         return surface

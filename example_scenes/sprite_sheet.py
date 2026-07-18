@@ -34,7 +34,7 @@ def create_sprite_sheet_scene(window_size: int, layers: SortingLayerManager) -> 
     # parent object for the grid and tile map
     grid_obj = (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_position=Vector2(50, 50)))
+        .add_component(Transform(local_position=Vector2(50, 50), local_scale=Vector2(1, 1)))
         .add_component(tile_grid.grid)
         .add_component(tile_grid.tile_map)
         .add_component(tile_grid.tile_map_renderer)

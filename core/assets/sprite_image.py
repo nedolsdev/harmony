@@ -38,7 +38,7 @@ class SpriteImage(ScalableSurfaceAsset):
         return surface.get_size()
 
     @override
-    def get_surface_of_scale(self, scale: Vector2) -> pygame.Surface:
+    def get_surface_of_scale(self, scale: Vector2, *, use_smooth_scaling: bool = False) -> pygame.Surface:
         surface = self.get_surface()
         width, height = surface.get_size()
 
@@ -50,7 +50,10 @@ class SpriteImage(ScalableSurfaceAsset):
         if scaled_size == (width, height):
             return surface
 
-        return pygame.transform.smoothscale(surface, scaled_size)
+        if use_smooth_scaling:
+            return pygame.transform.smoothscale(surface, scaled_size)
+
+        return pygame.transform.scale(surface, scaled_size)
 
 
 class SlicedSpriteImage(SpriteImage):
