@@ -6,18 +6,18 @@ from typing import TYPE_CHECKING
 
 from pygame import Font
 
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.geometry.vector2 import Vector2
-from core.packages.render.render_layer import RenderLayer
-from core.packages.ui.components.base.visual.text import Text
 from example_scenes.helpers.camera_util import create_camera_game_object
-from game.object_builder import GameObjectBuilder
-from game.scene import Scene
+from harmony.core.components.transform import Transform
+from harmony.core.objects.empty import Empty
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.core.packages.ui.components.base.visual.text import Text
+from harmony.game.object_builder import GameObjectBuilder
+from harmony.game.scene import Scene
 
 if TYPE_CHECKING:
-    from game.sorting_layer import SortingLayerManager
-    from game.window import WindowSettings
+    from harmony.game.sorting_layer import SortingLayerManager
+    from harmony.game.window import WindowSettings
 
 
 def create_ui_scene(window_settings: WindowSettings, layers: SortingLayerManager) -> Scene:

@@ -5,14 +5,14 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING
 
-from core.packages.tilemap.grid import Grid, SquareGridSystem
-from core.packages.tilemap.tile_grid import TileGrid
-from core.packages.tilemap.tile_map import DictBasedTileMap
-from core.packages.tilemap.tile_map_renderer import TileMapRenderer
-from core.packages.tilemap.tile_palette import TilePalette
+from harmony.core.packages.tilemap.grid import Grid, SquareGridSystem
+from harmony.core.packages.tilemap.tile_grid import TileGrid
+from harmony.core.packages.tilemap.tile_map import DictBasedTileMap
+from harmony.core.packages.tilemap.tile_map_renderer import TileMapRenderer
+from harmony.core.packages.tilemap.tile_palette import TilePalette
 
 if TYPE_CHECKING:
-    from core.packages.spritesheet.sprite_sheet import SpriteSheet
+    from harmony.core.packages.spritesheet.sprite_sheet import SpriteSheet
 
 
 def get_sprite_sheet_grid(

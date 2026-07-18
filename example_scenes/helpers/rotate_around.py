@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import math
 
-from core.components.transform import Transform
-from game.behavior import Behavior
+from harmony.core.components.transform import Transform
+from harmony.game.behavior import Behavior
 
 
 class RotateAround(Behavior):

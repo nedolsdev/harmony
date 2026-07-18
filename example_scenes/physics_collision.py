@@ -4,26 +4,26 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.collision.collider_rect import ColliderRect
-from core.packages.collision.collision_grouper import CollisionGrouper
-from core.packages.collision.collision_layer import CollisionLayer
-from core.packages.collision.collision_rule import CollisionRule
-from core.packages.geometry.rectangle import Rectangle
-from core.packages.geometry.vector2 import Vector2
-from core.packages.physics.rigidbody_2d import RigidBody2D
-from core.packages.render.render_layer import RenderLayer
-from core.packages.render.sprite_2d import Sprite2D
 from example_scenes.helpers.camera_util import create_camera_game_object
-from game.material import ColorMaterial
-from game.object_builder import GameObjectBuilder
-from game.scene import Scene
+from harmony.core.components.transform import Transform
+from harmony.core.objects.empty import Empty
+from harmony.core.packages.collision.collider_rect import ColliderRect
+from harmony.core.packages.collision.collision_grouper import CollisionGrouper
+from harmony.core.packages.collision.collision_layer import CollisionLayer
+from harmony.core.packages.collision.collision_rule import CollisionRule
+from harmony.core.packages.geometry.rectangle import Rectangle
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.physics.rigidbody_2d import RigidBody2D
+from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.core.packages.render.sprite_2d import Sprite2D
+from harmony.game.material import ColorMaterial
+from harmony.game.object_builder import GameObjectBuilder
+from harmony.game.scene import Scene
 
 if TYPE_CHECKING:
-    from core.packages.collision.collision_manager import CollisionManager
-    from game.sorting_layer import SortingLayerManager
-    from game.window import WindowSettings
+    from harmony.core.packages.collision.collision_manager import CollisionManager
+    from harmony.game.sorting_layer import SortingLayerManager
+    from harmony.game.window import WindowSettings
 
 
 def create_physics_collision_scene(

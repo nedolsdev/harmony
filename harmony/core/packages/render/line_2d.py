@@ -1,0 +1,87 @@
+"""2D line component."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, override
+
+import pygame
+
+from harmony.core.packages.render.render import Render
+
+if TYPE_CHECKING:
+    from harmony.core.components.transform import Transform
+    from harmony.core.packages.camera.camera_component import Camera
+    from harmony.core.packages.geometry.vector2 import Vector2
+    from harmony.game.event_handler import EventHandler
+    from harmony.game.material import Material
+
+
+class Line2D(Render):
+    """A 2D line component."""
+
+    def __init__(
+        self,
+        start: Vector2,
+        end: Vector2,
+        width: int,
+        material: Material,
+    ) -> None:
+        """Initialize the 2D line with a given start and end point."""
+        super().__init__()
+        self.start_pos = start
+        self.end_pos = end
+        self.width = width
+        self.material = material
+
+    @override
+    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
+        """Render the line with proper rotation handling."""
+        start_pixel = camera.world_to_screen(transform.transform_point(self.start_pos + transform.local_position))
+        end_pixel = camera.world_to_screen(transform.transform_point(self.end_pos + transform.local_position))
+
+        line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+
+        pygame.draw.line(
+            line_surface,
+            (255, 255, 255, 255),
+            start_pixel.as_tuple(),
+            end_pixel.as_tuple(),
+            self.width,
+        )
+
+        self.material.apply(line_surface)
+        surface.blit(line_surface, (0, 0))
+
+    def get_start_end(self) -> tuple[Vector2, Vector2]:
+        """Return the start and end positions of the line."""
+        return self.start_pos, self.end_pos
+
+    def set_start_end(self, start: Vector2, end: Vector2) -> None:
+        """Set the start and end positions of the line."""
+        self.start_pos = start
+        self.end_pos = end
+
+    @override
+    def awake(self) -> None:
+        """Event call when the component instance is created."""
+
+    @override
+    def start(self) -> None:
+        """Initialize the component."""
+
+    @override
+    def update(self) -> None:
+        """Update the component."""
+
+    @override
+    def add_events(self, event_handler: EventHandler) -> None:
+        """Add events to the event handler for this component."""
+
+    def copy(self) -> Line2D:
+        """Create a copy of the Line2D component."""
+        return Line2D(
+            start=self.start_pos,
+            end=self.end_pos,
+            width=self.width,
+            material=self.material,
+        )

@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.camera.camera_component import Camera, Viewport
-from core.packages.camera.camera_controller import CameraController
-from core.packages.render.render_layer import RenderLayer
-from game.object_builder import GameObjectBuilder
+from harmony.core.components.transform import Transform
+from harmony.core.objects.empty import Empty
+from harmony.core.packages.camera.camera_component import Camera, Viewport
+from harmony.core.packages.camera.camera_controller import CameraController
+from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.game.object_builder import GameObjectBuilder
 
 if TYPE_CHECKING:
-    from game.object import GameObject
-    from game.sorting_layer import SortingLayer
-    from game.window import WindowSettings
+    from harmony.game.object import GameObject
+    from harmony.game.sorting_layer import SortingLayer
+    from harmony.game.window import WindowSettings
 
 
 def create_camera_game_object(window_settings: WindowSettings, layer: SortingLayer) -> GameObject:

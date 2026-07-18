@@ -4,18 +4,18 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.geometry.vector2 import Vector2
-from core.packages.render.render_layer import RenderLayer
 from example_scenes.helpers.camera_util import create_camera_game_object
 from example_scenes.helpers.test_tile_map import get_example_tile_grid
-from game.object_builder import GameObjectBuilder
-from game.scene import Scene
+from harmony.core.components.transform import Transform
+from harmony.core.objects.empty import Empty
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.game.object_builder import GameObjectBuilder
+from harmony.game.scene import Scene
 
 if TYPE_CHECKING:
-    from game.sorting_layer import SortingLayerManager
-    from game.window import WindowSettings
+    from harmony.game.sorting_layer import SortingLayerManager
+    from harmony.game.window import WindowSettings
 
 
 def create_tile_map_scene(window_settings: WindowSettings, layers: SortingLayerManager) -> Scene:
