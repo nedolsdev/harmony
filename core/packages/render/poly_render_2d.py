@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-from core.components.render import Render
+from core.packages.render.render import Render
 from game.material import NoMaterial
 
 if TYPE_CHECKING:

@@ -20,8 +20,8 @@ from game.event_backend import PygameEventBackend
 
 if TYPE_CHECKING:
     from core.packages.input.input_system import InputSystem
+    from core.packages.render.render_pipeline import RenderPipeline
     from game.event_handler import EventHandler
-    from game.render_pipeline import RenderPipeline
     from game.scene import Scene
     from game.scene_manager import SceneManager
 

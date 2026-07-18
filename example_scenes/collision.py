@@ -4,9 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from agent_world.components.rotate_around import RotateAround
-from core.components.render_layer import RenderLayer
-from core.components.sprite_2d import Sprite2D
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.collision.collider_rect import ColliderRect
@@ -16,7 +13,10 @@ from core.packages.collision.collision_rule import CollisionRule
 from core.packages.collision.collision_test import CollisionTest
 from core.packages.geometry.rectangle import Rectangle
 from core.packages.geometry.vector2 import Vector2
+from core.packages.render.render_layer import RenderLayer
+from core.packages.render.sprite_2d import Sprite2D
 from example_scenes.helpers.camera_util import create_camera_game_object
+from example_scenes.helpers.rotate_around import RotateAround
 from game.material import ColorMaterial
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
@@ -24,9 +24,14 @@ from game.scene import Scene
 if TYPE_CHECKING:
     from core.packages.collision.collision_manager import CollisionManager
     from game.sorting_layer import SortingLayerManager
+    from game.window import WindowSettings
 
 
-def create_collision_scene(window_size: int, layers: SortingLayerManager, collision_manager: CollisionManager) -> Scene:
+def create_collision_scene(
+    window_settings: WindowSettings,
+    layers: SortingLayerManager,
+    collision_manager: CollisionManager,
+) -> Scene:
     """Return a Scene configured for testing collisions."""
     scene = Scene()
 
@@ -80,6 +85,6 @@ def create_collision_scene(window_size: int, layers: SortingLayerManager, collis
 
     scene.add_game_object(static_square)
 
-    scene.add_game_object(create_camera_game_object(window_size, default_layer))
+    scene.add_game_object(create_camera_game_object(window_settings, default_layer))
 
     return scene

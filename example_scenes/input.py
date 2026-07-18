@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from core.packages.input.input_binding import InputBinding
     from core.packages.input.input_system import InputSystem
     from game.sorting_layer import SortingLayerManager
+    from game.window import WindowSettings
 
 
 def create_gameplay_action_map() -> ActionMap:
@@ -58,7 +59,11 @@ def create_gameplay_action_map() -> ActionMap:
     return gameplay
 
 
-def create_input_scene(window_size: int, layers: SortingLayerManager, input_system: InputSystem) -> Scene:
+def create_input_scene(
+    window_settings: WindowSettings,
+    layers: SortingLayerManager,
+    input_system: InputSystem,
+) -> Scene:
     """Return a Scene configured for testing input behavior."""
     scene = Scene()
 
@@ -66,6 +71,6 @@ def create_input_scene(window_size: int, layers: SortingLayerManager, input_syst
 
     default_layer = layers.get_layer("Default")
 
-    scene.add_game_object(create_camera_game_object(window_size, default_layer))
+    scene.add_game_object(create_camera_game_object(window_settings, default_layer))
 
     return scene
