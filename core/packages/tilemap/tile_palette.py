@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from core.packages.tilemap.tile import Tile
 from game.asset import Asset
 
 if TYPE_CHECKING:
-    from core.packages.tilemap.tile import Tile
+    from core.packages.spritesheet.sprite_sheet import SpriteSheet
 
 
 class TilePalette(Asset):
@@ -28,3 +29,15 @@ class TilePalette(Asset):
             raise IndexError(msg)
 
         return self.tiles[index]
+
+    @classmethod
+    def from_sprite_sheet(cls, sprite_sheet: SpriteSheet) -> TilePalette:
+        """Create a TilePalette from a SpriteSheet."""
+        instance = cls()
+
+        assets = sprite_sheet.get_sprites()
+
+        for asset in assets:
+            instance.add_tile(Tile(asset, material=None))
+
+        return instance

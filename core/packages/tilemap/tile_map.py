@@ -59,6 +59,10 @@ class TileMap(GameComponent, ABC):
         """Update the sprite component."""
 
     @override
+    def fixed_update(self) -> None:
+        """Update the sprite component on fixed physics step."""
+
+    @override
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 
