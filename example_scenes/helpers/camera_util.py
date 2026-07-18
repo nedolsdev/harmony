@@ -9,7 +9,6 @@ from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.camera.camera_component import Camera, Viewport
 from core.packages.camera.camera_controller import CameraController
-from core.packages.geometry.vector2 import Vector2
 from game.object_builder import GameObjectBuilder
 
 if TYPE_CHECKING:
@@ -21,7 +20,7 @@ def create_camera_game_object(window_size: int, layer: SortingLayer) -> GameObje
     """Create a test camera object."""
     return (
         GameObjectBuilder(Empty)
-        .add_component(Transform(local_scale=Vector2(0.25, 0.25)))
+        .add_component(Transform())
         .add_component(
             Camera(
                 Viewport(
