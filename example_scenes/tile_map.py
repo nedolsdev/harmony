@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from agent_world.objects.test_tile_map import get_example_tile_grid
 from core.components.transform import Transform
 from core.objects.empty import Empty
 from core.packages.geometry.vector2 import Vector2
 from core.packages.render.render_layer import RenderLayer
 from example_scenes.helpers.camera_util import create_camera_game_object
+from example_scenes.helpers.test_tile_map import get_example_tile_grid
 from game.object_builder import GameObjectBuilder
 from game.scene import Scene
 

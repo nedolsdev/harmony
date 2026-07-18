@@ -8,8 +8,11 @@ from rich.traceback import install
 from core.packages.audio.audio_manager import AudioManager
 from core.packages.input.input_system import InputSystem
 from core.packages.render.render_pipeline import RenderPipeline
+from example_scenes.animation import create_animation_scene
 from example_scenes.collision import create_collision_scene
 from example_scenes.input import create_input_scene
+from example_scenes.physics import create_physics_scene
+from example_scenes.physics_collision import create_physics_collision_scene
 from example_scenes.rotation import create_rotation_scene
 from example_scenes.sound import create_sound_test_scene
 from example_scenes.sprite_sheet import create_sprite_sheet_scene
@@ -53,15 +56,15 @@ def main() -> None:
     collision_manager = game.physics.collision_manager
 
     scenes = [
-        # SimpleLazyScene(
-        #     "Animation Scene",
-        #     lambda: create_animation_scene(window_size, renderer.sorting_layers),
-        # ),
-        # SimpleLazyScene(
-        #     "Physics Collision Scene",
-        #     lambda: create_physics_collision_scene(window_size, renderer.sorting_layers, collision_manager),
-        # ),
-        # SimpleLazyScene("Physics Scene", lambda: create_physics_scene(window_size, renderer.sorting_layers)),
+        SimpleLazyScene(
+            "Animation Scene",
+            lambda: create_animation_scene(window_size, renderer.sorting_layers),
+        ),
+        SimpleLazyScene(
+            "Physics Collision Scene",
+            lambda: create_physics_collision_scene(window_size, renderer.sorting_layers, collision_manager),
+        ),
+        SimpleLazyScene("Physics Scene", lambda: create_physics_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Sprite Sheet Scene", lambda: create_sprite_sheet_scene(window_size, renderer.sorting_layers)),
         SimpleLazyScene("Input Scene", lambda: create_input_scene(window_size, renderer.sorting_layers, input_system)),
         SimpleLazyScene("UI Scene", lambda: create_ui_scene(window_size, renderer.sorting_layers)),
