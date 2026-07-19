@@ -12,3 +12,4 @@ wheels/
 *.wav
 
 *example_assets
+*.env
