@@ -5,9 +5,6 @@ from __future__ import annotations
 import pygame
 from rich.traceback import install
 
-from core.packages.audio.audio_manager import AudioManager
-from core.packages.input.input_system import InputSystem
-from core.packages.render.render_pipeline import RenderPipeline
 from example_scenes.animation import create_animation_scene
 from example_scenes.collision import create_collision_scene
 from example_scenes.input import create_input_scene
@@ -19,13 +16,16 @@ from example_scenes.sprite_sheet import create_sprite_sheet_scene
 from example_scenes.tile_map import create_tile_map_scene
 from example_scenes.timer import create_timer_scene
 from example_scenes.ui import create_ui_scene
-from game.event_handler import EventHandler
-from game.image_cache import ImageCache
-from game.lazy_scene import SimpleLazyScene
-from game.logging import EngineLogger
-from game.runner import Runner
-from game.scene_manager import SceneManager
-from game.window import DisplayMode, WindowSettings
+from harmony.core.packages.audio.audio_manager import AudioManager
+from harmony.core.packages.input.input_system import InputSystem
+from harmony.core.packages.render.render_pipeline import RenderPipeline
+from harmony.game.event_handler import EventHandler
+from harmony.game.image_cache import ImageCache
+from harmony.game.lazy_scene import SimpleLazyScene
+from harmony.game.logging import EngineLogger
+from harmony.game.runner import Runner
+from harmony.game.scene_manager import SceneManager
+from harmony.game.window import DisplayMode, WindowSettings
 
 install()
 

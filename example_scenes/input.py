@@ -6,20 +6,20 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from core.packages.input.action_map import ActionMap
-from core.packages.input.bindings.key_binding import KeyBinding
-from core.packages.input.bindings.mouse_binding import MouseMoveBinding
-from core.packages.input.composite_binding import CompositeBinding
-from core.packages.input.interactions.tap import TapInteraction
 from example_scenes.helpers.camera_util import create_camera_game_object
-from game.scene import Scene
+from harmony.core.packages.input.action_map import ActionMap
+from harmony.core.packages.input.bindings.key_binding import KeyBinding
+from harmony.core.packages.input.bindings.mouse_binding import MouseMoveBinding
+from harmony.core.packages.input.composite_binding import CompositeBinding
+from harmony.core.packages.input.interactions.tap import TapInteraction
+from harmony.game.scene import Scene
 
 if TYPE_CHECKING:
-    from core.packages.input.input_action import InputAction
-    from core.packages.input.input_binding import InputBinding
-    from core.packages.input.input_system import InputSystem
-    from game.sorting_layer import SortingLayerManager
-    from game.window import WindowSettings
+    from harmony.core.packages.input.input_action import InputAction
+    from harmony.core.packages.input.input_binding import InputBinding
+    from harmony.core.packages.input.input_system import InputSystem
+    from harmony.game.sorting_layer import SortingLayerManager
+    from harmony.game.window import WindowSettings
 
 
 def create_gameplay_action_map() -> ActionMap:

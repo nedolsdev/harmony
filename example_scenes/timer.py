@@ -4,16 +4,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.components.transform import Transform
-from core.objects.empty import Empty
-from core.packages.timing.timer import ComponentUsingTimer
 from example_scenes.helpers.camera_util import create_camera_game_object
-from game.object_builder import GameObjectBuilder
-from game.scene import Scene
+from harmony.core.components.transform import Transform
+from harmony.core.objects.empty import Empty
+from harmony.core.packages.timing.timer import ComponentUsingTimer
+from harmony.game.object_builder import GameObjectBuilder
+from harmony.game.scene import Scene
 
 if TYPE_CHECKING:
-    from game.sorting_layer import SortingLayerManager
-    from game.window import WindowSettings
+    from harmony.game.sorting_layer import SortingLayerManager
+    from harmony.game.window import WindowSettings
 
 
 def create_timer_scene(window_settings: WindowSettings, layers: SortingLayerManager) -> Scene:

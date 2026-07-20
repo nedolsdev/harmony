@@ -5,17 +5,17 @@ from __future__ import annotations
 import random
 from typing import Literal
 
-from core.assets.polygon_asset import PolygonAsset
-from core.packages.geometry.polygon import Polygon
-from core.packages.geometry.rectangle import Rectangle
-from core.packages.geometry.vector2 import Vector2
-from core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
-from core.packages.tilemap.tile import Tile
-from core.packages.tilemap.tile_grid import TileGrid
-from core.packages.tilemap.tile_map import DictBasedTileMap
-from core.packages.tilemap.tile_map_renderer import TileMapRenderer
-from core.packages.tilemap.tile_palette import TilePalette
-from game.material import ColorMaterial
+from harmony.core.assets.polygon_asset import PolygonAsset
+from harmony.core.packages.geometry.polygon import Polygon
+from harmony.core.packages.geometry.rectangle import Rectangle
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
+from harmony.core.packages.tilemap.tile import Tile
+from harmony.core.packages.tilemap.tile_grid import TileGrid
+from harmony.core.packages.tilemap.tile_map import DictBasedTileMap
+from harmony.core.packages.tilemap.tile_map_renderer import TileMapRenderer
+from harmony.core.packages.tilemap.tile_palette import TilePalette
+from harmony.game.material import ColorMaterial
 
 
 def get_example_tile_grid(

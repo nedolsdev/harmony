@@ -1,0 +1,14 @@
+"""Music track asset."""
+
+from __future__ import annotations
+
+from harmony.game.asset import Asset
+
+
+class MusicTrack(Asset):
+    """Music track asset."""
+
+    def __init__(self, path: str) -> None:
+        """Initialize the AudioClip."""
+        super().__init__()
+        self.path = path

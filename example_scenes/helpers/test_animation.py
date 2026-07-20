@@ -4,18 +4,18 @@ from __future__ import annotations
 
 import math
 
-from core.components.transform import Transform
-from core.packages.animation.animator import Animator
-from core.packages.animation.clip import NO_ANIMATION, KeyFrame, KeyFrameBlender, KeyFramedAnimationClip
-from core.packages.animation.controller import (
+from harmony.core.components.transform import Transform
+from harmony.core.packages.animation.animator import Animator
+from harmony.core.packages.animation.clip import NO_ANIMATION, KeyFrame, KeyFrameBlender, KeyFramedAnimationClip
+from harmony.core.packages.animation.controller import (
     ENTRY_STATE,
     AnimationController,
     AnimationLayer,
     AnimationState,
     AnimationTransition,
 )
-from core.packages.animation.frame import ScalarFrame, Vector2Frame
-from core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.animation.frame import ScalarFrame, Vector2Frame
+from harmony.core.packages.geometry.vector2 import Vector2
 
 
 class BasicVector2LERP(KeyFrameBlender[Vector2Frame]):
