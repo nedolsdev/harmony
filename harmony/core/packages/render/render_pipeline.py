@@ -14,6 +14,7 @@ from harmony.game.sorting_layer import SortingLayerManager
 from harmony.game.window import GameWindow, WindowSettings
 
 if TYPE_CHECKING:
+    from harmony.core.packages.render.resolution import ResolutionManager
     from harmony.game.object import GameObject
     from harmony.game.scene import Scene
 
@@ -25,9 +26,9 @@ class NoCameraError(RuntimeError):
 class RenderPipeline:
     """Handles rendering of the game."""
 
-    def __init__(self, window_settings: WindowSettings | None = None) -> None:
+    def __init__(self, resolution: ResolutionManager, window_settings: WindowSettings | None = None) -> None:
         """Initialize the renderer."""
-        self.window = GameWindow(window_settings)
+        self.window = GameWindow(resolution, window_settings)
         self.sorting_layers = SortingLayerManager()
 
     def draw_objects(self, objects: list[GameObject], cameras: list[Camera]) -> None:

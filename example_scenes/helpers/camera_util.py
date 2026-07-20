@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 def create_camera_game_object(window_settings: WindowSettings, layer: SortingLayer) -> GameObject:
     """Create a test camera object."""
-    width, height = window_settings.resolution
+    width, height = window_settings.window_size
     return (
         GameObjectBuilder(Empty)
         .add_component(Transform())

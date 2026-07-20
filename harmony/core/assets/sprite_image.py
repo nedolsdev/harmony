@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, override
 import pygame
 
 from harmony.core.assets.surface_asset import ScalableSurfaceAsset
+from harmony.core.packages.render.resolution import ResolutionManager
 from harmony.game.image_cache import ImageCache
 
 if TYPE_CHECKING:
@@ -39,21 +40,7 @@ class SpriteImage(ScalableSurfaceAsset):
 
     @override
     def get_surface_of_scale(self, scale: Vector2, *, use_smooth_scaling: bool = False) -> pygame.Surface:
-        surface = self.get_surface()
-        width, height = surface.get_size()
-
-        scaled_size = (
-            max(1, round(width * scale.x)),
-            max(1, round(height * scale.y)),
-        )
-
-        if scaled_size == (width, height):
-            return surface
-
-        if use_smooth_scaling:
-            return pygame.transform.smoothscale(surface, scaled_size)
-
-        return pygame.transform.scale(surface, scaled_size)
+        return ResolutionManager.scale_surface(self.get_surface(), scale, use_smooth_scaling=use_smooth_scaling)
 
 
 class SlicedSpriteImage(SpriteImage):
