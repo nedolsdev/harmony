@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING
 from example_scenes.helpers.camera_util import create_camera_game_object
 from harmony.core.components.transform import Transform
 from harmony.core.objects.empty import Empty
+from harmony.core.packages.geometry.rectangle import Rectangle
 from harmony.core.packages.geometry.vector2 import Vector2
 from harmony.core.packages.physics.physics_test import PhysicsTest
 from harmony.core.packages.physics.rigidbody_2d import RigidBody2D
+from harmony.core.packages.render.rect_render_2d import RectRender2D
 from harmony.core.packages.render.render_layer import RenderLayer
-from harmony.core.packages.render.sprite_2d import Sprite2D
-from harmony.game.material import ColorMaterial
 from harmony.game.object_builder import GameObjectBuilder
 from harmony.game.scene import Scene
 
@@ -30,7 +30,7 @@ def create_physics_scene(window_settings: WindowSettings, layers: SortingLayerMa
     square = (
         GameObjectBuilder(Empty)
         .add_component(Transform(Vector2(100, 100)))
-        .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
+        .add_component(RectRender2D(Rectangle(25, 25, Vector2(0, 0)), (0, 255, 0)))
         .add_component(RenderLayer(default_layer))
         .add_component(PhysicsTest())
         .add_component(RigidBody2D(velocity=Vector2(100, 0), angular_velocity=1.5, angular_damping=0.2))

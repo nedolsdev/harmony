@@ -20,12 +20,18 @@ if TYPE_CHECKING:
 class RectRender2D(Render):
     """The 2D rect render component."""
 
-    def __init__(self, rect: Rectangle, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
+    def __init__(
+        self,
+        rect: Rectangle,
+        fill: Color,
+        stroke: Stroke | None = None,
+        material: Material | None = None,
+    ) -> None:
         """Initialize a rect and material."""
         super().__init__()
         self.rect = rect
         self.fill = fill
-        self.stroke = stroke
+        self.stroke = stroke or Stroke()
         self.material = material or NoMaterial()
 
     @override
@@ -39,6 +45,14 @@ class RectRender2D(Render):
     @override
     def update(self) -> None:
         """Update the rect render component."""
+
+    @override
+    def fixed_update(self) -> None:
+        """Update the component in the physics / fixed loop."""
+
+    @override
+    def late_update(self) -> None:
+        """Late update the component every frame."""
 
     @override
     def add_events(self, event_handler: EventHandler) -> None:

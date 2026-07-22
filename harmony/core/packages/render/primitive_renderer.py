@@ -30,15 +30,15 @@ class PrimitiveRenderer:
     def _render_primitive(self, primitive: RenderPrimitive) -> None:
         match primitive:
             case Line2DRenderPrimitive():
-                pass
+                self._render_line(primitive)
             case RectRenderPrimitive():
-                pass
+                self._render_rect(primitive)
             case CircleRenderPrimitive():
-                pass
+                self._render_circle(primitive)
             case PolygonRenderPrimitive():
-                pass
+                self._render_polygon(primitive)
             case SpriteRenderPrimitive():
-                pass
+                self._render_sprite(primitive)
 
     def _render_line(self, primitive: Line2DRenderPrimitive) -> None:
         raise NotImplementedError

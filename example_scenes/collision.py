@@ -15,9 +15,8 @@ from harmony.core.packages.collision.collision_rule import CollisionRule
 from harmony.core.packages.collision.collision_test import CollisionTest
 from harmony.core.packages.geometry.rectangle import Rectangle
 from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.rect_render_2d import RectRender2D
 from harmony.core.packages.render.render_layer import RenderLayer
-from harmony.core.packages.render.sprite_2d import Sprite2D
-from harmony.game.material import ColorMaterial
 from harmony.game.object_builder import GameObjectBuilder
 from harmony.game.scene import Scene
 
@@ -60,7 +59,7 @@ def create_collision_scene(
     rotating_square = (
         GameObjectBuilder(Empty)
         .add_component(Transform(local_position=Vector2(100, 0)))
-        .add_component(Sprite2D(25, 25, ColorMaterial((255, 0, 0))))
+        .add_component(RectRender2D(Rectangle(25, 25, Vector2(0, 0)), (255, 0, 0)))
         .add_component(RenderLayer(default_layer))
         .add_component(collider1)
         .build()
@@ -76,7 +75,7 @@ def create_collision_scene(
     static_square = (
         GameObjectBuilder(Empty)
         .add_component(Transform(local_position=Vector2(400, 300)))
-        .add_component(Sprite2D(25, 25, ColorMaterial((0, 255, 0))))
+        .add_component(RectRender2D(Rectangle(25, 25, Vector2(0, 0)), (0, 255, 0)))
         .add_component(RenderLayer(default_layer))
         .add_component(collider2)
         .add_component(CollisionTest())

@@ -11,6 +11,7 @@ from harmony.core.objects.empty import Empty
 from harmony.core.packages.geometry.vector2 import Vector2
 from harmony.core.packages.render.render_layer import RenderLayer
 from harmony.core.packages.spritesheet.sprite_sheet import SimpleSpriteSheet
+from harmony.game.image_cache import ImageCache
 from harmony.game.object_builder import GameObjectBuilder
 from harmony.game.scene import Scene
 
@@ -25,6 +26,7 @@ def create_sprite_sheet_scene(window_settings: WindowSettings, layers: SortingLa
 
     sprite_sheet = SimpleSpriteSheet(
         "./core/packages/spritesheet/example_assets/tilemap_packed.png",
+        Vector2(*ImageCache.load("./core/packages/spritesheet/example_assets/tilemap_packed.png").get_size()),
         16,
         16,
         grid_gap=0,

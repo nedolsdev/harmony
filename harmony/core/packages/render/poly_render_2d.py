@@ -20,12 +20,18 @@ if TYPE_CHECKING:
 class PolyRender2D(Render):
     """The 2D polygon render component."""
 
-    def __init__(self, polygon: Polygon, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
+    def __init__(
+        self,
+        polygon: Polygon,
+        fill: Color,
+        stroke: Stroke | None = None,
+        material: Material | None = None,
+    ) -> None:
         """Initialize a polygon and material."""
         super().__init__()
         self.polygon = polygon
         self.fill = fill
-        self.stroke = stroke
+        self.stroke = stroke or Stroke()
         self.material = material or NoMaterial()
 
     @override

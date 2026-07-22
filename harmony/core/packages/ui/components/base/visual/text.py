@@ -7,18 +7,18 @@ from typing import TYPE_CHECKING, override
 from harmony.core.packages.ui.components.visual_element import VisualUIElement
 
 if TYPE_CHECKING:
-    import pygame
     from pygame.font import Font
 
     from harmony.core.components.transform import Transform
-    from harmony.core.packages.camera.camera_component import Camera
+    from harmony.core.packages.render.color import Color
+    from harmony.core.packages.render.primitive import RenderPrimitive
     from harmony.game.event_handler import EventHandler
 
 
 class Text(VisualUIElement):
     """Basic Text component for the UI package."""
 
-    def __init__(self, content: str, font: Font, color: tuple[int, int, int]) -> None:
+    def __init__(self, content: str, font: Font, color: Color) -> None:
         """Initialize the basic Text UI component."""
         super().__init__()
         self.content = content
@@ -26,11 +26,10 @@ class Text(VisualUIElement):
         self.color = color
 
     @override
-    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
+    def render(self, transform: Transform) -> list[RenderPrimitive]:
         """Render the object."""
-        # TODO: Don't always assume screen space  # noqa: TD003
-        screen_coords = transform.local_position
-        surface.blit(self.font.render(self.content, antialias=True, color=self.color), screen_coords.as_tuple())
+        # TODO: Render text  # noqa: TD003
+        return []
 
     @override
     def awake(self) -> None:

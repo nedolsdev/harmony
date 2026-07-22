@@ -14,6 +14,8 @@ from harmony.core.packages.geometry.transform import (
 from harmony.game.material import Material, NoMaterial
 
 if TYPE_CHECKING:
+    from pygame import Font
+
     from harmony.core.assets.sprite_image import SpriteImage
     from harmony.core.components.transform import Transform
     from harmony.core.packages.geometry.circle import Circle
@@ -187,6 +189,45 @@ class SpriteRenderPrimitive(RenderPrimitive):
         return SpriteRenderPrimitive(
             self.sprite,
             transform_rectangle(self.rect, transform),
+        )
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        return self.rect.bounds()
+
+    @override
+    def size(self) -> tuple[float, float]:
+        return self.rect.size()
+
+
+class TextRenderPrimitive(RenderPrimitive):
+    """A text render primitive."""
+
+    def __init__(
+        self,
+        content: str,
+        font: Font,
+        color: Color,
+        rect: Rectangle,
+        material: Material | None = None,
+    ) -> None:
+        """Initialize the SpriteRenderPrimitive."""
+        super().__init__(material)
+        self.content = content
+        self.font = font
+        self.color = color
+        self.rect = rect
+
+    @override
+    def transform(self, transform: Transform) -> TextRenderPrimitive:
+        # for now we assume screen space so we don't need to transform
+        # TODO: Support world space UI  # noqa: TD003
+        return TextRenderPrimitive(
+            self.content,
+            self.font,
+            self.color,
+            self.rect,
+            self.material,
         )
 
     @override
