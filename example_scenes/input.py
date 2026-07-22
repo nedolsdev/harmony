@@ -17,7 +17,7 @@ from harmony.game.scene import Scene
 if TYPE_CHECKING:
     from harmony.core.packages.input.input_action import InputAction
     from harmony.core.packages.input.input_binding import InputBinding
-    from harmony.core.packages.input.input_system import InputSystem
+    from harmony.core.packages.input.input_manager import InputManager
     from harmony.game.sorting_layer import SortingLayerManager
     from harmony.game.window import WindowSettings
 
@@ -62,7 +62,7 @@ def create_gameplay_action_map() -> ActionMap:
 def create_input_scene(
     window_settings: WindowSettings,
     layers: SortingLayerManager,
-    input_system: InputSystem,
+    input_system: InputManager,
 ) -> Scene:
     """Return a Scene configured for testing input behavior."""
     scene = Scene()

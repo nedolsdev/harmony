@@ -50,6 +50,7 @@ class RenderPipeline:
         # TODO: Fix performance here, matrixes / other point mapping to avoid looping for each camera  # noqa: TD003
 
         logical_surface = self.window.get_logical_surface()
+
         for camera in cameras:
             camera_surface = logical_surface.subsurface(camera.viewport.as_tuple())
             for obj in objects:

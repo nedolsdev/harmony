@@ -109,3 +109,8 @@ class AudioSource(Behavior):
             else:
                 AudioManager().release_channel(self.channel)
                 self.channel = None
+
+    @override
+    def copy(self) -> AudioSource:
+        """Copy the component."""
+        return AudioSource(self.clip, self.bus, spatializer=self.spatializer)

@@ -48,6 +48,10 @@ class GameComponent(ABC):
         """Update the component every frame."""
 
     @abstractmethod
+    def late_update(self) -> None:
+        """Late update the component every frame."""
+
+    @abstractmethod
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 

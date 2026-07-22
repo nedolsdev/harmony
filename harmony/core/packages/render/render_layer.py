@@ -38,6 +38,9 @@ class RenderLayer(GameComponent):
     def update(self) -> None:
         """Update the render layer component."""
 
+    def late_update(self) -> None:
+        """Late update the component every frame."""
+
     def fixed_update(self) -> None:
         """Update the render layer component in the physics / fixed loop."""
 

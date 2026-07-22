@@ -22,3 +22,8 @@ class AudioListener(Behavior):
             raise MissingComponentDependencyError(msg)
 
         self.transform = self.game_object.get_component(Transform)
+
+    @override
+    def copy(self) -> AudioListener:
+        """Copy the component."""
+        return AudioListener()

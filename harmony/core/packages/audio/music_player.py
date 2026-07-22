@@ -97,6 +97,10 @@ class MusicPlayer(GameComponent):
         """Update the sprite component."""
 
     @override
+    def late_update(self) -> None:
+        """Late update the sprite component."""
+
+    @override
     def add_events(self, event_handler: EventHandler) -> None:
         """Add events to the event handler for this component."""
 

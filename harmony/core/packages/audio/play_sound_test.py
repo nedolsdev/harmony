@@ -60,3 +60,8 @@ class PlaySoundTest(Behavior):
             self.move_direction = 1
 
         self.transform.local_position = self.point1 + (self.point2 - self.point1) * self.t
+
+    @override
+    def copy(self) -> PlaySoundTest:
+        """Copy the component."""
+        return PlaySoundTest()
