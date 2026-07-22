@@ -92,6 +92,7 @@ class Runner:
 
     def start(self) -> None:
         """Start the main game loop."""
+        self.system_manager.pre_init()
         self.system_manager.init()
 
         self.running = True

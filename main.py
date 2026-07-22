@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pygame
 from rich.traceback import install
 
 from example_scenes.animation import create_animation_scene
@@ -16,7 +15,6 @@ from example_scenes.sprite_sheet import create_sprite_sheet_scene
 from example_scenes.tile_map import create_tile_map_scene
 from example_scenes.timer import create_timer_scene
 from example_scenes.ui import create_ui_scene
-from harmony.core.packages.audio.audio_manager import AudioManager
 from harmony.core.packages.audio.audio_system import AudioSystem
 from harmony.core.packages.collision.collision_manager import CollisionManager
 from harmony.core.packages.collision.collision_resolver import CollisionResolver
@@ -43,12 +41,6 @@ install()
 
 def main() -> None:
     """Initialize the game and start the renderer."""
-    # init pygame and mixer
-    pygame.mixer.pre_init(44100, -16, 2, 512)
-    pygame.init()
-
-    AudioManager(number_of_channels=32)
-
     settings = WindowSettings(mode=DisplayMode.WINDOWED, world_resolution=(750, 750), window_size=(750, 750))
 
     resolution = ResolutionManager()
