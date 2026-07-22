@@ -2,17 +2,18 @@
 
 from __future__ import annotations
 
+from harmony.core.packages.geometry.vector2 import Vector2
 from harmony.game.asset import Asset
-from harmony.game.image_cache import ImageCache
 
 
 class SpriteImage(Asset):
     """A SpriteImage Asset."""
 
-    def __init__(self, image_path: str, size: tuple[int, int] | None = None) -> None:
+    def __init__(self, image_path: str, true_pixel_size: Vector2, scale: Vector2 | None = None) -> None:
         """Initialize the sprite image with a file path."""
         self.image_path = image_path
-        self.size = size or ImageCache.load(self.image_path).get_size()
+        self.true_pixel_size = true_pixel_size
+        self.scale = scale or Vector2.one()
         super().__init__()
 
 
@@ -21,5 +22,5 @@ class SlicedSpriteImage(SpriteImage):
 
     def __init__(self, image_path: str, x: int, y: int, width: int, height: int) -> None:
         """Initialize the sprite image with a file path."""
-        super().__init__(image_path, (width, height))
+        super().__init__(image_path, Vector2(width, height))
         self.position = (x, y)

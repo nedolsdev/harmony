@@ -3,19 +3,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self, override
 
+from harmony.core.packages.geometry.transform import (
+    transform_circle,
+    transform_line_segment,
+    transform_polygon,
+    transform_rectangle,
+)
 from harmony.game.material import Material, NoMaterial
 
 if TYPE_CHECKING:
     from harmony.core.assets.sprite_image import SpriteImage
+    from harmony.core.components.transform import Transform
     from harmony.core.packages.geometry.circle import Circle
     from harmony.core.packages.geometry.geometry import Geometry
     from harmony.core.packages.geometry.line_segment import LineSegment
     from harmony.core.packages.geometry.polygon import Polygon
     from harmony.core.packages.geometry.rectangle import Rectangle
     from harmony.core.packages.geometry.shape import Shape
-    from harmony.core.packages.geometry.vector2 import Vector2
     from harmony.core.packages.render.color import Color
 
 
@@ -34,6 +40,14 @@ class RenderPrimitive:
         """Initialize the RenderPrimitive."""
         self.material = material or NoMaterial()
 
+    def transform(self, transform: Transform) -> Self:
+        """Transform the render primitive."""
+        raise NotImplementedError
+
+    def bounds(self) -> tuple[float, float, float, float]:
+        """Get the rectangular bounds of the geometry (min_x, max_x, min_y, max_y)."""
+        raise NotImplementedError
+
 
 class GeometryRenderPrimitive(RenderPrimitive):
     """A geometry render primitive."""
@@ -42,6 +56,10 @@ class GeometryRenderPrimitive(RenderPrimitive):
         """Initialize the GeometryRenderPrimitive."""
         super().__init__(material)
         self.geometry = geometry
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        return self.geometry.bounds()
 
 
 class Line2DRenderPrimitive(GeometryRenderPrimitive):
@@ -56,6 +74,15 @@ class Line2DRenderPrimitive(GeometryRenderPrimitive):
         """Initialize the Line2DRenderPrimitive."""
         super().__init__(line_segment, material)
         self.thickness = thickness
+        self.segment = line_segment
+
+    @override
+    def transform(self, transform: Transform) -> Line2DRenderPrimitive:
+        return Line2DRenderPrimitive(
+            transform_line_segment(self.segment, transform),
+            self.thickness,
+            self.material,
+        )
 
 
 class ShapeRenderPrimitive(GeometryRenderPrimitive):
@@ -64,7 +91,7 @@ class ShapeRenderPrimitive(GeometryRenderPrimitive):
     def __init__(self, shape: Shape, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
         """Initialize the PolygonRenderPrimitive."""
         super().__init__(shape, material)
-        self.polygon = shape
+        self.shape = shape
         self.fill = fill
         self.stroke = stroke
 
@@ -77,6 +104,15 @@ class PolygonRenderPrimitive(ShapeRenderPrimitive):
         super().__init__(polygon, fill, stroke, material)
         self.polygon: Polygon = polygon
 
+    @override
+    def transform(self, transform: Transform) -> PolygonRenderPrimitive:
+        return PolygonRenderPrimitive(
+            transform_polygon(self.polygon, transform),
+            self.fill,
+            self.stroke,
+            self.material,
+        )
+
 
 class RectRenderPrimitive(PolygonRenderPrimitive):
     """A RectRenderPrimitive render primitive."""
@@ -85,6 +121,15 @@ class RectRenderPrimitive(PolygonRenderPrimitive):
         """Initialize the RectRenderPrimitive."""
         super().__init__(rect, fill, stroke, material)
         self.rect = rect
+
+    @override
+    def transform(self, transform: Transform) -> RectRenderPrimitive:
+        return RectRenderPrimitive(
+            transform_rectangle(self.rect, transform),
+            self.fill,
+            self.stroke,
+            self.material,
+        )
 
 
 class CircleRenderPrimitive(ShapeRenderPrimitive):
@@ -95,6 +140,15 @@ class CircleRenderPrimitive(ShapeRenderPrimitive):
         super().__init__(circle, fill, stroke, material)
         self.circle = circle
 
+    @override
+    def transform(self, transform: Transform) -> CircleRenderPrimitive:
+        return CircleRenderPrimitive(
+            transform_circle(self.circle, transform),
+            self.fill,
+            self.stroke,
+            self.material,
+        )
+
 
 class SpriteRenderPrimitive(RenderPrimitive):
     """A sprite render primitive."""
@@ -102,12 +156,21 @@ class SpriteRenderPrimitive(RenderPrimitive):
     def __init__(
         self,
         sprite: SpriteImage,
-        position: Vector2,
-        rotation: float,
+        rect: Rectangle,
         material: Material | None = None,
     ) -> None:
         """Initialize the SpriteRenderPrimitive."""
         super().__init__(material)
         self.sprite = sprite
-        self.position = position
-        self.rotation = rotation
+        self.rect = rect
+
+    @override
+    def transform(self, transform: Transform) -> SpriteRenderPrimitive:
+        return SpriteRenderPrimitive(
+            self.sprite,
+            transform_rectangle(self.rect, transform),
+        )
+
+    @override
+    def bounds(self) -> tuple[float, float, float, float]:
+        return self.rect.bounds()
