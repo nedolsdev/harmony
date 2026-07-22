@@ -138,17 +138,15 @@ class Runner:
         self.scene_manager.set_active_scene(0)
 
         while self.running:
-            if not self.scene_manager.active_scene_is_loaded():
-                scene = self.scene_manager.get_active_scene()
-                if scene is None:
-                    msg = "No active scene exists so the game step has failed."
-                    raise NoActiveSceneError(msg)
-                self.load_scene(scene)
+            scene_is_unloaded = not self.scene_manager.active_scene_is_loaded()
 
             scene = self.scene_manager.get_active_scene()
             if scene is None:
                 msg = "No active scene exists so the game step has failed."
                 raise NoActiveSceneError(msg)
+
+            if scene_is_unloaded:
+                self.load_scene(scene)
 
             self.run_step(scene)
 
