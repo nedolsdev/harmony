@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from harmony.game.behavior import Behavior
 from harmony.game.component import GameComponent
 from harmony.game.component_channel import ComponentChannel
 
@@ -43,6 +44,8 @@ class ComponentManager:
     def add_game_object(self, game_object: GameObject) -> None:
         """Add all the components for a game object to their channels."""
         for component in game_object.get_components():
+            if isinstance(component, Behavior):
+                component.set_owner(game_object)
             self.add_component(component)
 
     def remove_game_object(self, game_object: GameObject) -> None:

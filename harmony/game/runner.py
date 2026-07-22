@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 import pygame
 
 from harmony.core.packages.timing.delta_time import DeltaTime
-from harmony.game.behavior import Behavior
 from harmony.game.event import PygameEvent, PygameKeyStateEvent
 from harmony.game.event_handler import EventHandler
 
@@ -100,11 +99,6 @@ class Runner:
 
         for game_object in flattened_objs:
             self.system_manager.component_manager.add_game_object(game_object)
-            for component in game_object.get_components():
-                if isinstance(component, Behavior):
-                    component.set_owner(game_object)
-
-        for game_object in flattened_objs:
             game_object.add_events(self.event_handler)
 
         for game_object in flattened_objs:
