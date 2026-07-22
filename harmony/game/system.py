@@ -26,3 +26,15 @@ class System:
         channel = component_manager.add_channel(component_type)
         self._channels[component_type] = channel
         return channel
+
+    def pre_init(self) -> None:
+        """Before initialization of the system."""
+
+    def init(self) -> None:
+        """Initialize the system."""
+
+    def update(self) -> None:
+        """Update the system."""
+
+    def late_update(self) -> None:
+        """Late update the system."""
