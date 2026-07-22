@@ -26,6 +26,7 @@ class WindowSettings:
 
     title: str | None = None
     window_size: tuple[int, int] = (1280, 720)
+    world_resolution: tuple[int, int] | None = None
     mode: DisplayMode = DisplayMode.WINDOWED
     resizable: bool = False
     vsync: bool = True
@@ -40,6 +41,8 @@ class GameWindow:
         self._surface: pygame.Surface
 
         self._resolution = resolution
+
+        self._resolution.set_logical_resolution(self._settings.world_resolution)
 
         self.apply_settings()
 
@@ -95,10 +98,19 @@ class GameWindow:
         """Set resolution to match window size."""
         self._resolution.set_logical_resolution(None)
 
-    def get_surface(self) -> pygame.Surface:
+    def get_screen_surface(self) -> pygame.Surface:
         """Return the display surface."""
         return self._surface
+
+    def get_logical_surface(self) -> pygame.Surface:
+        """Return the logical surface."""
+        resolution = self._resolution.get_logical_resolution()
+        return pygame.Surface(resolution or self._surface.get_size())
 
     def get_settings(self) -> WindowSettings:
         """Return the current window settings."""
         return self._settings
+
+    def apply_to_screen(self, surface: pygame.Surface) -> None:
+        """Apply the logical surface to the screen surface."""
+        self._resolution.apply(surface, self.get_screen_surface())

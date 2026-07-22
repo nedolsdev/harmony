@@ -41,7 +41,7 @@ def main() -> None:
 
     event_handler = EventHandler()
 
-    settings = WindowSettings(mode=DisplayMode.FULLSCREEN)
+    settings = WindowSettings(mode=DisplayMode.WINDOWED, world_resolution=(750, 750), window_size=(750, 750))
 
     resolution = ResolutionManager()
 

@@ -14,10 +14,9 @@ class ResolutionManager:
     def __init__(
         self,
         resolution_strategy: ResolutionStrategy | None = None,
-        logical_resolution: tuple[int, int] | None = None,
     ) -> None:
         """Initialize the ResolutionManager."""
-        self._resolution = logical_resolution
+        self._resolution: tuple[int, int] | None = None
         self.strategy = resolution_strategy or IntegerFitResolutionStrategy()
 
     def set_logical_resolution(
