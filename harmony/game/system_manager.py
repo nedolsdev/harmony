@@ -19,4 +19,39 @@ class SystemManager:
 
     def add_system(self, system: System) -> None:
         """Add a system to the SystemManager."""
-        self.system = system
+        self.systems.append(system)
+
+    def pre_init(self) -> None:
+        """Before initialization of the system."""
+        for system in self.systems:
+            system.pre_init()
+
+    def init(self) -> None:
+        """Initialize the system."""
+        for system in self.systems:
+            system.init()
+
+    def pre_update(self) -> None:
+        """Update the system."""
+        for system in self.systems:
+            system.pre_update()
+
+    def update(self) -> None:
+        """Update the system."""
+        for system in self.systems:
+            system.update()
+
+    def fixed_update(self) -> None:
+        """Update the system on fixed physics step."""
+        for system in self.systems:
+            system.fixed_update()
+
+    def late_update(self) -> None:
+        """Late update the system."""
+        for system in self.systems:
+            system.late_update()
+
+    def post_update(self) -> None:
+        """Post update the system."""
+        for system in self.systems:
+            system.post_update()

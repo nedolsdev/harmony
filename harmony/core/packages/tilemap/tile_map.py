@@ -59,6 +59,10 @@ class TileMap(GameComponent, ABC):
         """Update the sprite component."""
 
     @override
+    def late_update(self) -> None:
+        """Late update the sprite component."""
+
+    @override
     def fixed_update(self) -> None:
         """Update the sprite component on fixed physics step."""
 

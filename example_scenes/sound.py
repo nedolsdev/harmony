@@ -33,8 +33,8 @@ def create_sound_test_scene(window_settings: WindowSettings, layers: SortingLaye
     music_bus = AudioBus("Music", 0.5)
 
     # assets
-    clip = AudioClip("./core/packages/audio/example_assets/coin.wav")
-    track = MusicTrack("./core/packages/audio/example_assets/music.wav")
+    clip = AudioClip("./harmony/core/packages/audio/example_assets/coin.wav")
+    track = MusicTrack("./harmony/core/packages/audio/example_assets/music.wav")
 
     player = MusicPlayer(music_bus)
     player.play(track)

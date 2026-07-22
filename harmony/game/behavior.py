@@ -33,6 +33,10 @@ class Behavior(GameComponent):
         """Update the sprite component."""
 
     @override
+    def late_update(self) -> None:
+        """Late update the component every frame."""
+
+    @override
     def fixed_update(self) -> None:
         """Update the component in the physics / fixed loop."""
 

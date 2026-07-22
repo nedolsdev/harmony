@@ -1,41 +1,31 @@
-"""The central controller for the input system."""
+"""Input system."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from harmony.core.packages.input.action_map import ActionMap
+from harmony.game.system import System
 
 if TYPE_CHECKING:
-    from harmony.core.packages.input.device_manager import DeviceManager
+    from harmony.core.packages.input.input_manager import InputManager
 
 
-class InputSystem:
-    """The central controller for the input system."""
+class InputSystem(System):
+    """Input system."""
 
-    def __init__(self) -> None:
-        """Initialize the InputSystem."""
-        self.maps: dict[str, ActionMap] = {}
+    def __init__(self, input_manager: InputManager) -> None:
+        """Initialize the Input System."""
+        super().__init__()
+        self.input_manager = input_manager
 
-    def update(self, device_manager: DeviceManager) -> None:
-        """Update the input system given a list of connected devices."""
-        device_manager.update()
+    def init(self) -> None:
+        """Init the system."""
+        self.input_manager.device_manager.reset()
 
-        for action_map in self.maps.values():
-            if not action_map.active:
-                continue
+    def pre_update(self) -> None:
+        """Pre-update the system."""
+        self.input_manager.update()
 
-            for binding in action_map.bindings:
-                binding.update(device_manager.devices)
-
-    def late_update(self) -> None:
-        """Late update the input system, resetting the actions."""
-        for action_map in self.maps.values():
-            for action in action_map.actions.values():
-                action.reset()
-
-    def create_map(self, name: str, *, action_map: ActionMap | None = None) -> ActionMap:
-        """Create an action map with a given name."""
-        action_map = action_map or ActionMap()
-        self.maps[name] = action_map
-        return action_map
+    def post_update(self) -> None:
+        """Post-update the system."""
+        self.input_manager.post_update()

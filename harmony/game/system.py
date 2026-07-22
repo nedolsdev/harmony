@@ -33,8 +33,17 @@ class System:
     def init(self) -> None:
         """Initialize the system."""
 
+    def pre_update(self) -> None:
+        """Pre-update the system."""
+
     def update(self) -> None:
         """Update the system."""
 
+    def fixed_update(self) -> None:
+        """Update the system on fixed physics step."""
+
     def late_update(self) -> None:
         """Late update the system."""
+
+    def post_update(self) -> None:
+        """Post update the system."""

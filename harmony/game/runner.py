@@ -6,24 +6,17 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from harmony.core.packages.audio.audio_manager import AudioManager
-from harmony.core.packages.collision.collision_manager import CollisionManager
-from harmony.core.packages.collision.collision_resolver import CollisionResolver
-from harmony.core.packages.input.device_discoverer import PygameDeviceDiscoverer
-from harmony.core.packages.input.device_manager import DeviceManager
-from harmony.core.packages.input.input_backend import PygameInputBackend
-from harmony.core.packages.physics.physics_manager import PhysicsManager
 from harmony.core.packages.timing.delta_time import DeltaTime
 from harmony.game.behavior import Behavior
 from harmony.game.event import PygameEvent, PygameKeyStateEvent
-from harmony.game.event_backend import PygameEventBackend
+from harmony.game.event_handler import EventHandler
 
 if TYPE_CHECKING:
-    from harmony.core.packages.input.input_system import InputSystem
     from harmony.core.packages.render.render_pipeline import RenderPipeline
-    from harmony.game.event_handler import EventHandler
+    from harmony.game.event_backend import EventBackend
     from harmony.game.scene import Scene
     from harmony.game.scene_manager import SceneManager
+    from harmony.game.system_manager import SystemManager
 
 
 class NoActiveSceneError(RuntimeError):
@@ -38,70 +31,59 @@ class Runner:
     def __init__(
         self,
         render_pipeline: RenderPipeline,
-        event_handler: EventHandler,
+        event_backend: EventBackend,
         scene_manager: SceneManager,
-        input_system: InputSystem,
+        system_manager: SystemManager,
     ) -> None:
         """Initialize the runner with a renderer and an event handler."""
         self.renderer = render_pipeline
-        self.event_handler = event_handler
         self.clock = pygame.time.Clock()
         self.running = False
         self.scene_manager = scene_manager
 
+        self.event_handler = EventHandler()
+
         def quit_listener() -> None:
             self.stop()
 
-        event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
-        event_handler.register_listener(
+        self.event_handler.register_listener(PygameEvent.get_name_from_type(pygame.QUIT), quit_listener)
+        self.event_handler.register_listener(
             PygameKeyStateEvent.get_name_from_key(pygame.K_ESCAPE, event_type=pygame.KEYDOWN),
             quit_listener,
         )
 
+        self.system_manager = system_manager
+
         self.delta_time = DeltaTime()
 
-        self.event_backend = PygameEventBackend()
-
-        self.input_system = input_system
-
-        self.device_manager = DeviceManager(
-            PygameDeviceDiscoverer(PygameInputBackend(self.event_backend)),
-        )
-
-        self.physics = PhysicsManager(
-            collision_manager=CollisionManager(),
-            collision_resolver=CollisionResolver(),
-        )
+        self.event_backend = event_backend
 
     def run_step(self, scene: Scene) -> None:
         """Run a single step of the game loop."""
         frame_dt: float = self.clock.tick(self.FPS) / 1000.0
-
         self.delta_time.set(frame_dt)
 
+        # load events
         self.event_backend.poll()
-
         events = self.event_backend.fetch()
 
-        self.input_system.update(self.device_manager)
+        # pre update
+        self.system_manager.pre_update()
 
+        # handle events
         self.event_handler.handle_events(events)
-
         self.event_backend.clear()
 
-        AudioManager().update()
-
         objs = scene.get_flattened_game_objects()
-
-        self.physics.update(objs, frame_dt)
-
-        self.input_system.late_update()
 
         for obj in objs:
             obj.update()
 
         for obj in objs:
             obj.update_coroutines()
+
+        # post update
+        self.system_manager.post_update()
 
         if not self.running:
             return
@@ -117,6 +99,7 @@ class Runner:
         flattened_objs = scene.get_flattened_game_objects()
 
         for game_object in flattened_objs:
+            self.system_manager.component_manager.add_game_object(game_object)
             for component in game_object.get_components():
                 if isinstance(component, Behavior):
                     component.set_owner(game_object)
@@ -132,7 +115,7 @@ class Runner:
 
     def start(self) -> None:
         """Start the main game loop."""
-        self.device_manager.reset()
+        self.system_manager.init()
 
         self.running = True
         self.scene_manager.set_active_scene(0)

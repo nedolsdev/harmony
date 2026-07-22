@@ -29,7 +29,7 @@ class ComponentManager:
             return channel
 
         channel = ComponentChannel(component_type)
-        self._channels[component_type]
+        self._channels[component_type] = channel
         return channel
 
     def remove_channel(self, component_type: type[GameComponent]) -> None:

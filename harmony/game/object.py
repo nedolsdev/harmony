@@ -128,6 +128,11 @@ class GameObject:
         for component in self.components:
             component.update()
 
+    def late_update(self) -> None:
+        """Late update the game object by updating its components."""
+        for component in self.components:
+            component.late_update()
+
     def fixed_update(self) -> None:
         """Update the game object's physics / fixed loop by updating its components."""
         for component in self.components:
