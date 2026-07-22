@@ -19,6 +19,7 @@ from example_scenes.ui import create_ui_scene
 from harmony.core.packages.audio.audio_manager import AudioManager
 from harmony.core.packages.input.input_system import InputSystem
 from harmony.core.packages.render.render_pipeline import RenderPipeline
+from harmony.core.packages.render.resolution import ResolutionManager
 from harmony.game.event_handler import EventHandler
 from harmony.game.image_cache import ImageCache
 from harmony.game.lazy_scene import SimpleLazyScene
@@ -40,9 +41,11 @@ def main() -> None:
 
     event_handler = EventHandler()
 
-    settings = WindowSettings(mode=DisplayMode.FULLSCREEN)
+    settings = WindowSettings(mode=DisplayMode.WINDOWED, world_resolution=(750, 750), window_size=(750, 750))
 
-    renderer = RenderPipeline(settings)
+    resolution = ResolutionManager()
+
+    renderer = RenderPipeline(resolution, settings)
     renderer.sorting_layers.create_layer("Background", 0)
     renderer.sorting_layers.create_layer("Default", 10)
     renderer.sorting_layers.create_layer("UI", 100)

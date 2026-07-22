@@ -14,6 +14,7 @@ from harmony.game.sorting_layer import SortingLayerManager
 from harmony.game.window import GameWindow, WindowSettings
 
 if TYPE_CHECKING:
+    from harmony.core.packages.render.resolution import ResolutionManager
     from harmony.game.object import GameObject
     from harmony.game.scene import Scene
 
@@ -25,12 +26,18 @@ class NoCameraError(RuntimeError):
 class RenderPipeline:
     """Handles rendering of the game."""
 
-    def __init__(self, window_settings: WindowSettings | None = None) -> None:
+    def __init__(
+        self,
+        resolution: ResolutionManager,
+        window_settings: WindowSettings | None = None,
+        default_fill_color: tuple[int, int, int] | tuple[int, int, int, int] = (0, 0, 0),
+    ) -> None:
         """Initialize the renderer."""
-        self.window = GameWindow(window_settings)
+        self.window = GameWindow(resolution, window_settings)
         self.sorting_layers = SortingLayerManager()
+        self._default_fill_color = default_fill_color
 
-    def draw_objects(self, objects: list[GameObject], cameras: list[Camera]) -> None:
+    def draw_objects(self, objects: list[GameObject], cameras: list[Camera]) -> pygame.Surface:
         """Draw game objects on the screen."""
         # NOTE: This will be called only on objects with Render components
         # and it will be pre-sorted by the scene's render queue.
@@ -42,23 +49,27 @@ class RenderPipeline:
 
         # TODO: Fix performance here, matrixes / other point mapping to avoid looping for each camera  # noqa: TD003
 
-        screen = self.window.get_surface()
+        logical_surface = self.window.get_logical_surface()
         for camera in cameras:
-            camera_surface = screen.subsurface(camera.viewport.as_tuple())
+            camera_surface = logical_surface.subsurface(camera.viewport.as_tuple())
             for obj in objects:
                 transform = obj.get_component(Transform)
                 for render_component in obj.get_components_of_type(Render):
                     render_component.render(transform, camera_surface, camera)
 
+        return logical_surface
+
     def draw_frame(self, scene: Scene) -> None:
         """Draw a single frame of the game."""
-        screen = self.window.get_surface()
+        screen = self.window.get_screen_surface()
 
-        screen.fill((255, 255, 255))
+        screen.fill(self._default_fill_color)
 
         objects, cameras = self.get_render_queue(scene)
 
-        self.draw_objects(objects, cameras)
+        surface = self.draw_objects(objects, cameras)
+
+        self.window.apply_to_screen(surface)
 
         pygame.display.flip()
 
