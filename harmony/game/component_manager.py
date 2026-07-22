@@ -22,7 +22,7 @@ class ComponentManager:
         """Check if the ComponentManager has a channel for this component."""
         return self._channels.get(component_type, None) is not None
 
-    def add_channel(self, component_type: type[GameComponent]) -> ComponentChannel:
+    def add_channel[T: GameComponent](self, component_type: type[T]) -> ComponentChannel[T]:
         """Add a channel if it doesn't exist yet for a particular component type."""
         channel = self.get_channel(component_type)
         if channel is not None:
@@ -60,7 +60,7 @@ class ComponentManager:
         channel = self.add_channel(type(component))
         channel.remove_component(component)
 
-    def get_components_of_type(self, component_type: type[GameComponent]) -> set[GameComponent]:
+    def get_components_of_type[T: GameComponent](self, component_type: type[T]) -> set[T]:
         """Get components of a particular type."""
         channel = self.get_channel(component_type)
         if channel is None:
