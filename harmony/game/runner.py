@@ -9,6 +9,8 @@ import pygame
 from harmony.core.packages.timing.delta_time import DeltaTime
 from harmony.game.event import PygameEvent, PygameKeyStateEvent
 from harmony.game.event_handler import EventHandler
+from harmony.game.image_cache import ImageCache
+from harmony.game.logging import EngineLogger
 from harmony.game.scene_system import NoActiveSceneError, SceneSystem
 
 if TYPE_CHECKING:
@@ -92,6 +94,10 @@ class Runner:
 
     def start(self) -> None:
         """Start the main game loop."""
+        EngineLogger.setup()
+        ImageCache.set_max_size(100)
+        ImageCache.clear()
+
         self.system_manager.pre_init()
         self.system_manager.init()
 
