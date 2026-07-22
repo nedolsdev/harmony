@@ -48,6 +48,10 @@ class RenderPrimitive:
         """Get the rectangular bounds of the geometry (min_x, max_x, min_y, max_y)."""
         raise NotImplementedError
 
+    def size(self) -> tuple[float, float]:
+        """Get the size of the render primitive."""
+        raise NotImplementedError
+
 
 class GeometryRenderPrimitive(RenderPrimitive):
     """A geometry render primitive."""
@@ -60,6 +64,10 @@ class GeometryRenderPrimitive(RenderPrimitive):
     @override
     def bounds(self) -> tuple[float, float, float, float]:
         return self.geometry.bounds()
+
+    @override
+    def size(self) -> tuple[float, float]:
+        return self.geometry.size()
 
 
 class Line2DRenderPrimitive(GeometryRenderPrimitive):
@@ -99,10 +107,19 @@ class ShapeRenderPrimitive(GeometryRenderPrimitive):
 class PolygonRenderPrimitive(ShapeRenderPrimitive):
     """A Polygon render primitive."""
 
-    def __init__(self, polygon: Polygon, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
+    def __init__(
+        self,
+        polygon: Polygon,
+        fill: Color,
+        stroke: Stroke,
+        material: Material | None = None,
+        *,
+        antialiased: bool = False,
+    ) -> None:
         """Initialize the PolygonRenderPrimitive."""
         super().__init__(polygon, fill, stroke, material)
         self.polygon: Polygon = polygon
+        self.antialiased = antialiased
 
     @override
     def transform(self, transform: Transform) -> PolygonRenderPrimitive:
@@ -111,6 +128,7 @@ class PolygonRenderPrimitive(ShapeRenderPrimitive):
             self.fill,
             self.stroke,
             self.material,
+            antialiased=self.antialiased,
         )
 
 
@@ -174,3 +192,7 @@ class SpriteRenderPrimitive(RenderPrimitive):
     @override
     def bounds(self) -> tuple[float, float, float, float]:
         return self.rect.bounds()
+
+    @override
+    def size(self) -> tuple[float, float]:
+        return self.rect.size()

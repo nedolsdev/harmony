@@ -8,22 +8,22 @@ from typing import TYPE_CHECKING
 import pygame
 import pygame.gfxdraw
 
-from harmony.core.assets.surface_asset import ScalableSurfaceAsset
+from harmony.game.asset import Asset
 from harmony.game.error import InvalidArgumentCombinationError
 
 if TYPE_CHECKING:
     from harmony.core.packages.geometry.polygon import Polygon
-    from harmony.core.packages.geometry.vector2 import Vector2
+    from harmony.core.packages.render.color import Color
 
 
-class PolygonAsset(ScalableSurfaceAsset):
+class PolygonAsset(Asset):
     """Polygon asset."""
 
     def __init__(
         self,
         polygon: Polygon,
-        fill_color: tuple[int, int, int] | None = None,
-        outline_color: tuple[int, int, int] | None = None,
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
         outline_width: int = 0,
         *,
         antialiased: bool = False,
@@ -40,7 +40,8 @@ class PolygonAsset(ScalableSurfaceAsset):
         self.outline_width = outline_width
         self.antialiased = antialiased
 
-    def _create_surface(self) -> pygame.Surface:
+    def create_surface(self) -> pygame.Surface:
+        """Create a surface for the polygon."""
         min_x, max_x, min_y, max_y = self.polygon.bounds()
 
         width = math.ceil(max_x - min_x) + 1
@@ -73,22 +74,6 @@ class PolygonAsset(ScalableSurfaceAsset):
                 )
 
         return surface
-
-    def get_surface_of_scale(self, scale: Vector2) -> pygame.Surface:
-        """Get the surface of the polygon."""
-        if scale.x <= 0 or scale.y <= 0:
-            msg = "Size must be positive."
-            raise ValueError(msg)
-
-        scaled_polygon = PolygonAsset(
-            polygon=self.polygon.scale(scale),
-            fill_color=self.fill_color,
-            outline_color=self.outline_color,
-            outline_width=self.outline_width,
-            antialiased=self.antialiased,
-        )
-
-        return scaled_polygon._create_surface()
 
     def copy(self) -> PolygonAsset:
         """Create a copy of the current Polygon."""
