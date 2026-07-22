@@ -57,3 +57,19 @@ class Scene:
     def find_objects_of_type(self, object_type: type[T]) -> list[T]:
         """Find all game objects of a specific type within the scene."""
         return [obj for obj in self.get_flattened_game_objects() if isinstance(obj, object_type)]
+
+    def get_hierarchy_string(self) -> str:
+        """Return an indented string representation of the scene hierarchy."""
+        lines: list[str] = []
+
+        def add_object(obj: GameObject, depth: int) -> None:
+            name = obj.label if obj.label is not None else obj.__class__.__name__
+            lines.append(f"{'   ' * depth}{name}")
+
+            for child in obj.children:
+                add_object(child, depth + 1)
+
+        for root_obj in self.root_objects:
+            add_object(root_obj, 0)
+
+        return "\n".join(lines)

@@ -32,11 +32,13 @@ class ObjectAlreadyStartedError(RuntimeError):
 class GameObject:
     """A base class for game objects in the game."""
 
-    def __init__(self) -> None:
+    def __init__(self, label: str | None = None) -> None:
         """Initialize the game object with its components."""
         self.components: list[GameComponent] = []
         self.tags: set[str] = set()
         self.active = True
+
+        self.label = label
 
         # awoke
         self.awoken = False
