@@ -6,6 +6,7 @@ import math
 from typing import TYPE_CHECKING
 
 from harmony.core.packages.geometry.circle import Circle
+from harmony.core.packages.geometry.line_segment import LineSegment
 from harmony.core.packages.geometry.polygon import Polygon
 from harmony.core.packages.geometry.rectangle import Rectangle
 
@@ -16,6 +17,14 @@ if TYPE_CHECKING:
 def transform_polygon(polygon: Polygon, transform: Transform) -> Polygon:
     """Transform Polygon."""
     return Polygon([transform.transform_point(p) for p in polygon.points])
+
+
+def transform_line_segment(line_segment: LineSegment, transform: Transform) -> LineSegment:
+    """Transform LineSegment."""
+    return LineSegment(
+        transform.transform_point(line_segment.start),
+        transform.transform_point(line_segment.end),
+    )
 
 
 def transform_rectangle(rect: Rectangle, transform: Transform) -> Rectangle:
