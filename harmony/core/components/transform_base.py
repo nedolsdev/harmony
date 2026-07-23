@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import math
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Self
 
 from harmony.core.packages.geometry.vector2 import Vector2
 
 
-class TransformBase(ABC):
+class Base:
+    """A base class to handle MRO issues (kinda a hack)."""
+
+    def __init__(self, *_: object, **__: object) -> None:
+        """Initialize the Base class."""
+
+
+class TransformBase(Base):
     """A base for basic transform operations independent of the Transform component."""
 
     def __init__(

@@ -33,6 +33,7 @@ def main() -> None:
     scene_manager = game.scene_manager
 
     scenes = [
+        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Animation Scene",
             lambda: create_animation_scene(settings, renderer.sorting_layers),
@@ -55,7 +56,6 @@ def main() -> None:
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Rotation Scene", lambda: create_rotation_scene(settings, renderer.sorting_layers)),
-        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(settings, renderer.sorting_layers)),
     ]
 
     for scene in scenes:

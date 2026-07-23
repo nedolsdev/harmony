@@ -11,10 +11,10 @@ class SpriteImage(Asset):
 
     def __init__(self, image_path: str, true_pixel_size: Vector2, scale: Vector2 | None = None) -> None:
         """Initialize the sprite image with a file path."""
+        super().__init__()
         self.image_path = image_path
         self.true_pixel_size = true_pixel_size
         self.scale = scale or Vector2.one()
-        super().__init__()
 
 
 class SlicedSpriteImage(SpriteImage):

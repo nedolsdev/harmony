@@ -11,15 +11,15 @@ from harmony.core.packages.geometry.polygon import Polygon
 from harmony.core.packages.geometry.rectangle import Rectangle
 
 if TYPE_CHECKING:
-    from harmony.core.components.transform import Transform
+    from harmony.core.components.transform_base import TransformBase
 
 
-def transform_polygon(polygon: Polygon, transform: Transform) -> Polygon:
+def transform_polygon(polygon: Polygon, transform: TransformBase) -> Polygon:
     """Transform Polygon."""
     return Polygon([transform.transform_point(p) for p in polygon.points])
 
 
-def transform_line_segment(line_segment: LineSegment, transform: Transform) -> LineSegment:
+def transform_line_segment(line_segment: LineSegment, transform: TransformBase) -> LineSegment:
     """Transform LineSegment."""
     return LineSegment(
         transform.transform_point(line_segment.start),
@@ -27,7 +27,7 @@ def transform_line_segment(line_segment: LineSegment, transform: Transform) -> L
     )
 
 
-def transform_rectangle(rect: Rectangle, transform: Transform) -> Rectangle:
+def transform_rectangle(rect: Rectangle, transform: TransformBase) -> Rectangle:
     """Return a new Rectangle transformed by the given Transform."""
     world_center = transform.transform_point(rect.center)
 
@@ -44,7 +44,7 @@ def transform_rectangle(rect: Rectangle, transform: Transform) -> Rectangle:
     )
 
 
-def transform_circle(circle: Circle, transform: Transform) -> Circle:
+def transform_circle(circle: Circle, transform: TransformBase) -> Circle:
     """Return a new Circle transformed by the given Transform."""
     world_center = transform.transform_point(circle.center)
 

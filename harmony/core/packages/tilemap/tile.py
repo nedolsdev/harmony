@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
-from harmony.game.asset import Asset
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from harmony.core.packages.render.primitive import SurfaceRenderPrimitive
 
 
-class Tile(Asset):
-    """A Tile is a cell of a TileMap."""
+class Tile:
+    """A tile holds the base render primitive for a tile map cell."""
 
-    def __init__(self, shared_asset: )
-
-    def get_render_primitive()
+    def __init__(self, primitive: SurfaceRenderPrimitive) -> None:
+        """Initialize the Tile."""
+        self.primitive = primitive

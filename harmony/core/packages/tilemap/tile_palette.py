@@ -38,6 +38,8 @@ class TilePalette(Asset):
         assets = sprite_sheet.get_sprites()
 
         for asset in assets:
-            instance.add_tile(Tile(asset, material=None))
+            # TODO: Fix sprite sheet loading tile palette  # noqa: TD003
+            tile = None
+            instance.add_tile(tile)
 
         return instance

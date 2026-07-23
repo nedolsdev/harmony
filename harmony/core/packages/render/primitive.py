@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from pygame import Font
 
     from harmony.core.assets.sprite_image import SpriteImage
-    from harmony.core.components.transform import Transform
+    from harmony.core.components.transform_base import TransformBase
     from harmony.core.packages.geometry.circle import Circle
     from harmony.core.packages.geometry.geometry import Geometry
     from harmony.core.packages.geometry.line_segment import LineSegment
@@ -42,7 +42,7 @@ class RenderPrimitive:
         """Initialize the RenderPrimitive."""
         self.material = material or NoMaterial()
 
-    def transform(self, transform: Transform) -> Self:
+    def transform(self, transform: TransformBase) -> Self:
         """Transform the render primitive."""
         raise NotImplementedError
 
@@ -90,7 +90,7 @@ class Line2DRenderPrimitive(GeometryRenderPrimitive):
         self.antialiased = antialiased
 
     @override
-    def transform(self, transform: Transform) -> Line2DRenderPrimitive:
+    def transform(self, transform: TransformBase) -> Line2DRenderPrimitive:
         return Line2DRenderPrimitive(
             transform_line_segment(self.segment, transform),
             self.thickness,
@@ -99,7 +99,16 @@ class Line2DRenderPrimitive(GeometryRenderPrimitive):
         )
 
 
-class ShapeRenderPrimitive(GeometryRenderPrimitive):
+class SurfaceRenderPrimitive(GeometryRenderPrimitive):
+    """A surface render primitive."""
+
+    def __init__(self, surface_shape: Shape, material: Material | None = None) -> None:
+        """Initialize the PolygonRenderPrimitive."""
+        super().__init__(surface_shape, material)
+        self.surface_shape = surface_shape
+
+
+class ShapeRenderPrimitive(SurfaceRenderPrimitive):
     """A shape render primitive."""
 
     def __init__(self, shape: Shape, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
@@ -128,7 +137,7 @@ class PolygonRenderPrimitive(ShapeRenderPrimitive):
         self.antialiased = antialiased
 
     @override
-    def transform(self, transform: Transform) -> PolygonRenderPrimitive:
+    def transform(self, transform: TransformBase) -> PolygonRenderPrimitive:
         return PolygonRenderPrimitive(
             transform_polygon(self.polygon, transform),
             self.fill,
@@ -147,7 +156,7 @@ class RectRenderPrimitive(PolygonRenderPrimitive):
         self.rect = rect
 
     @override
-    def transform(self, transform: Transform) -> RectRenderPrimitive:
+    def transform(self, transform: TransformBase) -> RectRenderPrimitive:
         return RectRenderPrimitive(
             transform_rectangle(self.rect, transform),
             self.fill,
@@ -174,7 +183,7 @@ class CircleRenderPrimitive(ShapeRenderPrimitive):
         self.antialiased = antialiased
 
     @override
-    def transform(self, transform: Transform) -> CircleRenderPrimitive:
+    def transform(self, transform: TransformBase) -> CircleRenderPrimitive:
         return CircleRenderPrimitive(
             transform_circle(self.circle, transform),
             self.fill,
@@ -184,7 +193,7 @@ class CircleRenderPrimitive(ShapeRenderPrimitive):
         )
 
 
-class SpriteRenderPrimitive(RenderPrimitive):
+class SpriteRenderPrimitive(SurfaceRenderPrimitive):
     """A sprite render primitive."""
 
     def __init__(
@@ -196,13 +205,13 @@ class SpriteRenderPrimitive(RenderPrimitive):
         antialiased: bool = False,
     ) -> None:
         """Initialize the SpriteRenderPrimitive."""
-        super().__init__(material)
+        super().__init__(rect, material)
         self.sprite = sprite
         self.rect = rect
         self.antialiased = antialiased
 
     @override
-    def transform(self, transform: Transform) -> SpriteRenderPrimitive:
+    def transform(self, transform: TransformBase) -> SpriteRenderPrimitive:
         return SpriteRenderPrimitive(
             self.sprite,
             transform_rectangle(self.rect, transform),
@@ -241,7 +250,7 @@ class TextRenderPrimitive(RenderPrimitive):
         self.antialiased = antialiased
 
     @override
-    def transform(self, transform: Transform) -> TextRenderPrimitive:
+    def transform(self, transform: TransformBase) -> TextRenderPrimitive:
         # for now we assume screen space so we don't need to transform
         # TODO: Support world space UI  # noqa: TD003
         return TextRenderPrimitive(

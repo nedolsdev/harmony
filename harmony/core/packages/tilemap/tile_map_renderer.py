@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
+from harmony.core.components.transform_base import TransformBase
 from harmony.core.packages.geometry.vector2 import Vector2
-from harmony.core.packages.render.primitive import RenderPrimitive
 from harmony.core.packages.render.render import Render
 
 if TYPE_CHECKING:
     from harmony.core.components.transform import Transform
+    from harmony.core.packages.render.primitive import RenderPrimitive
     from harmony.core.packages.tilemap.grid import Grid
     from harmony.core.packages.tilemap.tile_map import TileMap
     from harmony.game.event_handler import EventHandler
@@ -29,10 +30,7 @@ class TileMapRenderer(Render):
         """Render the TileMap."""
         min_x, max_x, min_y, max_y = 0, self.tile_map.width, 0, self.tile_map.height
 
-        local_size = Vector2(self.grid.cell_size, self.grid.cell_size)
-        world_size = transform.transform_scale(local_size)
-
-        tiles: list[RenderPrimitive]
+        tiles: list[RenderPrimitive] = []
 
         for x in range(min_x, max_x + 1):
             for y in range(min_y, max_y + 1):
@@ -40,7 +38,8 @@ class TileMapRenderer(Render):
                 if tile:
                     local_coords = self.grid.cell_to_local(Vector2(x, y))
                     world_coords = transform.transform_point(local_coords)
-                    tile = 
+                    primitive = tile.primitive.transform(TransformBase(local_position=world_coords))
+                    tiles.append(primitive)
 
         return tiles
 
