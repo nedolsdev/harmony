@@ -80,11 +80,14 @@ class Line2DRenderPrimitive(GeometryRenderPrimitive):
         line_segment: LineSegment,
         thickness: int,
         material: Material | None = None,
+        *,
+        antialiased: bool = False,
     ) -> None:
         """Initialize the Line2DRenderPrimitive."""
         super().__init__(line_segment, material)
         self.thickness = thickness
         self.segment = line_segment
+        self.antialiased = antialiased
 
     @override
     def transform(self, transform: Transform) -> Line2DRenderPrimitive:
@@ -92,6 +95,7 @@ class Line2DRenderPrimitive(GeometryRenderPrimitive):
             transform_line_segment(self.segment, transform),
             self.thickness,
             self.material,
+            antialiased=self.antialiased,
         )
 
 
@@ -155,10 +159,19 @@ class RectRenderPrimitive(PolygonRenderPrimitive):
 class CircleRenderPrimitive(ShapeRenderPrimitive):
     """A CircleRenderPrimitive render primitive."""
 
-    def __init__(self, circle: Circle, fill: Color, stroke: Stroke, material: Material | None = None) -> None:
+    def __init__(
+        self,
+        circle: Circle,
+        fill: Color,
+        stroke: Stroke,
+        material: Material | None = None,
+        *,
+        antialiased: bool = False,
+    ) -> None:
         """Initialize the RectRenderPrimitive."""
         super().__init__(circle, fill, stroke, material)
         self.circle = circle
+        self.antialiased = antialiased
 
     @override
     def transform(self, transform: Transform) -> CircleRenderPrimitive:
@@ -167,6 +180,7 @@ class CircleRenderPrimitive(ShapeRenderPrimitive):
             self.fill,
             self.stroke,
             self.material,
+            antialiased=self.antialiased,
         )
 
 
@@ -178,17 +192,22 @@ class SpriteRenderPrimitive(RenderPrimitive):
         sprite: SpriteImage,
         rect: Rectangle,
         material: Material | None = None,
+        *,
+        antialiased: bool = False,
     ) -> None:
         """Initialize the SpriteRenderPrimitive."""
         super().__init__(material)
         self.sprite = sprite
         self.rect = rect
+        self.antialiased = antialiased
 
     @override
     def transform(self, transform: Transform) -> SpriteRenderPrimitive:
         return SpriteRenderPrimitive(
             self.sprite,
             transform_rectangle(self.rect, transform),
+            self.material,
+            antialiased=self.antialiased,
         )
 
     @override
@@ -203,13 +222,15 @@ class SpriteRenderPrimitive(RenderPrimitive):
 class TextRenderPrimitive(RenderPrimitive):
     """A text render primitive."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         content: str,
         font: Font,
         color: Color,
         rect: Rectangle,
         material: Material | None = None,
+        *,
+        antialiased: bool = False,
     ) -> None:
         """Initialize the SpriteRenderPrimitive."""
         super().__init__(material)
@@ -217,6 +238,7 @@ class TextRenderPrimitive(RenderPrimitive):
         self.font = font
         self.color = color
         self.rect = rect
+        self.antialiased = antialiased
 
     @override
     def transform(self, transform: Transform) -> TextRenderPrimitive:
@@ -228,6 +250,7 @@ class TextRenderPrimitive(RenderPrimitive):
             self.color,
             self.rect,
             self.material,
+            antialiased=self.antialiased,
         )
 
     @override
