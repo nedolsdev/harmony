@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from harmony.core.packages.geometry.rectangle import Rectangle
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.primitive import SpriteRenderPrimitive
 from harmony.core.packages.tilemap.tile import Tile
 from harmony.game.asset import Asset
 
@@ -39,7 +42,10 @@ class TilePalette(Asset):
 
         for asset in assets:
             # TODO: Fix sprite sheet loading tile palette  # noqa: TD003
-            tile = None
+            local_size = asset.true_pixel_size * asset.scale
+            width, height = local_size.as_tuple()
+            rect = Rectangle(width, height, center=Vector2.zero())
+            tile = Tile(SpriteRenderPrimitive(asset, rect, material=None))
             instance.add_tile(tile)
 
         return instance

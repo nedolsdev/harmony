@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 import pygame
 import pygame.gfxdraw
 
+from harmony.core.assets.sprite_image import SlicedSpriteImage
 from harmony.core.packages.render.primitive import (
     CircleRenderPrimitive,
     Line2DRenderPrimitive,
@@ -15,6 +16,7 @@ from harmony.core.packages.render.primitive import (
     RectRenderPrimitive,
     SpriteRenderPrimitive,
 )
+from harmony.game.image_cache import ImageCache
 
 if TYPE_CHECKING:
     from harmony.core.packages.render.primitive import RenderPrimitive
@@ -188,4 +190,28 @@ class PygamePrimitiveRenderer(PrimitiveRenderer):
         return surface
 
     def _render_sprite(self, primitive: SpriteRenderPrimitive) -> None:
-        raise NotImplementedError
+        sprite = primitive.sprite
+        rect = primitive.rect
+        image = ImageCache.load(sprite.image_path)
+
+        if isinstance(sprite, SlicedSpriteImage):
+            source_rect = pygame.Rect(
+                sprite.position[0],
+                sprite.position[1],
+                int(sprite.true_pixel_size.x),
+                int(sprite.true_pixel_size.y),
+            )
+
+            image = image.subsurface(source_rect)
+
+        destination_size = (int(rect.width), int(rect.height))
+
+        if image.get_size() != destination_size:
+            if primitive.antialiased:
+                image = pygame.transform.smoothscale(image, destination_size)
+            else:
+                image = pygame.transform.scale(image, destination_size)
+
+        primitive.material.apply(image)
+
+        self.surface.blit(image, rect.top_left())

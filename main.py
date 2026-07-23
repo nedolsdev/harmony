@@ -33,6 +33,7 @@ def main() -> None:
     scene_manager = game.scene_manager
 
     scenes = [
+        SimpleLazyScene("Sprite Sheet Scene", lambda: create_sprite_sheet_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Animation Scene",
@@ -43,7 +44,6 @@ def main() -> None:
             lambda: create_physics_collision_scene(settings, renderer.sorting_layers, game.physics.collision_manager),
         ),
         SimpleLazyScene("Physics Scene", lambda: create_physics_scene(settings, renderer.sorting_layers)),
-        SimpleLazyScene("Sprite Sheet Scene", lambda: create_sprite_sheet_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Input Scene",
             lambda: create_input_scene(settings, renderer.sorting_layers, game.input_system.input_manager),

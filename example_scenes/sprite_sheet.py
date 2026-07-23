@@ -25,8 +25,8 @@ def create_sprite_sheet_scene(window_settings: WindowSettings, layers: SortingLa
     scene = Scene()
 
     sprite_sheet = SimpleSpriteSheet(
-        "./core/packages/spritesheet/example_assets/tilemap_packed.png",
-        Vector2(*ImageCache.load("./core/packages/spritesheet/example_assets/tilemap_packed.png").get_size()),
+        "./harmony/core/packages/spritesheet/example_assets/tilemap_packed.png",
+        Vector2(*ImageCache.load("./harmony/core/packages/spritesheet/example_assets/tilemap_packed.png").get_size()),
         16,
         16,
         grid_gap=0,
