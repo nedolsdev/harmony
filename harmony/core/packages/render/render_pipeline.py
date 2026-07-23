@@ -11,6 +11,7 @@ from harmony.core.packages.camera.camera_component import Camera
 from harmony.core.packages.render.primitive_renderer import PygamePrimitiveRenderer
 from harmony.core.packages.render.render import Render
 from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.game.material import MaterialStack, NoMaterial
 from harmony.game.sorting_layer import SortingLayerManager
 from harmony.game.window import GameWindow, WindowSettings
 
@@ -63,7 +64,17 @@ class RenderPipeline:
         camera_space: list[RenderPrimitive] = []
         for camera in cameras:
             for primitive in world_space:
-                camera_space.append(primitive.transform(camera.transform))  # noqa: PERF401
+                new_primitive = primitive.transform(camera.transform)
+                camera_space.append(new_primitive)
+
+                # apply some material to the camera view by applying it to all primitives
+                # TODO: Explore whether this should actually just be applied to the final screen  # noqa: TD003
+                # pros and cons to both approaches honestly
+                if not isinstance(camera.material, NoMaterial):
+                    stack = MaterialStack()
+                    stack.add_material(new_primitive.material)
+                    stack.add_material(camera.material)
+                    new_primitive.material = stack
 
         PygamePrimitiveRenderer(logical_surface).render_primitives(camera_space)
 

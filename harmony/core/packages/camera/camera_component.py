@@ -8,6 +8,7 @@ from harmony.core.components.transform import Transform
 from harmony.core.packages.geometry.vector2 import Vector2
 from harmony.game.behavior import Behavior
 from harmony.game.error import MissingComponentDependencyError
+from harmony.game.material import Material, NoMaterial
 
 
 class Viewport:
@@ -29,10 +30,11 @@ class Camera(Behavior):
 
     transform: Transform
 
-    def __init__(self, viewport: Viewport) -> None:
+    def __init__(self, viewport: Viewport, material: Material | None = None) -> None:
         """Initialize the Camera component."""
         super().__init__()
         self.viewport = viewport
+        self.material = material or NoMaterial()
 
     def world_to_screen(self, world: Vector2) -> Vector2:
         """Convert a world-space point to screen-space."""
