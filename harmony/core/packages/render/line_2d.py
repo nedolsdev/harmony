@@ -4,14 +4,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
-import pygame
-
+from harmony.core.packages.geometry.transform import transform_line_segment
+from harmony.core.packages.render.primitive import Line2DRenderPrimitive, RenderPrimitive
 from harmony.core.packages.render.render import Render
 
 if TYPE_CHECKING:
     from harmony.core.components.transform import Transform
-    from harmony.core.packages.camera.camera_component import Camera
-    from harmony.core.packages.geometry.vector2 import Vector2
+    from harmony.core.packages.geometry.line_segment import LineSegment
     from harmony.game.event_handler import EventHandler
     from harmony.game.material import Material
 
@@ -21,45 +20,28 @@ class Line2D(Render):
 
     def __init__(
         self,
-        start: Vector2,
-        end: Vector2,
+        line_segment: LineSegment,
         width: int,
         material: Material,
     ) -> None:
         """Initialize the 2D line with a given start and end point."""
         super().__init__()
-        self.start_pos = start
-        self.end_pos = end
+        self.segment = line_segment
         self.width = width
         self.material = material
 
     @override
-    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
-        """Render the line with proper rotation handling."""
-        start_pixel = camera.world_to_screen(transform.transform_point(self.start_pos + transform.local_position))
-        end_pixel = camera.world_to_screen(transform.transform_point(self.end_pos + transform.local_position))
+    def render(self, transform: Transform) -> list[RenderPrimitive]:
+        """Render the object at the world position."""
+        return [Line2DRenderPrimitive(transform_line_segment(self.segment, transform), self.width, self.material)]
 
-        line_surface = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-
-        pygame.draw.line(
-            line_surface,
-            (255, 255, 255, 255),
-            start_pixel.as_tuple(),
-            end_pixel.as_tuple(),
-            self.width,
-        )
-
-        self.material.apply(line_surface)
-        surface.blit(line_surface, (0, 0))
-
-    def get_start_end(self) -> tuple[Vector2, Vector2]:
+    def get_segment(self) -> LineSegment:
         """Return the start and end positions of the line."""
-        return self.start_pos, self.end_pos
+        return self.segment
 
-    def set_start_end(self, start: Vector2, end: Vector2) -> None:
+    def set_segment(self, segment: LineSegment) -> None:
         """Set the start and end positions of the line."""
-        self.start_pos = start
-        self.end_pos = end
+        self.segment = segment
 
     @override
     def awake(self) -> None:
@@ -80,8 +62,7 @@ class Line2D(Render):
     def copy(self) -> Line2D:
         """Create a copy of the Line2D component."""
         return Line2D(
-            start=self.start_pos,
-            end=self.end_pos,
+            line_segment=self.segment.copy(),
             width=self.width,
             material=self.material,
         )

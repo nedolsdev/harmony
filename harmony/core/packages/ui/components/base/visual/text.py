@@ -4,33 +4,47 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
+from harmony.core.packages.geometry.rectangle import Rectangle
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.primitive import TextRenderPrimitive
 from harmony.core.packages.ui.components.visual_element import VisualUIElement
 
 if TYPE_CHECKING:
-    import pygame
     from pygame.font import Font
 
     from harmony.core.components.transform import Transform
-    from harmony.core.packages.camera.camera_component import Camera
+    from harmony.core.packages.render.color import Color
+    from harmony.core.packages.render.primitive import RenderPrimitive
     from harmony.game.event_handler import EventHandler
 
 
 class Text(VisualUIElement):
     """Basic Text component for the UI package."""
 
-    def __init__(self, content: str, font: Font, color: tuple[int, int, int]) -> None:
+    def __init__(self, content: str, font: Font, color: Color, *, antialiased: bool = False) -> None:
         """Initialize the basic Text UI component."""
         super().__init__()
         self.content = content
         self.font = font
         self.color = color
+        self.antialiased = antialiased
+
+        # TODO: Compute rough rect bounding box of the text  # noqa: TD003
+        self.rect = Rectangle(0, 0, Vector2(0, 0))
 
     @override
-    def render(self, transform: Transform, surface: pygame.Surface, camera: Camera) -> None:
+    def render(self, transform: Transform) -> list[RenderPrimitive]:
         """Render the object."""
-        # TODO: Don't always assume screen space  # noqa: TD003
-        screen_coords = transform.local_position
-        surface.blit(self.font.render(self.content, antialias=True, color=self.color), screen_coords.as_tuple())
+        return [
+            TextRenderPrimitive(
+                self.content,
+                self.font,
+                self.color,
+                self.rect,
+                None,
+                antialiased=self.antialiased,
+            ).transform(transform),
+        ]
 
     @override
     def awake(self) -> None:

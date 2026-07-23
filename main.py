@@ -33,21 +33,22 @@ def main() -> None:
     scene_manager = game.scene_manager
 
     scenes = [
-        SimpleLazyScene(
-            "Animation Scene",
-            lambda: create_animation_scene(settings, renderer.sorting_layers),
-        ),
+        SimpleLazyScene("UI Scene", lambda: create_ui_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Physics Collision Scene",
             lambda: create_physics_collision_scene(settings, renderer.sorting_layers, game.physics.collision_manager),
         ),
-        SimpleLazyScene("Physics Scene", lambda: create_physics_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Sprite Sheet Scene", lambda: create_sprite_sheet_scene(settings, renderer.sorting_layers)),
+        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(settings, renderer.sorting_layers)),
+        SimpleLazyScene(
+            "Animation Scene",
+            lambda: create_animation_scene(settings, renderer.sorting_layers),
+        ),
+        SimpleLazyScene("Physics Scene", lambda: create_physics_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Input Scene",
             lambda: create_input_scene(settings, renderer.sorting_layers, game.input_system.input_manager),
         ),
-        SimpleLazyScene("UI Scene", lambda: create_ui_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Collision Scene",
             lambda: create_collision_scene(settings, renderer.sorting_layers, game.physics.collision_manager),
@@ -55,7 +56,6 @@ def main() -> None:
         SimpleLazyScene("Timer Scene", lambda: create_timer_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Sound Scene", lambda: create_sound_test_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene("Rotation Scene", lambda: create_rotation_scene(settings, renderer.sorting_layers)),
-        SimpleLazyScene("Tile Map Scene", lambda: create_tile_map_scene(settings, renderer.sorting_layers)),
     ]
 
     for scene in scenes:

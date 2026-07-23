@@ -5,10 +5,10 @@ from __future__ import annotations
 import random
 from typing import Literal
 
-from harmony.core.assets.polygon_asset import PolygonAsset
 from harmony.core.packages.geometry.polygon import Polygon
 from harmony.core.packages.geometry.rectangle import Rectangle
 from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.primitive import PolygonRenderPrimitive, Stroke
 from harmony.core.packages.tilemap.grid import Grid, HexGridSystem, SquareGridSystem
 from harmony.core.packages.tilemap.tile import Tile
 from harmony.core.packages.tilemap.tile_grid import TileGrid
@@ -38,17 +38,38 @@ def get_example_tile_grid(
 
     polygon = hex_polygon if cell_type == "hex" else square_polygon
 
-    surface = PolygonAsset(
-        polygon=polygon,
-        fill_color=(255, 255, 255),
-        outline_width=2,
-        outline_color=(144, 144, 144),
+    black_tile = Tile(
+        PolygonRenderPrimitive(
+            polygon=polygon,
+            fill=(255, 255, 255),
+            stroke=Stroke(2, (144, 144, 144)),
+            material=ColorMaterial(color=(0, 0, 0)),
+        ),
     )
-
-    black_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(0, 0, 0)))
-    red_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(255, 0, 0)))
-    green_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(0, 255, 0)))
-    blue_tile = Tile(tile_surface=surface.copy(), material=ColorMaterial(color=(0, 0, 255)))
+    red_tile = Tile(
+        PolygonRenderPrimitive(
+            polygon=polygon,
+            fill=(255, 255, 255),
+            stroke=Stroke(2, (144, 144, 144)),
+            material=ColorMaterial(color=(255, 0, 0)),
+        ),
+    )
+    blue_tile = Tile(
+        PolygonRenderPrimitive(
+            polygon=polygon,
+            fill=(255, 255, 255),
+            stroke=Stroke(2, (144, 144, 144)),
+            material=ColorMaterial(color=(0, 0, 255)),
+        ),
+    )
+    green_tile = Tile(
+        PolygonRenderPrimitive(
+            polygon=polygon,
+            fill=(255, 255, 255),
+            stroke=Stroke(2, (144, 144, 144)),
+            material=ColorMaterial(color=(0, 255, 0)),
+        ),
+    )
 
     palette = TilePalette()
     palette.add_tile(black_tile)

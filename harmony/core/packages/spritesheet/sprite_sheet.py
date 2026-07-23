@@ -3,17 +3,20 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import override
+from typing import TYPE_CHECKING, override
 
 from harmony.core.assets.sprite_image import SlicedSpriteImage, SpriteImage
+
+if TYPE_CHECKING:
+    from harmony.core.packages.geometry.vector2 import Vector2
 
 
 class SpriteSheet(SpriteImage):
     """Base sprite sheet asset."""
 
-    def __init__(self, image_path: str) -> None:
+    def __init__(self, image_path: str, true_pixel_size: Vector2) -> None:
         """Initialize the SpriteSheet asset."""
-        super().__init__(image_path)
+        super().__init__(image_path, true_pixel_size)
         self.sprites: list[int] = []
 
     @abstractmethod
@@ -30,16 +33,24 @@ class SpriteSheet(SpriteImage):
 class SimpleSpriteSheet(SpriteSheet):
     """A simple sprite sheet asset with a grid-layout."""
 
-    def __init__(self, image_path: str, sprite_width: int, sprite_height: int, *, grid_gap: int = 0) -> None:
+    def __init__(
+        self,
+        image_path: str,
+        true_pixel_size: Vector2,
+        sprite_width: int,
+        sprite_height: int,
+        *,
+        grid_gap: int = 0,
+    ) -> None:
         """Initialize the SimpleSpriteSheet asset."""
-        super().__init__(image_path)
+        super().__init__(image_path, true_pixel_size)
         self._width = sprite_width
         self._height = sprite_height
         self._grid_gap = grid_gap
 
     @override
     def get_sprites(self) -> list[SlicedSpriteImage]:
-        image_width, image_height = self.get_size()
+        image_width, image_height = self.true_pixel_size.as_int_tuple()
 
         step_x = self._width + self._grid_gap
         step_y = self._height + self._grid_gap
@@ -51,7 +62,7 @@ class SimpleSpriteSheet(SpriteSheet):
 
     @override
     def get_sprite(self, sprite_id: int) -> SlicedSpriteImage:
-        image_width, _ = self.get_size()
+        image_width, _ = self.true_pixel_size.as_int_tuple()
         step_x = self._width + self._grid_gap
         step_y = self._height + self._grid_gap
 

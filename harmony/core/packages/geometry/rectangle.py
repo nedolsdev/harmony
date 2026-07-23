@@ -87,3 +87,23 @@ class Rectangle(Polygon):
     def rotate_radians(self, radians: float) -> Rectangle:
         rotation = radians + self.rotation_radians
         return Rectangle(self.width, self.height, self.center.copy(), rotation_degrees=math.degrees(rotation))
+
+    @classmethod
+    def from_top_left(
+        cls,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        *,
+        rotation_degrees: float = 0.0,
+    ) -> Rectangle:
+        """Construct a rectangle from its top-left corner."""
+        center = Vector2(x + width / 2, y + height / 2)
+
+        return cls(
+            width,
+            height,
+            center,
+            rotation_degrees=rotation_degrees,
+        )

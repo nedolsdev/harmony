@@ -8,12 +8,14 @@ import pygame
 
 from harmony.core.components.transform import Transform
 from harmony.core.packages.camera.camera_component import Camera
+from harmony.core.packages.render.primitive_renderer import PygamePrimitiveRenderer
 from harmony.core.packages.render.render import Render
 from harmony.core.packages.render.render_layer import RenderLayer
 from harmony.game.sorting_layer import SortingLayerManager
 from harmony.game.window import GameWindow, WindowSettings
 
 if TYPE_CHECKING:
+    from harmony.core.packages.render.primitive import RenderPrimitive
     from harmony.core.packages.render.resolution import ResolutionManager
     from harmony.game.object import GameObject
     from harmony.game.scene import Scene
@@ -51,12 +53,19 @@ class RenderPipeline:
 
         logical_surface = self.window.get_logical_surface()
 
+        world_space: list[RenderPrimitive] = []
+
+        for obj in objects:
+            transform = obj.get_component(Transform)
+            for render_component in obj.get_components_of_type(Render):
+                world_space.extend(render_component.render(transform))
+
+        camera_space: list[RenderPrimitive] = []
         for camera in cameras:
-            camera_surface = logical_surface.subsurface(camera.viewport.as_tuple())
-            for obj in objects:
-                transform = obj.get_component(Transform)
-                for render_component in obj.get_components_of_type(Render):
-                    render_component.render(transform, camera_surface, camera)
+            for primitive in world_space:
+                camera_space.append(primitive.transform(camera.transform))  # noqa: PERF401
+
+        PygamePrimitiveRenderer(logical_surface).render_primitives(camera_space)
 
         return logical_surface
 
