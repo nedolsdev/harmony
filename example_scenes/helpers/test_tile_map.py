@@ -5,7 +5,6 @@ from __future__ import annotations
 import random
 from typing import Literal
 
-from harmony.core.assets.polygon_asset import PolygonAsset
 from harmony.core.packages.geometry.polygon import Polygon
 from harmony.core.packages.geometry.rectangle import Rectangle
 from harmony.core.packages.geometry.vector2 import Vector2

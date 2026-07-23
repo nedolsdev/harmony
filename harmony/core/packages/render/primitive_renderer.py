@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import math
 from typing import TYPE_CHECKING
 
 import pygame
+import pygame.gfxdraw
 
-from harmony.core.assets.polygon_asset import PolygonAsset
 from harmony.core.packages.render.primitive import (
     CircleRenderPrimitive,
     Line2DRenderPrimitive,
@@ -141,17 +142,50 @@ class PygamePrimitiveRenderer(PrimitiveRenderer):
         )
 
     def _render_polygon(self, primitive: PolygonRenderPrimitive) -> None:
-        asset = PolygonAsset(
-            primitive.polygon,
-            primitive.fill,
-            outline_color=primitive.stroke.color,
-            outline_width=primitive.stroke.thickness,
-            antialiased=False,
-        )
-
-        poly_surface = asset.create_surface()
+        poly_surface = self._compute_pygame_polygon_surface(primitive)
         primitive.material.apply(poly_surface)
         self.surface.blit(poly_surface, primitive.polygon.top_left())
+
+    def _compute_pygame_polygon_surface(self, primitive: PolygonRenderPrimitive) -> pygame.Surface:
+        """Create a surface for the polygon."""
+        polygon = primitive.polygon
+        antialiased = primitive.antialiased
+        fill_color = primitive.fill
+        outline_color = primitive.stroke.color
+        outline_width = primitive.stroke.thickness
+
+        min_x, max_x, min_y, max_y = polygon.bounds()
+
+        width = math.ceil(max_x - min_x) + 1
+        height = math.ceil(max_y - min_y) + 1
+
+        surface = pygame.Surface((width, height), pygame.SRCALPHA)
+
+        shifted_points = [(point.x - min_x, point.y - min_y) for point in polygon.points]
+
+        if antialiased:
+            int_points = [(int(x), int(y)) for x, y in shifted_points]
+
+            if fill_color:
+                pygame.gfxdraw.filled_polygon(surface, int_points, fill_color)
+                pygame.gfxdraw.aapolygon(surface, int_points, fill_color)
+
+            if outline_color and outline_width > 0:
+                pygame.gfxdraw.aapolygon(surface, int_points, outline_color)
+
+        else:
+            if fill_color:
+                pygame.draw.polygon(surface, fill_color, shifted_points)
+
+            if outline_color and outline_width > 0:
+                pygame.draw.polygon(
+                    surface,
+                    outline_color,
+                    shifted_points,
+                    outline_width,
+                )
+
+        return surface
 
     def _render_sprite(self, primitive: SpriteRenderPrimitive) -> None:
         raise NotImplementedError
