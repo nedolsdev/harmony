@@ -33,6 +33,7 @@ def main() -> None:
     scene_manager = game.scene_manager
 
     scenes = [
+        SimpleLazyScene("UI Scene", lambda: create_ui_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Physics Collision Scene",
             lambda: create_physics_collision_scene(settings, renderer.sorting_layers, game.physics.collision_manager),
@@ -48,7 +49,6 @@ def main() -> None:
             "Input Scene",
             lambda: create_input_scene(settings, renderer.sorting_layers, game.input_system.input_manager),
         ),
-        SimpleLazyScene("UI Scene", lambda: create_ui_scene(settings, renderer.sorting_layers)),
         SimpleLazyScene(
             "Collision Scene",
             lambda: create_collision_scene(settings, renderer.sorting_layers, game.physics.collision_manager),

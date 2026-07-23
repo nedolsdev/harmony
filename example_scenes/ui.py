@@ -29,7 +29,7 @@ def create_ui_scene(window_settings: WindowSettings, layers: SortingLayerManager
     ui_obj = (
         GameObjectBuilder(Empty)
         .add_component(Transform(local_position=Vector2(100, 100)))
-        .add_component(Text(content="Hello World", font=Font(size=100), color=(0, 0, 0)))
+        .add_component(Text(content="Hello World", font=Font(size=100), color=(255, 255, 255), antialiased=True))
         .add_component(RenderLayer(default_layer))
         .build()
     )

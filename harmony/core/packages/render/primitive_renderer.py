@@ -15,6 +15,7 @@ from harmony.core.packages.render.primitive import (
     PolygonRenderPrimitive,
     RectRenderPrimitive,
     SpriteRenderPrimitive,
+    TextRenderPrimitive,
 )
 from harmony.game.image_cache import ImageCache
 
@@ -42,6 +43,8 @@ class PrimitiveRenderer:
                 self._render_polygon(primitive)
             case SpriteRenderPrimitive():
                 self._render_sprite(primitive)
+            case TextRenderPrimitive():
+                self._render_text(primitive)
 
     def _render_line(self, primitive: Line2DRenderPrimitive) -> None:
         raise NotImplementedError
@@ -56,6 +59,9 @@ class PrimitiveRenderer:
         raise NotImplementedError
 
     def _render_sprite(self, primitive: SpriteRenderPrimitive) -> None:
+        raise NotImplementedError
+
+    def _render_text(self, primitive: TextRenderPrimitive) -> None:
         raise NotImplementedError
 
 
@@ -220,3 +226,11 @@ class PygamePrimitiveRenderer(PrimitiveRenderer):
         primitive.material.apply(image)
 
         self.surface.blit(image, rect.top_left())
+
+    def _render_text(self, primitive: TextRenderPrimitive) -> None:
+        text_surface: pygame.Surface = primitive.font.render(
+            primitive.content,
+            primitive.antialiased,
+            primitive.color,
+        )
+        self.surface.blit(text_surface, primitive.rect.top_left())

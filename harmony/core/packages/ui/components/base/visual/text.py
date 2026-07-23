@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, override
 
+from harmony.core.packages.geometry.rectangle import Rectangle
+from harmony.core.packages.geometry.vector2 import Vector2
+from harmony.core.packages.render.primitive import TextRenderPrimitive
 from harmony.core.packages.ui.components.visual_element import VisualUIElement
 
 if TYPE_CHECKING:
@@ -18,18 +21,30 @@ if TYPE_CHECKING:
 class Text(VisualUIElement):
     """Basic Text component for the UI package."""
 
-    def __init__(self, content: str, font: Font, color: Color) -> None:
+    def __init__(self, content: str, font: Font, color: Color, *, antialiased: bool = False) -> None:
         """Initialize the basic Text UI component."""
         super().__init__()
         self.content = content
         self.font = font
         self.color = color
+        self.antialiased = antialiased
+
+        # TODO: Compute rough rect bounding box of the text  # noqa: TD003
+        self.rect = Rectangle(0, 0, Vector2(0, 0))
 
     @override
     def render(self, transform: Transform) -> list[RenderPrimitive]:
         """Render the object."""
-        # TODO: Render text  # noqa: TD003
-        return []
+        return [
+            TextRenderPrimitive(
+                self.content,
+                self.font,
+                self.color,
+                self.rect,
+                None,
+                antialiased=self.antialiased,
+            ).transform(transform),
+        ]
 
     @override
     def awake(self) -> None:
