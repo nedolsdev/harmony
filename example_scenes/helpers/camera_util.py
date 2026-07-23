@@ -9,6 +9,7 @@ from harmony.core.objects.empty import Empty
 from harmony.core.packages.camera.camera_component import Camera, Viewport
 from harmony.core.packages.camera.camera_controller import CameraController
 from harmony.core.packages.render.render_layer import RenderLayer
+from harmony.game.material import GrayscaleMaterial
 from harmony.game.object_builder import GameObjectBuilder
 
 if TYPE_CHECKING:
@@ -29,6 +30,7 @@ def create_camera_game_object(window_settings: WindowSettings, layer: SortingLay
                     width,
                     height,
                 ),
+                GrayscaleMaterial(),
             ),
         )
         .add_component(RenderLayer(layer))
