@@ -82,6 +82,11 @@ class PygamePrimitiveRenderer(PrimitiveRenderer):
         self.surface.blit(line_surface, primitive.segment.top_left())
 
     def _render_rect(self, primitive: RectRenderPrimitive) -> None:
+        # if rotated
+        if primitive.rect.rotation_radians != 0:
+            self._render_polygon(primitive)
+            return
+
         rect = primitive.rect
 
         width = int(rect.width)
